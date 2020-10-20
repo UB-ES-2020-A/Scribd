@@ -1,0 +1,13 @@
+[
+  {
+    "model": "Scribd.ebook",
+    "id": 1,
+    "fields": {
+      "title": "El dia que se perdió la cordura",
+      "autor": "Javier Castillo",
+      "size": "1",
+      "media_type": "pdf",
+      "count_downloads": "0"
+    }
+  }
+]
