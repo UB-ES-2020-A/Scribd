@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# JetBrains Files
+.DS_Store
+.idea
+
 # C extensions
 *.so
 
