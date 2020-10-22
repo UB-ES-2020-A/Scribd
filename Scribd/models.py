@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
-class Account(models.Models):
+class Account(models.Model):
+    username = models.CharField(primary_key=True, max_length=15)
     name = models.CharField(max_length=1000)
     email = models.CharField(max_length=1000)
-    username = models.CharField(max_length=15)
+    date_registration = models.DateField()
+    date_registration = models.DateField()
     subscribed = models.BooleanField()
     type = models.CharField(max_length=20)
 
@@ -19,7 +21,10 @@ class Account(models.Models):
         super(Post, self).save(*args,**kwargs)"""
 
     class Meta:
-        ordering = ['created on']
+
+
+        def __str__(self):
+            return self.username
 
 
 
