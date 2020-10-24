@@ -32,13 +32,13 @@ class Ebook(models.Model):
         verbose_name_plural = 'Ebooks'
 
 
-class ViewedEbook(models.Model):
+class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
 
 
 class EbookInsertDate(models.Model):
-    viewed_ebooks = models.ForeignKey(ViewedEbook, on_delete=models.CASCADE)
+    viewed_ebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
