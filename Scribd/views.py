@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from Scribd.models import ebook
+from Scribd.models import Ebook
 from Scribd.serializers import ebookSerializer
 from rest_framework import generics
 
@@ -8,11 +8,11 @@ from rest_framework import generics
 
 # GET/POST
 class ebookList(generics.ListCreateAPIView):
-    queryset = ebook.objects.all()
+    queryset = Ebook.objects.all()
     serializer_class = ebookSerializer
 
 
 # GET/PATCH (AKA PUT)/DELETE
 class ebookDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = ebook.objects.all()
+    queryset = Ebook.objects.all()
     serializer_class = ebookSerializer
