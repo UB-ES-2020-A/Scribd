@@ -36,7 +36,7 @@ class ViewedEbook(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
 
-"""
+
 class EbookInsertDate(models.Model):
     viewed_ebooks = models.ForeignKey(ViewedEbook, on_delete=models.CASCADE)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
@@ -44,7 +44,6 @@ class EbookInsertDate(models.Model):
 
     class Meta:
         ordering = ['-date_added']
-"""
 
 
 class Review(models.Model):
