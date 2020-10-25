@@ -1,9 +1,25 @@
-<!DOCTYPE html>
 <html>
+
     <head>
-        <title>Example</title>
+        
+        <title>
+            
+            {% block title %} {% endblock %}
+
+        </title>
+
     </head>
+
     <body>
-        <p>This is an example of a simple HTML page with one paragraph.</p>
+
+        <h1>Scribd</h1>
+
+        <h2>Libros, pdfs, articulos científicos...</h2>
+
+        {% block content %} {% endblock %}
+
+        <p>Libros gratuitos</p>
+
     </body>
+
 </html>
