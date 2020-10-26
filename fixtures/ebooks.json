@@ -1,0 +1,16 @@
+[
+  {
+    "model": "Scribd.ebook",
+    "pk": 1,
+    "fields": {
+      "ebook_number": "09186777",
+      "title": "El dia que se perdió la cordura",
+      "autor": "Javier Castillo",
+      "description": "Tematica Thriller",
+      "is_promot": "False",
+      "size": "1",
+      "media_type": "pdf",
+      "count_downloads": "1"
+    }
+  }
+]
