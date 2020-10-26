@@ -1,4 +1,4 @@
-from rest_frameworks import serializers
+from rest_framework import serializers
 from .models import Account, SubscribedAccounts
 from rest_framework import serializers
 
