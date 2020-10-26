@@ -13,6 +13,9 @@ class libro(object):
         self.titulo = titulo
         self.autor = autor
 
+def base(request):
+    return render(request, 'scribd/base.html')
+
 def lista_libros(request):
 
     l1 = libro("el señor de los anillos la comunidad del anillo", "John R.R. Tolkien")

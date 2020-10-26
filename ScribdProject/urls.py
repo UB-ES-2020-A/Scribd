@@ -21,5 +21,4 @@ from Scribd.views import lista_libros
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Scribd.urls')), # link to endpoints
-    path('libros/', lista_libros),
 ]
