@@ -1,11 +1,8 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
+
 from Scribd import views
 from Scribd.views import ebookList, ebookDetail, AccountList, AccountDetail
-from django.contrib import admin
-from django.urls import path
-from django.conf.urls import url, include
-from rest_framework.urlpatterns import format_suffix_patterns
 
 # endpoints
 urlpatterns = [

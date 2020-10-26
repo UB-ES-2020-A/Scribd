@@ -13,12 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin    
+from django.contrib import admin
 from django.urls import path, include
-from Scribd.views import lista_libros
-from Scribd.views import AccountList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Scribd.urls')), # link to endpoints
+    path('', include('Scribd.urls')),  # link to endpoints
 ]
