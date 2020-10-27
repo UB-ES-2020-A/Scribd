@@ -1,10 +1,12 @@
 from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
-from Scribd.views import base, add_books_form, ebookList, ebookDetail, ebook_create_view, ebookListView, ebookDetailView
+from Scribd.views import lista_libros, base, add_books_form, ebookList, ebookDetail, ebook_create_view, ebookListView, ebookDetailView
 
 # endpoints
 
 urlpatterns = [
+    url(r'^$', lista_libros, name='mainpage'),
+    url(r'^base/$', base, name='base'),
     url('predef-ebooklist/$', ebookList.as_view(), name='ebook_list'),
     url('predef-ebookdetail/(?P<pk>[0-9]+)/$', ebookDetail.as_view(), name='ebook_detail'),
     url('ebooklist/$', ebookListView.as_view(), name='ebook_custom_list'),
