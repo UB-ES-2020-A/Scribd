@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.validators import MinValueValidator
 # Create your models here.
+from django.urls import reverse
+
 
 class Ebook(models.Model):
     TYPE_FILE = (
@@ -10,16 +12,15 @@ class Ebook(models.Model):
         ("epub", "epub"),
     )
     _type_files = dict(TYPE_FILE)
-    ebook_number = models.CharField(max_length=8, unique=True,default='')
-    title = models.CharField(max_length=50)
-    autor = models.CharField(max_length=50)
+    ebook_number = models.CharField(max_length=8, unique=True, default='') #IBAN?
+    title = models.CharField(max_length=50, blank=False, default='')
+    autor = models.CharField(max_length=50, blank=False, default='')
     description = models.TextField(default='')
     is_promot = models.BooleanField(default='False')
-    size = models.IntegerField()
-    media_type= models.CharField(max_length=5, choices=TYPE_FILE)
+    size = models.IntegerField(default=0)
+    media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="scribd/static/images/",default='scribd/static/images/')
-    count_downloads = models.PositiveIntegerField()
-
+    count_downloads = models.PositiveIntegerField(default=0)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]

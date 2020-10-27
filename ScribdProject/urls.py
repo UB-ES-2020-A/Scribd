@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from Scribd.views import ebook_create_view
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Scribd.urls')), # link to endpoints
+    path('api/', include('Scribd.urls')),  # link to endpoints
 ]

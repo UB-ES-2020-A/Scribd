@@ -1,0 +1,13 @@
+{% extends 'scribd/base.html' %}
+
+{% block content %}
+    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
+        <h3>Add a new book <small style="color: gray">(First view form)</small></h3>
+        <form method="POST" action="http://127.0.0.1:8000/api/addbook/">
+            <!-- csrf protection -->
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add book</button>
+        </form>
+    </div>
+{% endblock %}
