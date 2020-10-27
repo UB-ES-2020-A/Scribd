@@ -20,6 +20,9 @@ from Scribd.views import lista_libros
 
 
 urlpatterns = [
+    path(r'^Scribd/', include('Scribd.urls')),
     path('admin/', admin.site.urls),
+    path('', include('Scribd.urls')),
     path('api/', include('Scribd.urls')),  # link to endpoints
+    path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
