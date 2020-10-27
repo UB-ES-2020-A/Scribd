@@ -1,6 +1,6 @@
 [
   {
-    "model": "Scribd.ebook",
+    "model": "Scribd.Ebook",
     "pk": 1,
     "fields": {
       "ebook_number": "09186777",
@@ -14,10 +14,10 @@
     }
   },
     {
-    "model": "Scribd.ebook",
+    "model": "Scribd.Ebook",
     "pk": 2,
     "fields": {
-      "ebook_number": "",
+      "ebook_number": "743738",
       "title": "Harry Potter and the goblet of fire",
       "autor": "J.K Rowling",
       "description": "4to saga Harry Potter",
@@ -28,10 +28,10 @@
     }
   },
     {
-    "model": "Scribd.ebook",
+    "model": "Scribd.Ebook",
     "pk": 3,
     "fields": {
-      "ebook_number": "",
+      "ebook_number": "353585",
       "title": "Harry Potter and the chamber of secrets",
       "autor": "J.K Rowling",
       "description": "2ndo saga Harry Potter",
