@@ -1,1 +1,15 @@
+language: python
 
+python: 
+  - "3.8.6"
+  
+env:
+  - DJANGO=3.1.2
+
+install:
+  - pip install -r requirements.txt 
+  - python -m venv myvenv
+  - source myvenv/bin/activate
+
+script: 
+  - python manage.py test
