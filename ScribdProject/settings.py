@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import django_heroku
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -156,3 +158,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
 MEDIA_URL = '/media/'
 
+django_heroku.settings(locals())
+
+try:
+    from forkilla.local_settings import *
+except ImportError:
+    # No local settings was found, skipping.
+    pass
