@@ -1,15 +1,12 @@
 language: python
-
-python: 
-  - "3.8.6"
-  
-env:
-  - DJANGO=3.1.2
-
+python:
+- '3.8.6'
 install:
-  - pip install -r requirements.txt 
-  - python -m venv myvenv
-  - source myvenv/bin/activate
-
-script: 
-  - python manage.py test
+- pip install -r requirements.txt
+deploy:
+  provider: heroku
+  api_key:
+    secure: 35fde4b6-79ea-4101-8800-5180cf18dec9
+  app:
+  on:
+    repo: UB-ES-2020/Scribd
