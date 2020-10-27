@@ -12,5 +12,33 @@
       "media_type": "pdf",
       "count_downloads": "1"
     }
+  },
+    {
+    "model": "Scribd.ebook",
+    "pk": 2,
+    "fields": {
+      "ebook_number": "",
+      "title": "Harry Potter and the goblet of fire",
+      "autor": "J.K Rowling",
+      "description": "4to saga Harry Potter",
+      "is_promot": "False",
+      "size": "635",
+      "media_type": "epub",
+      "count_downloads": "1"
+    }
+  },
+    {
+    "model": "Scribd.ebook",
+    "pk": 3,
+    "fields": {
+      "ebook_number": "",
+      "title": "Harry Potter and the chamber of secrets",
+      "autor": "J.K Rowling",
+      "description": "2ndo saga Harry Potter",
+      "is_promot": "False",
+      "size": "251",
+      "media_type": "epub",
+      "count_downloads": "1"
+    }
   }
 ]
