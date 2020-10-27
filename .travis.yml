@@ -1,12 +1,13 @@
 language: python
 python:
-- '3.8.6'
+- '3.8'
 install:
 - pip install -r requirements.txt
 deploy:
   provider: heroku
   api_key:
     secure: 35fde4b6-79ea-4101-8800-5180cf18dec9
-  app:
+  strategy: git
+  app: es-scribd
   on:
     repo: UB-ES-2020/Scribd
