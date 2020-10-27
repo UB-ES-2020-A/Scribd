@@ -1,12 +1,13 @@
 language: python
 python:
-- '3.8'
+- '3.8.6'
+cache: pip
 install:
 - pip install -r requirements.txt
 deploy:
   provider: heroku
   api_key:
-    secure: 35fde4b6-79ea-4101-8800-5180cf18dec9
+    secure: "LV76nN6vfV5yn4+CnnOQdpJHBzGJUM9gmv66ricLh3YowTby+9DZ75xTKFozkm9RQH+gM6fu7xrewBIBvYg4Ms4R9qG0sgZ4CKfnco382sIj9sj7R59S/xj1TdRD1flCXRQXPV8ruQs9Du4X+jttRcC8beXYj0Ss/jFMljq+2rSiXkoEfFNg2H66CMLZxRTAmeljak9n1m0AZC3s2iOnOo37QpDJpIc+g6KUBq+lCtvfKPSLlfQgwOWwITLAD3dFWhu4iEBsGBxXjMRQCM5W0EVqvxGfPCZIWT5M68cXMJyu18LlnIcK/eRO/MYpFVfq4+Xek8WQKVGoZ3KVPTuVEDE4mm6Jh22ALsUI2qxHkhHXnUUXo0TQb4eCbR7J1gmQE58a6YiWTzwkI4H32kT598jH35FooERJ+zn8TShuwJqV2oIY/fHGg4dkjjHUSyyQADQViz4De/2zgdu5YAOYIWjBkYVliiQ1XdYeTK5Eanc0I27sR0+Axqz8DqJYiGPQPpSIvbcDiZav6rbCM3axga24n9VDmYh1gXHy7KFf+0LujmNkp09zZ9jAIFZymulDZM2k0Nhq0h/ldWHFOZGqz1w6v0C66i71Du1EfVMiGio3+7fLnfYuiBgwB3KFIiHjyNM4A85irhB0eDPPKb/0MAAg+YuVRylyFjHKQvk2kFo="
   strategy: git
   app: es-scribd
   on:
