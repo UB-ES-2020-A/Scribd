@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
-import django_heroku
 import os
+from pathlib import Path
+
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -29,7 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Scribd.apps.ScribdConfig',
-    'rest_framework'
+    'rest_framework',
+    'bootstrap4',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
@@ -152,4 +153,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())
-
