@@ -1,161 +1,143 @@
-<!DOCTYPE html>
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <head>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-        <style>
+<title>
 
-            body {
-                font-family: Arial;
-            }
-            #menu {
-                top: 0;
-                background-color: black;
-            }
+{% block title %} {% endblock %}
 
-            #menu ul {
-                list-style: none;
-                top: 0;
-                margin: 0;
-                padding: 0;
-            }
+</title>
 
-            #menu ul li {
-                top: 0;
-                display: inline-block;
-            }
+</head>
+<body>
+<nav class="navbar fixed-top navbar-expand-lg navbar-light" style="background-color: #F0F0F0">
+<a class="navbar-brand pr-4" href="#">
+<img src="Captura.jpg" width="80" height="40" alt="">
+</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
 
-            #menu ul li a {
-                top: 0;
-                color: red;
-                display: block;
-                padding: 10px 80px;
-                text-decoration: none;
-            }
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<form class="form-inline ml-2 my-2 my-lg-0">
+<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+</form>
+<ul class="navbar-nav ml-auto">
+<li class="nav-item active">
+<a class="navbar-brand pr-2 mr-2" href="#">
+<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Register</button>
+</a>
+</li>
+<li class="nav-item">
+<a class="navbar-brand" href="#">
+<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+</a>
+</li>
+</ul>
+</div>
+</nav>
 
-            #menu ul li a:hover {
-                border-radius: 25px;
-                background-color: white;
-            }
+<div class="container-fading mt-5 pt-3">
 
-            .item-r {
-                border: 1px solid green;
-                border-radius: 25px;
-                float: right;
-            }
+    {% block content %} {% endblock %}
 
-            .header {
-                padding: 10px 16px;
-                background: #555;
-                color: #f1f1f1;
-            }
+</div>
 
-            .sticky {
-                position: fixed;
-                top: 0;
-                width: 97.5%;
-            }
+<!-- Footer -->
+<footer class="page-footer font-small pt-4" style="background-color: #F0F0F0">
 
-            .sticky + .content {
-                padding-top: 102px;
-            }
+<!-- Footer Links -->
+<div class="container-fluid text-center text-md-left">
 
-        </style>
-        
-        <title>
-            
-            {% block title %} {% endblock %}
+<!-- Grid row -->
+<div class="row">
 
-        </title>
+<!-- Grid column -->
+<div class="col-md-6 mt-md-0 mt-3">
 
-    </head>
+<!-- Content -->
+<h5 class="text-uppercase">Footer Content</h5>
+<p>Here you can use rows and columns to organize your footer content.</p>
 
-    <body>
+</div>
+<!-- Grid column -->
 
-        <!-- <img src="google.png" alt="idk" width="500" height="600"> -->
+<hr class="clearfix w-100 d-md-none pb-3">
 
-        <div class ="header" id ="menu">
-            <ul>
-                <li></li>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Home</a></li>
-                <li class="item-r"><a href="#">Login</a></li>
-            </ul>
-        </div>
+<!-- Grid column -->
+<div class="col-md-3 mb-md-0 mb-3">
 
-        <h2>Libros, pdfs, articulos científicos...</h2>
+<!-- Links -->
+<h5 class="text-uppercase">Links</h5>
 
-        {% block content %} {% endblock %}
+<ul class="list-unstyled">
+<li>
+<a href="#!">Link 1</a>
+</li>
+<li>
+<a href="#!">Link 2</a>
+</li>
+<li>
+<a href="#!">Link 3</a>
+</li>
+<li>
+<a href="#!">Link 4</a>
+</li>
+</ul>
 
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
-        <p>Libros gratuitos</p>
+</div>
+<!-- Grid column -->
 
-        <script>
-            window.onscroll = function() {myFunction()};
-            
-            var header = document.getElementById("menu");
-            var sticky = header.offsetTop;
-            
-            function myFunction() {
-              if (window.pageYOffset > sticky) {
-                header.classList.add("sticky");
-              } else {
-                header.classList.remove("sticky");
-              }
-            }
-            </script>
+<!-- Grid column -->
+<div class="col-md-3 mb-md-0 mb-3">
 
-    </body>
+<!-- Links -->
+<h5 class="text-uppercase">Links</h5>
 
+<ul class="list-unstyled">
+<li>
+<a href="#!">Link 1</a>
+</li>
+<li>
+<a href="#!">Link 2</a>
+</li>
+<li>
+<a href="#!">Link 3</a>
+</li>
+<li>
+<a href="#!">Link 4</a>
+</li>
+</ul>
+
+</div>
+<!-- Grid column -->
+
+</div>
+<!-- Grid row -->
+
+</div>
+<!-- Footer Links -->
+
+<!-- Copyright -->
+<div class="footer-copyright text-center py-3">© 2020 Copyright:
+<a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+</div>
+<!-- Copyright -->
+
+</footer>
+<!-- Footer -->
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
 </html>
