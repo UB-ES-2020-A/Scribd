@@ -1,13 +1,13 @@
-{%extends "scribd/base.html" %}
+{% extends "scribd/base.html" %}
 
 {% block title %} Welcome! {% endblock %}
 
-{%block content %}
+{% block content %}
 
-{% for libro in lista_libros %}
+    {% for libro in lista_libros %}
 
-<p>Libros: {{libro.titulo}} {{libro.autor}}</p>
+        <p>Libros: {{ libro.titulo }} {{ libro.autor }}</p>
 
-{% endfor %}
+    {% endfor %}
 
 {% endblock %}

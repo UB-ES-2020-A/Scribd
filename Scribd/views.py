@@ -1,3 +1,10 @@
+from django.shortcuts import render
+from rest_framework import generics
+
+from Scribd.models import User
+from Scribd.models import Ebook
+from Scribd.serializers import UserSerializer
+from Scribd.serializers import ebookSerializer
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView
 
@@ -35,7 +42,6 @@ def lista_libros(request):
 
     return render(request, "scribd/mainpage.html", ctx)
 
-
 def ebook_create_view(request):
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
@@ -66,6 +72,19 @@ class ebookDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Ebook.objects.all()
     serializer_class = ebookSerializer
 
+
+# Create your views here.
+
+# GET/POST
+
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all().order_by('username')
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 def base(request):
     return render(request, '../templates/scribd/base.html')

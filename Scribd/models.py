@@ -1,7 +1,8 @@
-from django.db import models
 from django.contrib.auth.models import User
-from datetime import datetime
-from django.core.validators import MinValueValidator
+from django.contrib.postgres.fields import ArrayField
+from django.db import models
+
+
 # Create your models here.
 from django.urls import reverse
 
@@ -11,12 +12,49 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 
+class User(models.Model):
+
+    USER_TYPE = (
+        ("admin","admin"),
+        ("provider","provider"),
+        ("support","support"),
+        ("free_trial","free_trial"),
+        ("subscribed","subscribed"),
+    )
+    _type_user = dict(USER_TYPE)
+
+    username = models.CharField(primary_key=True, unique=True, max_length=20)
+    name = models.CharField(max_length=1000)
+    password = models.CharField(max_length=20)
+    email = models.EmailField(unique=True)
+    date_registration = models.DateField(auto_now_add=True)
+    subscription = models.BooleanField()
+    type = models.CharField(max_length=15, choices=USER_TYPE)
+
+    def get_user_type(self):
+        return self._type_user[self.type]
+
+    class Meta:
+        verbose_name = 'User'
+        ordering = ['username']
+
+        def __str__(self):
+            return self.username
+
+
+class SubscribedUsers(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_subs = models.DateField(auto_now_add=True)
+    free_trial = models.BooleanField()
+
+
 class Ebook(models.Model):
     TYPE_FILE = (
         ("pdf", "pdf"),
         ("epub", "epub"),
     )
     _type_files = dict(TYPE_FILE)
+    
     ebook_number = models.CharField(max_length=8, unique=True, default='') #IBAN?
     title = models.CharField(max_length=50, blank=False, default='')
     autor = models.CharField(max_length=50, blank=False, default='')
@@ -62,10 +100,10 @@ class Review(models.Model):
     )
     _d_stars = dict(STARS)
     id = models.AutoField(primary_key=True)
-    ebook = models.ForeignKey(Ebook,on_delete=models.CASCADE)
+    ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     value_stars = models.CharField(max_length=12, choices=STARS)
     comment = models.TextField()
-    user = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
@@ -84,3 +122,4 @@ class Account(models.Model):
 
         def __str__(self):
             return self.username
+

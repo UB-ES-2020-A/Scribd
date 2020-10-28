@@ -153,4 +153,3 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())
-
