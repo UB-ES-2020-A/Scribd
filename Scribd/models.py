@@ -4,25 +4,39 @@ from django.db import models
 
 # Create your models here.
 
-class Account(models.Model):
-    username = models.CharField(primary_key=True, unique=True, max_length=15)
+class User(models.Model):
+
+    USER_TYPE = (
+        ("admin","admin"),
+        ("provider","provider"),
+        ("support","support"),
+        ("free_trial","free_trial"),
+        ("subscribed","subscribed"),
+    )
+    _type_user = dict(USER_TYPE)
+
+    username = models.CharField(primary_key=True, unique=True, max_length=20)
     name = models.CharField(max_length=1000)
+    password = models.CharField(max_length=20)
     email = models.CharField(unique=True, max_length=1000)
-    date_registration = models.DateField()
+    date_registration = models.DateField(auto_now_add=True)
     subscription = models.BooleanField()
-    type = models.CharField(max_length=20)
+    type = models.CharField(max_length=15, choices=USER_TYPE)
+
+    def get_user_type(self):
+        return self._type_user[self.type]
 
     class Meta:
-        verbose_name = 'Account'
+        verbose_name = 'User'
         ordering = ['username']
 
         def __str__(self):
             return self.username
 
 
-class SubscribedAccounts(models.Model):
-    username = models.ForeignKey(Account, on_delete=models.CASCADE)
-    date_subs = models.DateField()
+class SubscribedUsers(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_subs = models.DateField(auto_now_add=True)
     free_trial = models.BooleanField()
 
 

@@ -2,7 +2,7 @@ from django.conf.urls import url
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from Scribd import views
-from Scribd.views import ebookList, ebookDetail, AccountList, AccountDetail
+from Scribd.views import ebookList, ebookDetail, UserList, UserDetail
 
 # endpoints
 urlpatterns = [
@@ -10,8 +10,8 @@ urlpatterns = [
     url(r'^base/$', views.base, name='base'),
     url('ebook/$', ebookList.as_view()),
     url('ebook/(?P<pk>[0-9]+)/$', ebookDetail.as_view()),
-    url('Account/$', AccountList.as_view()),
-    url('Account/(?P<pk>[0-9]+)/$', AccountDetail.as_view())
+    url('User/$', UserList.as_view()),
+    url('User/(?P<pk>[0-9]+)/$', UserDetail.as_view())
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

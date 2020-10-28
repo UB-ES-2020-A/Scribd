@@ -1,13 +1,13 @@
 from rest_framework import serializers
 
 from Scribd.models import Ebook
-from .models import Account
+from .models import User
 
 
-class AccountSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Account
-        fields = ('username', 'name', 'email', 'date_registration', 'subscription', 'type')
+        model = User
+        fields = ('username', 'name', 'password', 'email', 'date_registration', 'subscription', 'type')
 
 
 class ebookSerializer(serializers.ModelSerializer):

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from rest_framework import generics
 
-from Scribd.models import Account
+from Scribd.models import User
 from Scribd.models import Ebook
-from Scribd.serializers import AccountSerializer
+from Scribd.serializers import UserSerializer
 from Scribd.serializers import ebookSerializer
 
 
@@ -48,11 +48,11 @@ class ebookDetail(generics.RetrieveUpdateDestroyAPIView):
 
 # GET/POST
 
-class AccountList(generics.ListCreateAPIView):
-    queryset = Account.objects.all().order_by('username')
-    serializer_class = AccountSerializer
+class UserList(generics.ListCreateAPIView):
+    queryset = User.objects.all().order_by('username')
+    serializer_class = UserSerializer
 
 
-class AccountDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
