@@ -4,6 +4,13 @@ from django.db import models
 
 
 # Create your models here.
+from django.urls import reverse
+
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+
+
 
 class User(models.Model):
 
@@ -47,15 +54,16 @@ class Ebook(models.Model):
         ("epub", "epub"),
     )
     _type_files = dict(TYPE_FILE)
-    ebook_number = models.CharField(max_length=8, unique=True, default='')
-    title = models.CharField(max_length=50)
-    autor = models.CharField(max_length=50)
+    
+    ebook_number = models.CharField(max_length=8, unique=True, default='') #IBAN?
+    title = models.CharField(max_length=50, blank=False, default='')
+    autor = models.CharField(max_length=50, blank=False, default='')
     description = models.TextField(default='')
     is_promot = models.BooleanField(default='False')
-    size = models.IntegerField()
-    media_type = models.CharField(max_length=5, choices=TYPE_FILE)
-    featured_photo = models.ImageField(upload_to="scribd/static/images/", default='scribd/static/images/')
-    count_downloads = models.PositiveIntegerField()
+    size = models.IntegerField(default=0)
+    media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
+    featured_photo = models.ImageField(upload_to="scribd/static/images/",default='scribd/static/images/')
+    count_downloads = models.PositiveIntegerField(default=0)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -99,3 +107,19 @@ class Review(models.Model):
 
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
+
+class Account(models.Model):
+    username = models.CharField(primary_key=True, unique=True, max_length=15)
+    name = models.CharField(max_length=1000)
+    email = models.CharField(unique=True, max_length=1000)
+    date_registration = models.DateField()
+    subscription = models.BooleanField()
+    type = models.CharField(max_length=20)
+
+    class Meta:
+        verbose_name = 'Account'
+        ordering = ['username']
+
+        def __str__(self):
+            return self.username
+
