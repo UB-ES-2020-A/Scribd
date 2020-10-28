@@ -15,10 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin    
 from django.urls import path, include
-from Scribd.views import lista_libros
+
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('Scribd.urls')), # link to endpoints
+    path('', include('Scribd.urls')),
+    path('api/', include('Scribd.urls')),  # link to endpoints
+    path('accounts/', include('django.contrib.auth.urls')),
+
 ]
