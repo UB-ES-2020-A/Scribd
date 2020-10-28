@@ -17,10 +17,16 @@ from django.contrib import admin
 from django.urls import path, include
 from Scribd.views import ebook_create_view
 from Scribd.views import lista_libros
+from django.views.generic import TemplateView
+from Scribd.views import signup
+import os.path
+Temp_Path = os.path.realpath('.')
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Scribd.urls')),
     path('api/', include('Scribd.urls')),  # link to endpoints
+    path('accounts/', include('django.contrib.auth.urls')),
+
 ]

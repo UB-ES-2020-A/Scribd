@@ -5,6 +5,11 @@ from django.core.validators import MinValueValidator
 # Create your models here.
 from django.urls import reverse
 
+from django.contrib.auth import login, authenticate
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import UserCreationForm
+
+
 
 class Ebook(models.Model):
     TYPE_FILE = (
@@ -64,3 +69,4 @@ class Review(models.Model):
 
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
+

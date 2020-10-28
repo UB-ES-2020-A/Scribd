@@ -8,7 +8,7 @@ class EbookForm(forms.ModelForm):
         fields = ['ebook_number', 'title', 'autor', 'description', 'is_promot', 'size', 'media_type', 'featured_photo',
                   'count_downloads']
 
-    #TODO Gestionar featured_photo
+        # TODO Gestionar featured_photo
         widgets = {
             'ebook_number': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 50 characters'}),
@@ -19,3 +19,8 @@ class EbookForm(forms.ModelForm):
             'media_type': forms.Select(attrs={'class': 'form-control'}),
             'count_downloads': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+
+class UserLoginForm(forms.Form):
+    username = forms.CharField(max_length=25)
+    password = forms.CharField(widget=forms.PasswordInput)
