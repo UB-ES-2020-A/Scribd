@@ -1,25 +1,24 @@
-<html>
-
-    <head>
-
-        <title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+     <title>
 
             {% block title %} {% endblock %}
 
-        </title>
+     </title>
+     <button onclick="location.href = '/accounts/login'">Log in page</button>
+     <button onclick="location.href = '/accounts/signup'">SignUp page</button>
 
-    </head>
-
-    <body>
-
-        <h1>Scribd</h1>
+</head>
+<body>
+    <h1>Scribd</h1>
 
         <h2>Libros, pdfs, articulos científicos...</h2>
 
         {% block content %} {% endblock %}
 
-        <p>Libros gratuitos</p>
-
-    </body>
-
+</body>
 </html>

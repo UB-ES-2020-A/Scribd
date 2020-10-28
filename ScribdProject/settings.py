@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Scribd.apps.ScribdConfig',
-    'rest_framework'
+    'rest_framework',
+    'bootstrap4',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
@@ -84,7 +85,6 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                "django.core.context_processors.csrf",
                 "django.contrib.messages.context_processors.messages",
             ],
         },

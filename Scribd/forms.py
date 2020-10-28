@@ -1,5 +1,7 @@
 from django import forms
-from Scribd.models import Ebook
+from django.contrib.auth.forms import UserCreationForm
+
+from Scribd.models import Ebook, Account
 
 
 class EbookForm(forms.ModelForm):
@@ -20,7 +22,13 @@ class EbookForm(forms.ModelForm):
             'count_downloads': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
+'''
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField()
+    subscription = forms.ChoiceField(choices=["Free","Subscribed"])
 
-class UserLoginForm(forms.Form):
-    username = forms.CharField(max_length=25)
-    password = forms.CharField(widget=forms.PasswordInput)
+    class Meta:
+        model = Account
+        fields = ["username","password1","password2","email","subscription"]
+
+'''
