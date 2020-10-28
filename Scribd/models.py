@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
@@ -18,7 +19,7 @@ class User(models.Model):
     username = models.CharField(primary_key=True, unique=True, max_length=20)
     name = models.CharField(max_length=1000)
     password = models.CharField(max_length=20)
-    email = models.CharField(unique=True, max_length=1000)
+    email = models.EmailField(unique=True)
     date_registration = models.DateField(auto_now_add=True)
     subscription = models.BooleanField()
     type = models.CharField(max_length=15, choices=USER_TYPE)
