@@ -10,9 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
-from pathlib import Path
-import django_heroku
 import os
+from pathlib import Path
+
+import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -28,7 +29,6 @@ SECRET_KEY = '#+)$zpc&&3(cs!p#$fjdgmr2^3=*42r_+ij9co0k^o%$7hl$t+'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.herokuapp.com']
-
 
 # Application definition
 

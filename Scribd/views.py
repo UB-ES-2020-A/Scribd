@@ -1,20 +1,14 @@
-from django.shortcuts import render
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView
 from rest_framework import generics
 
-from Scribd.models import User
+from Scribd.forms import EbookForm
 from Scribd.models import Ebook
+from Scribd.models import User
 from Scribd.serializers import UserSerializer
 from Scribd.serializers import ebookSerializer
-from django.shortcuts import render, redirect
-from django.views.generic import CreateView, ListView, DetailView
-
-from Scribd.models import Ebook
-from Scribd.forms import EbookForm
-from Scribd.serializers import ebookSerializer
-from rest_framework import generics
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
 
 
 # Create your views here.
@@ -41,6 +35,7 @@ def lista_libros(request):
     ctx = {"lista_libros": libros}
 
     return render(request, "scribd/mainpage.html", ctx)
+
 
 def ebook_create_view(request):
     if request.method == 'POST':
@@ -86,6 +81,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+
 def base(request):
     return render(request, '../templates/scribd/base.html')
 
@@ -104,7 +100,6 @@ def login_create_view(request):
         login_form = AuthenticationForm(data=request.POST)
 
         if login_form.is_valid():
-
             username = login_form.cleaned_data['username']
             password = login_form.cleaned_data['password']
 
