@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.views.generic import CreateView, ListView, DetailView
 
-from Scribd.models import Ebook
+from Scribd.models import Ebook, Account
 from Scribd.forms import EbookForm
-from Scribd.serializers import ebookSerializer
-from rest_framework import generics
+from Scribd.serializers import EbookSerializer, AccountSerializer
+from rest_framework import generics, viewsets, permissions
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
@@ -57,25 +57,24 @@ class ebookDetailView(DetailView):
     template_name = '../templates/scribd/ebook_detail.html'
 
 
-class ebookList(generics.ListCreateAPIView):
-    queryset = Ebook.objects.all()
-    serializer_class = ebookSerializer
+class EbookViewSet(viewsets.ModelViewSet):
+    queryset = Ebook.objects.all().order_by('id')
+    serializer_class = EbookSerializer
+    # permission_classes = permissions.IsAuthenticatedOrReadOnly
 
-
-class ebookDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Ebook.objects.all()
-    serializer_class = ebookSerializer
-
-
-def base(request):
-    return render(request, '../templates/scribd/base.html')
-
-
-def add_books_form(request):
-    return render(request, '../templates/forms/add_book.html')
-
+    def get_queryset(self):
+        return Ebook.objects.all().order_by('id')
 
 # ------------------------------------------User management------------------------------------------------
+
+
+class AccountsViewSet(viewsets.ModelViewSet):
+    queryset = Account.objects.all().order_by('date_registration')
+    serializer_class = AccountSerializer
+    # permission_classes = permissions.IsAuthenticatedOrReadOnly
+
+    def get_queryset(self):
+        return Account.objects.all().order_by('date_registration')
 
 
 def login_create_view(request):

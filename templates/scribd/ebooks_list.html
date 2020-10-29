@@ -1,6 +1,11 @@
 {% extends 'scribd/base.html' %}
 {% block content %}
     <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
+    <div class="row">
+        {% load static %}
+        <img src={% static "images/Captura.jpg" %}>
+    </div>
+    <div class="row">
         <h3>List of added ebooks</h3>
         <div>
             {% for ebook in object_list %}
@@ -9,6 +14,7 @@
 
             {% endfor %}
         </div>
+    </div>
     </div>
 
 {% endblock %}

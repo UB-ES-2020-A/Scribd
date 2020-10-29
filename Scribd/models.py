@@ -10,21 +10,20 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 
 
-
 class Ebook(models.Model):
     TYPE_FILE = (
         ("pdf", "pdf"),
         ("epub", "epub"),
     )
     _type_files = dict(TYPE_FILE)
-    ebook_number = models.CharField(max_length=8, unique=True, default='') #IBAN?
+    ebook_number = models.CharField(max_length=8, unique=True, default='')  # IBAN?
     title = models.CharField(max_length=50, blank=False, default='')
     autor = models.CharField(max_length=50, blank=False, default='')
     description = models.TextField(default='')
     is_promot = models.BooleanField(default='False')
     size = models.IntegerField(default=0)
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = models.ImageField(upload_to="scribd/static/images/",default='scribd/static/images/')
+    featured_photo = models.ImageField(upload_to="scribd/static/images/", default='scribd/static/images/')
     count_downloads = models.PositiveIntegerField(default=0)
 
     def get_ebook_media_type(self):
@@ -62,21 +61,34 @@ class Review(models.Model):
     )
     _d_stars = dict(STARS)
     id = models.AutoField(primary_key=True)
-    ebook = models.ForeignKey(Ebook,on_delete=models.CASCADE)
+    ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     value_stars = models.CharField(max_length=12, choices=STARS)
     comment = models.TextField()
-    user = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
 
+
 class Account(models.Model):
+    TYPE_ACCOUNT = (
+        ("ADMIN", "ADMIN"),
+        ("SUPP", "SUPP"),
+        ("PROV", "PROV"),
+        ("FREE", "FREE"),
+        ("SUSCR", "SUSCR")
+    )
+
+    _d_types = dict(TYPE_ACCOUNT)
     username = models.CharField(primary_key=True, unique=True, max_length=15)
     name = models.CharField(max_length=1000)
     email = models.CharField(unique=True, max_length=1000)
     date_registration = models.DateField()
     subscription = models.BooleanField()
-    type = models.CharField(max_length=20)
+    type = models.CharField(max_length=5, choices=TYPE_ACCOUNT, default='')
+
+    def get_type(self):
+        return self.type
 
     class Meta:
         verbose_name = 'Account'

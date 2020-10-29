@@ -15,14 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin    
 from django.urls import path, include
+from django.conf.urls import url
+from rest_framework import routers
+from Scribd.views import EbookViewSet, AccountsViewSet
 
-
+router = routers.DefaultRouter()
+router.register(r'ebooks', EbookViewSet)
+router.register(r'accounts', AccountsViewSet)
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('Scribd.urls')),
-    path('api/', include('Scribd.urls')),  # link to endpoints
-    path('accounts/', include('django.contrib.auth.urls')),
-
+    url(r'admin/', admin.site.urls),
+    url(r'', include('Scribd.urls')),
+    url(r'scribd/', include('Scribd.urls')),
+    url(r'api/', include(router.urls)),
+    url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

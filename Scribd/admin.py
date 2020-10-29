@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Ebook, ViewedEbooks, Review, EbookInsertDate
+from .models import Ebook, ViewedEbooks, Review, EbookInsertDate, Account
 
 
 # Register your models here
@@ -13,6 +13,7 @@ admin.site.register(Ebook)
 admin.site.register(Review)
 admin.site.register(ViewedEbooks)
 admin.site.register(EbookInsertDate)
+admin.site.register(Account)
 # Configurar el titulo del panel admin
 title = "Administration Scribd"
 admin.site.site_header = title
