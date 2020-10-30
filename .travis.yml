@@ -9,7 +9,7 @@ cache: pip
 
 # Set the python versions
 python:
-- 3.8
+  - 3.8
 
 # Addons
 addons:
@@ -17,22 +17,22 @@ addons:
 
 # Environment
 env:
-- DATABASE_URL=postgres://postgres:postgres@localhost:5432/travis_ci_test
+  - DATABASE_URL=postgres://postgres:postgres@localhost:5432/travis_ci_test
 
 # Install pip dependencies
 install:
-- pip install -r requirements.txt
+  - pip install -r requirements.txt
 
 # Create test database
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres
-- python manage.py makemigrations
-- python manage.py migrate
-- python manage.py loaddata fixtures/ebooks.json
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - python manage.py makemigrations
+  - python manage.py migrate
+  - python manage.py loaddata fixtures/ebooks.json
 
 # Run the unit test
 script:
-- python manage.py test
+  - python manage.py test
 
 # Deploy to heroku server
 deploy:

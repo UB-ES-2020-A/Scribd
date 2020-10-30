@@ -13,7 +13,7 @@
       "count_downloads": "1"
     }
   },
-    {
+  {
     "model": "Scribd.Ebook",
     "pk": 2,
     "fields": {
@@ -27,7 +27,7 @@
       "count_downloads": "1"
     }
   },
-    {
+  {
     "model": "Scribd.Ebook",
     "pk": 3,
     "fields": {
@@ -42,3 +42,4 @@
     }
   }
 ]
+

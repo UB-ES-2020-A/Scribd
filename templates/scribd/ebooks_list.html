@@ -9,7 +9,10 @@
         <h3>List of added ebooks</h3>
         <div>
             {% for ebook in object_list %}
-                <ul><li>{{ ebook.title }} written by {{ ebook.autor }} - <a href={% url "ebook_custom_detail" ebook.pk %}>Info</a></ul>
+                <ul>
+                    <li>{{ ebook.title }} written by {{ ebook.autor }} - <a
+                            href={% url "ebook_custom_detail" ebook.pk %}>Info</a>
+                </ul>
                 <ul>Synopsis: {{ ebook.description }}</ul>
 
             {% endfor %}

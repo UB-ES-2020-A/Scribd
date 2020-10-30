@@ -1,7 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 
-from Scribd.models import Ebook, Account
+from Scribd.models import Ebook
 
 
 class EbookForm(forms.ModelForm):
@@ -21,6 +20,7 @@ class EbookForm(forms.ModelForm):
             'media_type': forms.Select(attrs={'class': 'form-control'}),
             'count_downloads': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
 
 '''
 class RegisterForm(UserCreationForm):

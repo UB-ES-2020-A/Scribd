@@ -1,13 +1,29 @@
-{%extends "scribd/base.html" %}
+{% extends "scribd/base.html" %}
 
-{% block title %} Welcome! {% endblock %}
+{% block title %} scribd {% endblock %}
 
-{%block content %}
+{% block content %}
 
-{% for libro in lista_libros %}
-
-<p>Libros: {{libro.titulo}} {{libro.autor}}</p>
-
-{% endfor %}
+    <div id='cards'>
+        <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
+            <div class="container">
+                <div class="row">
+                {% for libro in lista_libros %}
+                    <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
+                        <div class="card">
+                            <div class="card-body">
+                                <h1 class="card-title pt-5" style="font-size: 300%">{{ libro.titulo }}</h1>
+                                <br>
+                                <h4 class="card-subtitle"><span><strong>Autor/a:</strong></span> {{ libro.autor }} </h4>
+                                <br>
+                                <p class="card-text">{{ libro.descripcion }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
