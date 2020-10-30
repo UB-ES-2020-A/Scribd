@@ -1,0 +1,15 @@
+[
+  {
+    "model": "Scribd.User",
+    "pk": 1,
+    "fields": {
+      "username": "jaumez",
+      "name": "Jaume",
+      "password": "passjaume",
+      "email": "jaume@gmail.com",
+      "date_registration": "2020-10-28",
+      "subscription": "False",
+      "type": "provider"
+    }
+  }
+]

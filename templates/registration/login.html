@@ -1,0 +1,23 @@
+{% extends 'scribd/base.html' %}
+
+
+{% block title %} Login {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2>Log In</h2>
+        <div class="jumbotron">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class='form-group'>
+                        {{ field.label_tag }}<br>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success">Log In</button>
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

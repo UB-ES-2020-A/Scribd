@@ -1,0 +1,18 @@
+{% extends 'scribd/base.html' %}
+{% block content %}
+    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
+        <h3>{{ ebook.title }}</h3>
+        <small>written by: {{ ebook.autor }}</small>
+        <br>
+        <hr>
+        <p>Synopsis: {{ ebook.description }}
+        </p>
+        <br>
+        <hr>
+        <p>IBAN {{ ebook.ebook_number }}</p>
+        <p>Number of pages {{ ebook.size }}</p>
+        <p>Media file type {{ ebook.media_type }}</p>
+        <p>Number of downloads on Scribd {{ ebook.count_downloads }}</p>
+    </div>
+
+{% endblock %}
