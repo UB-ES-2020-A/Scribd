@@ -1,7 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
+
+# TODO mantener Users y Accounts
 
 
 class User(models.Model):
@@ -33,6 +34,7 @@ class User(models.Model):
             return self.username
 
 
+# Suscribed users == Registered users ? True
 class SubscribedUsers(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     date_subs = models.DateField(auto_now_add=True)
