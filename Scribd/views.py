@@ -9,12 +9,17 @@ from Scribd.models import Ebook
 from Scribd.serializers import UserSerializer, EbookSerializer
 
 
+def provider_page(request):
+    return render(request, 'scribd/providers_homepage.html')
+
+
 class libro(object):
 
-    def __init__(self, titulo, autor, descripcion):
+    def __init__(self, titulo, autor, descripcion, portada):
         self.titulo = titulo
         self.autor = autor
         self.descripcion = descripcion
+        self.portada = portada
 
 
 def base(request):
@@ -22,11 +27,11 @@ def base(request):
 
 
 def lista_libros(request):
-    l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller")
-    l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller")
-    l3 = libro("Don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller")
+    l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller", "/static/images/SACdA.jpg")
+    l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller", "/static/images/HP3.jpg")
+    l3 = libro("Don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller", "/static/images/Q.jpeg")
 
-    libros = [l1, l2, l3, l1, l2, l3, l1, l2, l3]
+    libros = [l1, l2, l3]
 
     ctx = {"lista_libros": libros}
 
@@ -41,17 +46,17 @@ def ebook_create_view(request):
             return redirect('ebook_custom_list')
     else:
         form = EbookForm()
-    return render(request, '../templates/forms/add_book.html', {'form': form})
+    return render(request, 'forms/add_book.html', {'form': form})
 
 
 class ebookListView(ListView):
     model = Ebook
-    template_name = '../templates/jinja2/../templates/scribd/ebooks_list.html'
+    template_name = 'scribd/ebooks_list.html'
 
 
 class ebookDetailView(DetailView):
     model = Ebook
-    template_name = '../templates/jinja2/../templates/scribd/ebook_detail.html'
+    template_name = 'scribd/ebook_detail.html'
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -63,9 +68,6 @@ class EbookViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Ebook.objects.all().order_by('id')
 
-# Create your views here.
-
-# GET/POST
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all().order_by('username')
@@ -77,12 +79,8 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
 
 
-def base(request):
-    return render(request, '../templates/jinja2/../templates/scribd/base.html')
-
-
 def add_books_form(request):
-    return render(request, '../templates/forms/add_book.html')
+    return render(request, 'forms/add_book.html')
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
@@ -95,7 +93,6 @@ class AccountsViewSet(viewsets.ModelViewSet):
         return User.objects.all().order_by('date_registration')
 
 
-
 def login_create_view(request):
     login_form = AuthenticationForm()
     if request.method == "POST":
@@ -106,6 +103,8 @@ def login_create_view(request):
 
         if user is not None:
             login(request, user)
+            if user.type == "provider":
+                return redirect('provider_page')
             return redirect('mainpage')
     else:
 

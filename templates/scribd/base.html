@@ -18,7 +18,7 @@
 <nav class="navbar fixed-top navbar-expand-lg"
      style="background-color: #FFFFFF; height: 65px; border-bottom:1px solid #367C85;">
     <a class="navbar-brand pr-4" href="/">
-        <img src="{{ 'images/scribdLogo.png' }}" width="120" height="60" alt="" style="margin-left: 20px">
+        <img src="{{ 'static/images/scribdLogo.png' }}" width="120" height="60" alt="" style="margin-left: 20px">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,14 +31,14 @@
                    style="background-color: #F3F6FD; height: 33px; width: 400px; border-color: slategrey">
             <button class="btn my-2 my-sm-0" type="submit"
                     style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
-                <img src="{{ 'images/lupa.png' }}" width="18px" height="18px" style="margin-top: -10px">
+                <img src="{{ 'static/images/lupa.png' }}" width="18px" height="18px" style="margin-top: -10px">
             </button>
         </form>
         <ul class="navbar-nav ml-auto">
             {% if request.user.is_authenticated %}
                 <li class="nav-item active">
                     <a class="navbar-brand pr-2 mr-2" href="#">
-                        <b>{{request.user.username}}</b>
+                        <b style="color: #367C85">{{request.user.username}}</b>
                     </a>
                 </li>
 
@@ -116,7 +116,7 @@
 </div>
 
 <!-- #E5E5E5 -->
-<div class="container-fading mt-5 pt-3" style="background-color: #E5E5E5; margin-left: 180px; padding: 0px 10px">
+<div class="container-fading mt-5 pt-3" style="background-color: #E5E5E5; margin-left: 180px; padding: 0px 10px; min-height: 500px">
     {% block content %} {% endblock %}
 
 </div>
