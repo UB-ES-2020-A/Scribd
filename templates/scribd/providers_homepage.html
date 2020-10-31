@@ -1,15 +1,20 @@
 {% extends 'scribd/base.html' %}
 {% block content %}
-    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
-        <div class="row">
-
-        </div>
-        <div class="row">
-
-        </div>
-        <div class="row">
-
+    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px;">
+    <h3>Welcome to your <strong>providers</strong> profile!</h3>
+    <hr>
+        <div>
+            <div class="btn"><h4>Update your contract</h4></div>
+            <br>
+            <br>
+            <div class="btn"><h4 onclick="window.location.href='/scribd/addbook/'">Add a book</h4></div>
+            <br>
+            <br>
+            <!--fix this please-->
+            <div class="btn"><h4 onclick="window.location.href='/scribd/ebooklist/'">Review your history</div>
+            <br>
+            <br>
+            <div class="btn"><h4>Bills</h4></div>
         </div>
     </div>
-
 {% endblock %}

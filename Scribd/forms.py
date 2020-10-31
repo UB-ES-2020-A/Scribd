@@ -1,6 +1,10 @@
+from datetime import datetime
+from Scribd.models import Ebook
+from Scribd.user_model import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 
-from Scribd.models import Ebook
+
 
 
 class EbookForm(forms.ModelForm):
@@ -22,13 +26,22 @@ class EbookForm(forms.ModelForm):
         }
 
 
-'''
+''''''
 class RegisterForm(UserCreationForm):
+    print("****************************************************************")
     email = forms.EmailField()
-    subscription = forms.ChoiceField(choices=["Free","Subscribed"])
+    name = forms.TextInput()
 
     class Meta:
-        model = Account
-        fields = ["username","password1","password2","email","subscription"]
+        model = User
+        fields = ["username","first_name" ,"password1","password2","email","type"]
 
-'''
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'password1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+
+        }
+
+

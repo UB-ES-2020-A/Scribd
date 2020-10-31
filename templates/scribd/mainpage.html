@@ -4,13 +4,14 @@
     <div id='cards'>
         <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
             <div class="container">
+            <h2 style="color: #323232">Titles you've <strong>saved</strong></h2>
                 <div class="row">
                     {% for libro in lista_libros %}
                         <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
                             <div class="card" style="width: 500px">
-                                <div class="card-body" style="text-align: center">
+                                <div class="card-body" style="text-align: center;">
                                     <!-- Modify dimensions later-->
-                                    <img src="{{ "/static/images/HP3.jpg" }}" height="400px" width="280px" alt=""
+                                    <img src="{{ libro.portada }}" height="400px" width="280px" alt=""
                                          style="border-radius: 2%">
                                     <h5 class="card-title pt-5"><strong>{{ libro.titulo }}</strong></h5>
                                     <br>

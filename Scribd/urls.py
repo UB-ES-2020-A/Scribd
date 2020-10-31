@@ -4,7 +4,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from Scribd import views
 from Scribd.views import UserList, UserDetail
-from Scribd.views import ebook_create_view, ebookListView, ebookDetailView, signup_create_view, login_create_view
+from Scribd.views import ebook_create_view, ebookListView, ebookDetailView, signup_create_view, login_create_view, \
+    provider_page
 
 urlpatterns = [
     url(r'^$', views.lista_libros, name='mainpage'),
@@ -16,6 +17,7 @@ urlpatterns = [
     url('User/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
     url('accounts/login/', login_create_view, name='login'),
     url('accounts/signup/', signup_create_view, name='signup'),
+    url('provider/', provider_page, name='provider_page')
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
