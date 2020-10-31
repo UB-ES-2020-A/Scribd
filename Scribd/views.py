@@ -46,12 +46,12 @@ def ebook_create_view(request):
 
 class ebookListView(ListView):
     model = Ebook
-    template_name = '../templates/scribd/ebooks_list.html'
+    template_name = '../templates/jinja2/../templates/scribd/ebooks_list.html'
 
 
 class ebookDetailView(DetailView):
     model = Ebook
-    template_name = '../templates/scribd/ebook_detail.html'
+    template_name = '../templates/jinja2/../templates/scribd/ebook_detail.html'
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -75,7 +75,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 def base(request):
-    return render(request, '../templates/scribd/base.html')
+    return render(request, '../templates/jinja2/../templates/scribd/base.html')
 
 
 def add_books_form(request):

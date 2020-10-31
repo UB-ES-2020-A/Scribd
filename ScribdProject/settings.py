@@ -79,30 +79,30 @@ TEMPLATES = [
         "OPTIONS": {
             'environment': 'ScribdProject.jinja2.environment',
             "context_processors": [
-                    "django.template.context_processors.debug",
-                    "django.template.context_processors.request",
-                    "django.contrib.auth.context_processors.auth",
-                    "django.contrib.messages.context_processors.messages",
-                    "django.template.context_processors.i18n",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.i18n",
             ],
             "extensions": [
-                    "jinja2.ext.do",
-                    "jinja2.ext.loopcontrols",
-                    "jinja2.ext.with_",
-                    "jinja2.ext.i18n",
-                    "jinja2.ext.autoescape",
-                    "django_jinja.builtins.extensions.CsrfExtension",
-                    "django_jinja.builtins.extensions.CacheExtension",
-                    "django_jinja.builtins.extensions.TimezoneExtension",
-                    "django_jinja.builtins.extensions.UrlsExtension",
-                    "django_jinja.builtins.extensions.StaticFilesExtension",
-                    "django_jinja.builtins.extensions.DjangoFiltersExtension",
+                "jinja2.ext.do",
+                "jinja2.ext.loopcontrols",
+                "jinja2.ext.with_",
+                "jinja2.ext.i18n",
+                "jinja2.ext.autoescape",
+                "django_jinja.builtins.extensions.CsrfExtension",
+                "django_jinja.builtins.extensions.CacheExtension",
+                "django_jinja.builtins.extensions.TimezoneExtension",
+                "django_jinja.builtins.extensions.UrlsExtension",
+                "django_jinja.builtins.extensions.StaticFilesExtension",
+                "django_jinja.builtins.extensions.DjangoFiltersExtension",
             ],
         },
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -167,7 +167,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
 
 LOGIN_REDIRECT_URL = '/'
 
