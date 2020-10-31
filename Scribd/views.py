@@ -2,11 +2,11 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-from rest_framework import generics, viewsets
-
+from rest_framework import generics
+from Scribd.user_model import User, UserManager
 from Scribd.forms import EbookForm
-from Scribd.models import Ebook, User, Account
-from Scribd.serializers import UserSerializer, EbookSerializer, AccountSerializer
+from Scribd.models import Ebook
+from Scribd.serializers import UserSerializer, EbookSerializer
 
 
 class libro(object):
@@ -63,6 +63,9 @@ class EbookViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return Ebook.objects.all().order_by('id')
 
+# Create your views here.
+
+# GET/POST
 
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all().order_by('username')
@@ -92,34 +95,41 @@ class AccountsViewSet(viewsets.ModelViewSet):
         return Account.objects.all().order_by('date_registration')
 
 
+
 def login_create_view(request):
     login_form = AuthenticationForm()
     if request.method == "POST":
+        login_form = AuthenticationForm(None, data=request.POST)
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request,username=username,password=password)
 
-        login_form = AuthenticationForm(data=request.POST)
+        if user is not None:
+            login(request, user)
+            return redirect('mainpage')
+    else:
 
-        if login_form.is_valid():
-            username = login_form.cleaned_data['username']
-            password = login_form.cleaned_data['password']
+        login_form = AuthenticationForm()
 
-            user = authenticate(username=username, password=password)
-
-            return redirect('/mainpage')
-
-    # Si llegamos al final renderizamos el formulario
-    return render(request, 'registration/login.html', {'form': login_form})
+    return render(request, '../templates/registration/login.html', {'form': login_form})
 
 
 def signup_create_view(request):
     if request.method == 'POST':
-        signup_form = UserCreationForm(request.POST, request.FILES)
+
+        signup_form = RegisterForm(request.POST, request.FILES)
         if signup_form.is_valid():
-            signup_form.save()
-            username = signup_form.cleaned_data.get('username')
-            raw_password = signup_form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
+            user = User.objects.create_user(email = signup_form.cleaned_data.get('email'),
+                username=signup_form.cleaned_data.get('username'),
+                first_name=signup_form.cleaned_data.get('first_name'),
+                last_name="",
+                type=signup_form.cleaned_data.get('type'),
+                password=signup_form.cleaned_data.get('password1'))
+            print(user.type)
             login(request, user)
             return redirect('mainpage')
     else:
-        signup_form = UserCreationForm()
-    return render(request, 'registration/signup.html', {'form': signup_form})
+        print(request)
+        signup_form = RegisterForm()
+    return render(request, '../templates/registration/signup.html', {'form': signup_form})
+

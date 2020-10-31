@@ -35,20 +35,37 @@
             </button>
         </form>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-                <a class="navbar-brand pr-2 mr-2" href="/accounts/signup/">
-                    <button class="btn my-2 my-sm-0" type="submit" style="background-color: #367C85;">
-                        <h7 style="color: #FFFFFF">Register</h7>
-                    </button>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="navbar-brand" href="/accounts/login/">
-                    <button class="btn my-2 my-sm-0" type="submit" style="background-color: #367C85">
-                        <h7 style="color: #FFFFFF">Log In</h7>
-                    </button>
-                </a>
-            </li>
+            {% if request.user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="navbar-brand pr-2 mr-2" href="#">
+                        <b>{{request.user.username}}</b>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="navbar-brand pr-2 mr-2" href="/accounts/logout">
+                        <button onclick="location.href = '/accounts/logout'"
+                                class="btn my-2 my-sm-0" type
+                                style="background-color: #367C85;"
+                                type="submit"> <h7 style="color: #FFFFFF">Log Out</h7></button>
+                    </a>
+                </li>
+            {% else %}
+                <li class="nav-item active">
+                    <a class="navbar-brand pr-2 mr-2" href="/accounts/signup/">
+                        <button class="btn my-2 my-sm-0" type="submit" style="background-color: #367C85;">
+                            <h7 style="color: #FFFFFF">Register</h7>
+                        </button>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="navbar-brand" href="/accounts/login/">
+                        <button class="btn my-2 my-sm-0" type="submit" style="background-color: #367C85">
+                            <h7 style="color: #FFFFFF">Log In</h7>
+                        </button>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
@@ -56,6 +73,7 @@
 <!-- #E5E5E5 -->
 <div class="container-fading mt-5 pt-3" style="background-color: #FFFFFF">
     {% block content %} {% endblock %}
+
 </div>
 
 <!-- Footer -->
