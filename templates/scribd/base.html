@@ -18,7 +18,7 @@
 <nav class="navbar fixed-top navbar-expand-lg"
      style="background-color: #FFFFFF; height: 65px; border-bottom:1px solid #367C85;">
     <a class="navbar-brand pr-4" href="/">
-        <img src="{{ 'images/scribdLogo.png' }}" width="120" height="60" alt="" style="margin-left: 20px">
+        <img src="{{ 'static/images/scribdLogo.png' }}" width="120" height="60" alt="" style="margin-left: 20px">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,14 +31,14 @@
                    style="background-color: #F3F6FD; height: 33px; width: 400px; border-color: slategrey">
             <button class="btn my-2 my-sm-0" type="submit"
                     style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
-                <img src="{{ 'images/lupa.png' }}" width="18px" height="18px" style="margin-top: -10px">
+                <img src="{{ 'static/images/lupa.png' }}" width="18px" height="18px" style="margin-top: -10px">
             </button>
         </form>
         <ul class="navbar-nav ml-auto">
             {% if request.user.is_authenticated %}
                 <li class="nav-item active">
                     <a class="navbar-brand pr-2 mr-2" href="#">
-                        <b>{{request.user.username}}</b>
+                        <b style="color: #367C85">{{request.user.username}}</b>
                     </a>
                 </li>
 
@@ -70,14 +70,59 @@
     </div>
 </nav>
 
+<!-- Side navigation -->
+<div class="sidenav" style="height: 100%; width: 180px; position: fixed; z-index: 1; top: 0; left: 0; background-color: #EBF7FB; overflow-x: hidden; padding-top: 20px;">
+  <div class="container" style="margin-top: 60px;">
+      <div class="row" style="height: 60px; margin-left: 1px; margin-right: 5px; background-color: #FFFFFF; border-radius: 4%">
+          <p style="font-size: 13px; margin-left: 8px; margin-top: 10px">
+              Learn more about
+              Scribd membership
+          </p>
+      </div>
+      <div style="margin-left: 20px; margin-top: 20px">
+          <div class="btn" style="margin-top: 5px">
+              Home
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Saved
+          </div>
+          <hr style="margin-left: -35px; margin-right: -20px">
+          <div class="btn" style="margin-top: 5px">
+              Bestsellers
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Books
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Audiobooks
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Magazines
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Podcasts
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Sheet Music
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Snapshots
+          </div>
+          <div class="btn" style="margin-top: 5px">
+              Documents
+          </div>
+      </div>
+  </div>
+</div>
+
 <!-- #E5E5E5 -->
-<div class="container-fading mt-5 pt-3" style="background-color: #FFFFFF">
+<div class="container-fading mt-5 pt-3" style="background-color: #E5E5E5; margin-left: 180px; padding: 0px 10px; min-height: 500px">
     {% block content %} {% endblock %}
 
 </div>
 
 <!-- Footer -->
-<footer class="page-footer font-small pt-4" style="background-color: #F8F9FD; border-top:2px solid #E9EDF8;">
+<footer class="page-footer font-small pt-4" style="background-color: #F8F9FD; border-top:2px solid #E9EDF8; margin-left: 180px; padding: 0px 10px;">
 
     <!-- Footer Links -->
     <div class="container-fluid text-center text-md-left">

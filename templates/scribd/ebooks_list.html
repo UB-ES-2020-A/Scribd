@@ -1,4 +1,5 @@
 {% extends 'scribd/base.html' %}
+
 {% block content %}
     <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
         <h3>List of added ebooks</h3>
@@ -6,7 +7,7 @@
             {% for ebook in object_list %}
                 <ul>
                     <li>{{ ebook.title }} written by {{ ebook.autor }} - <a
-                            href={% url "ebook_custom_detail" ebook.pk %}>Info</a>
+                            href="es-scribd.herokuapp.com/ebookdetail/{{ ebook.pk }}" >Info</a>
                 </ul>
                 <ul>Synopsis: {{ ebook.description }}</ul>
 
