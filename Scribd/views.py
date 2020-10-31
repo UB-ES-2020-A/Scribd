@@ -107,7 +107,7 @@ def login_create_view(request):
             return redirect('/mainpage')
 
     # Si llegamos al final renderizamos el formulario
-    return render(request, '../templates/registration/login.html', {'form': login_form})
+    return render(request, 'registration/login.html', {'form': login_form})
 
 
 def signup_create_view(request):
@@ -122,4 +122,4 @@ def signup_create_view(request):
             return redirect('mainpage')
     else:
         signup_form = UserCreationForm()
-    return render(request, '../templates/registration/signup.html', {'form': signup_form})
+    return render(request, 'registration/signup.html', {'form': signup_form})
