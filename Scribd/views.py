@@ -2,9 +2,9 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from Scribd.user_model import User, UserManager
-from Scribd.forms import EbookForm
+from Scribd.forms import EbookForm, RegisterForm
 from Scribd.models import Ebook
 from Scribd.serializers import UserSerializer, EbookSerializer
 
@@ -86,13 +86,13 @@ def add_books_form(request):
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
-    queryset = Account.objects.all().order_by('date_registration')
-    serializer_class = AccountSerializer
+    queryset = User.objects.all().order_by('date_registration')
+    serializer_class = UserSerializer
 
     # permission_classes = permissions.IsAuthenticatedOrReadOnly
 
     def get_queryset(self):
-        return Account.objects.all().order_by('date_registration')
+        return User.objects.all().order_by('date_registration')
 
 
 
