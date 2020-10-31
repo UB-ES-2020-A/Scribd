@@ -9,12 +9,17 @@ from Scribd.models import Ebook, User, Account
 from Scribd.serializers import UserSerializer, EbookSerializer, AccountSerializer
 
 
+def provider_page(request):
+    return render(request, 'scribd/providers_homepage.html')
+
+
 class libro(object):
 
-    def __init__(self, titulo, autor, descripcion):
+    def __init__(self, titulo, autor, descripcion, portada):
         self.titulo = titulo
         self.autor = autor
         self.descripcion = descripcion
+        self.portada = portada
 
 
 def base(request):
@@ -22,11 +27,11 @@ def base(request):
 
 
 def lista_libros(request):
-    l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller")
-    l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller")
-    l3 = libro("Don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller")
+    l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller", "/static/images/SACdA.jpg")
+    l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller", "/static/images/HP3.jpg")
+    l3 = libro("Don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller", "/static/images/Q.jpeg")
 
-    libros = [l1, l2, l3, l1, l2, l3, l1, l2, l3]
+    libros = [l1, l2, l3]
 
     ctx = {"lista_libros": libros}
 
@@ -41,17 +46,17 @@ def ebook_create_view(request):
             return redirect('ebook_custom_list')
     else:
         form = EbookForm()
-    return render(request, '../templates/forms/add_book.html', {'form': form})
+    return render(request, 'forms/add_book.html', {'form': form})
 
 
 class ebookListView(ListView):
     model = Ebook
-    template_name = '../templates/jinja2/../templates/scribd/ebooks_list.html'
+    template_name = 'scribd/ebooks_list.html'
 
 
 class ebookDetailView(DetailView):
     model = Ebook
-    template_name = '../templates/jinja2/../templates/scribd/ebook_detail.html'
+    template_name = 'scribd/ebook_detail.html'
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -104,7 +109,7 @@ def login_create_view(request):
 
             user = authenticate(username=username, password=password)
 
-            return redirect('/mainpage')
+            return redirect('mainpage')
 
     # Si llegamos al final renderizamos el formulario
     return render(request, 'registration/login.html', {'form': login_form})
