@@ -5,7 +5,6 @@ from Scribd import views
 from Scribd.views import UserList, UserDetail
 from Scribd.views import ebook_create_view, ebookListView, ebookDetailView, signup_create_view, login_create_view
 
-
 urlpatterns = [
     url(r'^$', views.lista_libros, name='mainpage'),
     url(r'^base/$', views.base, name='base'),

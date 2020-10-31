@@ -85,6 +85,7 @@ def add_books_form(request):
 class AccountsViewSet(viewsets.ModelViewSet):
     queryset = Account.objects.all().order_by('date_registration')
     serializer_class = AccountSerializer
+
     # permission_classes = permissions.IsAuthenticatedOrReadOnly
 
     def get_queryset(self):
