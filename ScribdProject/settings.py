@@ -42,10 +42,15 @@ INSTALLED_APPS = [
     'Scribd.apps.ScribdConfig',
     'rest_framework',
     'bootstrap4',
-]
 
+]
+AUTH_USER_MODEL = 'Scribd.User'
 CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
 CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
+
+AUTHENTICATION_BACKENDS = (
+        'django.contrib.auth.backends.ModelBackend',
+    )
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -140,7 +145,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'Scribd/static'),
