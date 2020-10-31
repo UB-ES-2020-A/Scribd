@@ -16,9 +16,10 @@ from Scribd.serializers import ebookSerializer
 # GET/POST
 class libro(object):
 
-    def __init__(self, titulo, autor):
+    def __init__(self, titulo, autor, descripcion):
         self.titulo = titulo
         self.autor = autor
+        self.descripcion = descripcion
 
 
 def base(request):
@@ -26,11 +27,11 @@ def base(request):
 
 
 def lista_libros(request):
-    l1 = libro("el señor de los anillos la comunidad del anillo", "John R.R. Tolkien")
-    l2 = libro("harry potter y las reliquias de la muerte", "Joanne Rowling")
-    l3 = libro("don quijote de la mancha", "Miguel de Cervantes Saavedra")
+    l1 = libro("el señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller")
+    l2 = libro("harry potter y las reliquias de la muerte", "Joanne Rowling", "Thriller")
+    l3 = libro("don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller")
 
-    libros = [l1, l2, l3]
+    libros = [l1, l2, l3, l1, l2, l3, l1, l2, l3]
 
     ctx = {"lista_libros": libros}
 
