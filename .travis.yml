@@ -42,4 +42,4 @@ deploy:
   app: es-scribd
   on:
     repo: UB-ES-2020/Scribd
-    branch: master
+    branch: main
