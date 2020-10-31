@@ -11,7 +11,7 @@
                         {{ field.label }}<br>
                         {{ field }}
                         {% if field.help_text %}
-                            <small style="color: grey">{{ field.help_text }}</small>
+                            <small style="color: grey">{{ field.help_text|safe }}</small>
                         {% endif %}
                         {% for error in field.errors %}
                             <p style="color: #ff0000">{{ error }}</p>
