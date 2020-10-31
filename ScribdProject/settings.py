@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'Scribd.apps.ScribdConfig',
     'rest_framework',
     'bootstrap4',
+    'django_jinja'
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
@@ -71,6 +72,13 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ScribdProject.urls'
 
 TEMPLATES = [
+    {
+        "BACKEND": "django_jinja.backend.Jinja2",
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "match_extension": ".jinja",
+        }
+    },
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [os.path.join(BASE_DIR, "templates")],
