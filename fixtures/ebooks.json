@@ -9,6 +9,7 @@
       "description": "Tematica Thriller",
       "is_promot": "False",
       "size": "1",
+      "featured_photo": "unknown.png",
       "media_type": "pdf",
       "count_downloads": "1"
     }
@@ -22,6 +23,7 @@
       "autor": "J.K Rowling",
       "description": "4to saga Harry Potter",
       "is_promot": "False",
+      "featured_photo": "unknown.png",
       "size": "635",
       "media_type": "epub",
       "count_downloads": "1"
@@ -36,6 +38,7 @@
       "autor": "J.K Rowling",
       "description": "2ndo saga Harry Potter",
       "is_promot": "False",
+      "featured_photo": "unknown.png",
       "size": "251",
       "media_type": "epub",
       "count_downloads": "1"
