@@ -5,8 +5,6 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 
 
-
-
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
@@ -26,15 +24,13 @@ class EbookForm(forms.ModelForm):
         }
 
 
-''''''
 class RegisterForm(UserCreationForm):
-    print("****************************************************************")
     email = forms.EmailField()
     name = forms.TextInput()
 
     class Meta:
         model = User
-        fields = ["username","first_name" ,"password1","password2","email","type"]
+        fields = ["username", "first_name", "password1", "password2", "email", "type"]
 
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
@@ -43,5 +39,3 @@ class RegisterForm(UserCreationForm):
             'email': forms.TextInput(attrs={'class': 'form-control'}),
 
         }
-
-
