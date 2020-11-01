@@ -4,20 +4,20 @@
     <div id='cards'>
         <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
             <div class="container">
-            <h2 style="color: #323232">Titles you've <strong>saved</strong></h2>
+            <h2 style="color: #323232">Recently <strong>saved</strong></h2>
                 <div class="row">
-                    {% for libro in lista_libros %}
+                    {% for ebook in object_list %}
                         <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
                             <div class="card" style="width: 500px">
                                 <div class="card-body" style="text-align: center;">
                                     <!-- Modify dimensions later-->
-                                    <img src="{{ libro.portada }}" height="400px" width="280px" alt=""
+                                    <img src="{{ ebook.featured_photo }}" height="400px" width="280px" alt=""
                                          style="border-radius: 2%">
-                                    <h5 class="card-title pt-5"><strong>{{ libro.titulo }}</strong></h5>
+                                    <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
                                     <br>
-                                    <h6 class="card-subtitle"> {{ libro.autor }} </h6>
+                                    <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
                                     <br>
-                                    <p class="card-text">{{ libro.descripcion }}</p>
+                                    <a href="ebookdetail/{{ ebook.id }}" class="btn" style="background-color: #367C85"><h7 style="color: #FFFFFF">More info</h7></a>
                                 </div>
                             </div>
                         </div>
