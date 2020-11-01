@@ -12,6 +12,9 @@ from Scribd.serializers import UserSerializer, EbookSerializer
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
 
+def support_page(request):
+    return render(request, 'scribd/support_page.html')
+
 
 class libro(object):
 
@@ -26,6 +29,7 @@ def base(request):
     return render(request, 'scribd/base.html')
 
 
+"""
 def lista_libros(request):
     l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller", "/static/images/SACdA.jpg")
     l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller", "/static/images/HP3.jpg")
@@ -36,6 +40,7 @@ def lista_libros(request):
     ctx = {"lista_libros": libros}
 
     return render(request, "scribd/mainpage.html", ctx)
+"""
 
 
 def ebook_create_view(request):
@@ -43,10 +48,15 @@ def ebook_create_view(request):
         form = EbookForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('ebook_custom_list')
+            return redirect('mainpage')
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'form': form})
+
+
+class ebookMainView(ListView):
+    model = Ebook
+    template_name = 'scribd/mainpage.html'
 
 
 class ebookListView(ListView):
@@ -105,6 +115,8 @@ def login_create_view(request):
             login(request, user)
             if user.type == "provider":
                 return redirect('provider_page')
+            elif user.type == "support"
+                return redirect('support_page')
             return redirect('mainpage')
     else:
 
