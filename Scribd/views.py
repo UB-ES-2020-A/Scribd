@@ -126,6 +126,8 @@ def signup_create_view(request):
                 password=signup_form.cleaned_data.get('password1'))
             print(user.type)
             login(request, user)
+            if user.type == "provider":
+                return redirect('provider_page')
             return redirect('mainpage')
     else:
         print(request)
