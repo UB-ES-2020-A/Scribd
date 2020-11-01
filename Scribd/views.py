@@ -115,7 +115,7 @@ def login_create_view(request):
             login(request, user)
             if user.type == "provider":
                 return redirect('provider_page')
-            elif user.type == "support"
+            elif user.type == "support":
                 return redirect('support_page')
             return redirect('mainpage')
     else:
@@ -140,6 +140,8 @@ def signup_create_view(request):
             login(request, user)
             if user.type == "provider":
                 return redirect('provider_page')
+            elif user.type == "support":
+                return redirect('support_page')
             return redirect('mainpage')
     else:
         print(request)
