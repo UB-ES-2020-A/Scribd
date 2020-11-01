@@ -12,6 +12,9 @@ from Scribd.serializers import UserSerializer, EbookSerializer
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
 
+def support_page(request):
+    return render(request, 'scribd/support_page.html')
+
 
 class libro(object):
 
@@ -105,6 +108,8 @@ def login_create_view(request):
             login(request, user)
             if user.type == "provider":
                 return redirect('provider_page')
+            elif user.type == "support"
+                return redirect('support_page')
             return redirect('mainpage')
     else:
 
