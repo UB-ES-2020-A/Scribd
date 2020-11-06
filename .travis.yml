@@ -13,7 +13,7 @@ python:
 
 # Addons
 addons:
-  postgresql: '9.4'
+  postgresql: "9.4"
 
 # Environment
 env:
