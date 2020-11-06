@@ -42,13 +42,6 @@ jobs:
         - python manage.py loaddata fixtures/ebooks.json
       script:
         - python manage.py test
-      before_deploy:
-        # Set up git user name and tag this commit
-        - git config --local user.name "Scribd"
-        - git config --local user.email "Scribd"
-        - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
-        - git tag $TRAVIS_TAG>
-        # Deploy to heroku server
       deploy:
         provider: heroku
         api_key:
