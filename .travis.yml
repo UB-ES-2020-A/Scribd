@@ -30,16 +30,56 @@ before_script:
   - python manage.py migrate
   - python manage.py loaddata fixtures/ebooks.json
 
-# Run the unit test
-script:
-  - python manage.py test
+jobs:
+  include:
+    - stage: test
+      script:
+        - python manage.py test
+      before_deploy:
+        # Set up git user name and tag this commit
+        - git config --local user.name "Scribd"
+        - git config --local user.email "Scribd"
+        - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+        - git tag $TRAVIS_TAG>
+        # Deploy to heroku server
+        deploy:
+          provider: heroku
+          api_key:
+            secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
+          app: es-scribd-staging
+          on:
+            repo: UB-ES-2020/Scribd
+            on: production
+    - stage: deploy
+      script:
+        - python manage.py test
+      before_deploy:
+        # Set up git user name and tag this commit
+        - git config --local user.name "Scribd"
+        - git config --local user.email "Scribd"
+        - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)}
+        - git tag $TRAVIS_TAG>
+        # Deploy to heroku server
+      deploy:
+          provider: heroku
+          api_key:
+            secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
+          app: es-scribd
+          on:
+            repo: UB-ES-2020/Scribd
+            branch: main
+        - all:
+            notifications:
+              slack:
+                secure: uOAWBYKi6S2efmYNA2gDcbAflnCiEElsFHngHrO39Eo/A3avrtliOfJoLt1sl3IQF/KKiyWsGRam3eoWXSA7NMnSRI2x67Pa8U7OYWp8VKSyQmCOQkDnkH9ImPwshx1jVCPfbRHnQzGqBTBonjggf9sAOsLOcc8MgY6UvV7Nto0ZmZ1qaL9oFAtHmd0/yBn1z2xUKanCCs7M1RKv/4Se02rvCTS96f935oej9wBwbRQomZbb/VTpCMl/dZPt+Ej1/UVav0dQfAdioULSQ4Y8VNL/Aeo7oGwcfWjp489uZZ0wKRHZwimsWBq1NAeq5nuPCgNYEvJnJxsDw+SXyV5PWkwWR06QwdfuZdA0jTuNMOBAyHh/bZq/4a4RZuZDIn+PpHRxx+n8tkO2k18sXX1nlmHKd1yP3BLObUjABJ9lSKcdo3pRBBh0VI2juOJZeWNYWwyK1DwPTVx3FRIeg/816y2j+2qNBsARSsGeAMVjIPzE/RJxOJ+Eg1X+97a12dc0VWAWYo43GHseymdveTS+icXx7PUXrHFZvSAoMxRBby3xG/v6hDWCijdWeroOMpbpffj4KsyCgk+9xd5oiHIoZrwC/icwXEnUwrssSO0DJKVK11CLJU3H1iGz/EERMvyMoBEnQKYsy11lJJnOuoLw/YmMOhwWI8/QY8bbr9M6tjc=
 
-# Deploy to heroku server
-deploy:
-  provider: heroku
-  api_key:
-    secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
-  app: es-scribd
-  on:
-    repo: UB-ES-2020/Scribd
-    branch: main
+
+stages:
+  - name: test
+    # require the type to be a PR
+    if: type = pull_request
+  - name: deploy
+    # require the type to be push to master
+    if: type = push AND branch = main
+  - name: all_commits
+    if: type = push
