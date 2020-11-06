@@ -23,16 +23,23 @@ env:
 install:
   - pip install -r requirements.txt
 
-# Create test database
-before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - python manage.py makemigrations
-  - python manage.py migrate
-  - python manage.py loaddata fixtures/ebooks.json
+stages:
+  - name: test
+    # require the type to be a PR
+    if: type = pull_request
+  - name: deploy
+    # require the type to be push to master
+    if: type = push AND branch = main
 
 jobs:
   include:
     - stage: test
+      # Create test database
+      before_script:
+        - psql -c 'create database travis_ci_test;' -U postgres
+        - python manage.py makemigrations
+        - python manage.py migrate
+        - python manage.py loaddata fixtures/ebooks.json
       script:
         - python manage.py test
       before_deploy:
@@ -51,6 +58,12 @@ jobs:
             repo: UB-ES-2020/Scribd
             on: production
     - stage: deploy
+      # Create test database
+      before_script:
+        - psql -c 'create database travis_ci_test;' -U postgres
+        - python manage.py makemigrations
+        - python manage.py migrate
+        - python manage.py loaddata fixtures/ebooks.json
       script:
         - python manage.py test
       before_deploy:
@@ -70,13 +83,7 @@ jobs:
           branch: main
 
 
-stages:
-  - name: test
-    # require the type to be a PR
-    if: type = pull_request
-  - name: deploy
-    # require the type to be push to master
-    if: type = push AND branch = main
+
 
 notifications:
   slack:
