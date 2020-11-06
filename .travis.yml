@@ -24,6 +24,8 @@ install:
   - pip install -r requirements.txt
 
 stages:
+  - name: compile
+    if: type = push
   - name: test
     # require the type to be a PR
     if: type = pull_request
@@ -33,6 +35,16 @@ stages:
 
 jobs:
   include:
+    - stage: compile
+        # Create test database
+      before_script:
+        - psql -c 'create database travis_ci_test;' -U postgres
+        - python manage.py makemigrations
+        - python manage.py migrate
+        - python manage.py loaddata fixtures/ebooks.json
+      script:
+        - python manage.py test
+
     - stage: test
       # Create test database
       before_script:
