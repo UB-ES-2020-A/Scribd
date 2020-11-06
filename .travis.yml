@@ -28,7 +28,7 @@ stages:
     if: type = push
   - name: test
     # require the type to be a PR
-    if: (branch = main AND type = pull_request)
+    if: (branch = develop AND type = push)
   - name: deploy
     # require the type to be push to master
     if: (branch = main AND type = push) OR (tag IS present)
