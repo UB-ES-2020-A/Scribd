@@ -31,11 +31,12 @@ stages:
     if: type = pull_request
   - name: deploy
     # require the type to be push to master
-    if: type = push AND branch = main
+    if: (branch = main AND type = push) OR (tag IS present)
 
 jobs:
   include:
     - stage: compile
+      name: "Compile"
         # Create test database
       before_script:
         - psql -c 'create database travis_ci_test;' -U postgres
@@ -46,6 +47,7 @@ jobs:
         - python manage.py test
 
     - stage: test
+      name: "test"
       # Create test database
       before_script:
         - psql -c 'create database travis_ci_test;' -U postgres
@@ -64,6 +66,7 @@ jobs:
             branch: develop
 
     - stage: deploy
+      name: "deploy"
       # Create test database
       before_script:
         - psql -c 'create database travis_ci_test;' -U postgres
