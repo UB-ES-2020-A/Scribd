@@ -18,8 +18,8 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, first_name, last_name, password=None):
-        user = self.create_user(email="admin123@gmail.com",
+    def create_superuser(self, email, username, first_name, last_name, password=None):
+        user = self.create_user(email= email,
                                 username=username,
                                 first_name=first_name,
                                 last_name=last_name,
@@ -58,7 +58,8 @@ class User(AbstractBaseUser):
     type = models.CharField(max_length=15, choices=USER_TYPE, default="subscribed")
 
     USERNAME_FIELD = 'username'  # el que identificara a la classe
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    REQUIRED_FIELDS = ['first_name', 'last_name','email']
+
 
     objects = UserManager()
 
@@ -67,6 +68,9 @@ class User(AbstractBaseUser):
 
     def get_short_name(self):
         return self.username
+
+    def get_email_field_name(self):
+        return self.email
 
     def get_user_type(self):
         return self._type_user[self.type]
