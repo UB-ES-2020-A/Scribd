@@ -24,13 +24,14 @@ install:
   - pip install -r requirements.txt
 
 stages:
+    # CUALQUIER PUSH
   - name: compile
-    if: type = push
+    if: type = pull_request
   - name: test
-    # require the type to be a PR
-    if: (type = pull_request)
+    # MERGE DE UN PULL REQUEST A DEVELOP
+    if: type = push AND branch = develop
   - name: deploy
-    # require the type to be push to master
+    # MERGE DE DEVELOP A MAIN
     if: (branch = main AND type = push) OR (tag IS present)
 
 jobs:
@@ -56,6 +57,8 @@ jobs:
         - python manage.py loaddata fixtures/ebooks.json
       script:
         - python manage.py test
+      true:
+        repo: UB-ES-2020/Scribd
       branches:
         only:
           - master
