@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'scribd/', include('Scribd.urls')),
     url(r'api/', include(router.urls)),
     url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^oauth/', include('social_django.urls', namespace='social')),
     url('accounts/', include('django.contrib.auth.urls')),
 ]
