@@ -2,10 +2,9 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, permissions
 from rest_framework.response import Response
 
-from Scribd import permissions
 from Scribd.user_model import User, UserManager
 from Scribd.forms import EbookForm, RegisterForm
 from Scribd.models import Ebook
