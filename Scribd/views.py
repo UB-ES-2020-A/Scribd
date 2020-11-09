@@ -124,7 +124,7 @@ def login_create_view(request):
 
         login_form = AuthenticationForm()
 
-    return render(request, '/registration/login.html', {'form': login_form})
+    return render(request, 'registration/login.html', {'form': login_form})
 
 
 def signup_create_view(request):
