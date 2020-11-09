@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'Scribd.apps.ScribdConfig',
     'rest_framework',
     'bootstrap4',
-    'django_jinja',
-    'social_django'
+    'django_jinja'
 ]
 
 AUTH_USER_MODEL = 'Scribd.User'
@@ -51,12 +50,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstr
 CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
 
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.facebook.FacebookOAuth2',
-    'social_core.backends.google.GoogleOAuth2',
+        'django.contrib.auth.backends.ModelBackend',
+    )
 
-    'django.contrib.auth.backends.ModelBackend',
-)
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -75,15 +71,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware'
+    'django.middleware.common.CommonMiddleware'
 ]
 
 ROOT_URLCONF = 'ScribdProject.urls'
 
 TEMPLATES = [
     {
-        "BACKEND": "django_jinja.backend.Jinja2",
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
         "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -94,8 +89,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect'
             ],
             "extensions": [
                 "jinja2.ext.do",
@@ -105,24 +98,16 @@ TEMPLATES = [
                 "jinja2.ext.autoescape",
                 "django_jinja.builtins.extensions.CsrfExtension",
                 "django_jinja.builtins.extensions.CacheExtension",
-                "django_jinja.builtins.extensions.DebugExtension",
                 "django_jinja.builtins.extensions.TimezoneExtension",
                 "django_jinja.builtins.extensions.UrlsExtension",
                 "django_jinja.builtins.extensions.StaticFilesExtension",
                 "django_jinja.builtins.extensions.DjangoFiltersExtension",
             ],
-            "bytecode_cache": {
-                "name": "default",
-                "backend": "django_jinja.cache.BytecodeCache",
-                "enabled": False,
-            },
-            "autoescape": True,
-            "translation_engine": "django.utils.translation",
-        }
+        },
     },
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "DIRS": [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -133,10 +118,6 @@ TEMPLATES = [
             ],
         },
     },
-
-
-
-
 ]
 
 WSGI_APPLICATION = 'ScribdProject.wsgi.application'
@@ -186,9 +167,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 LOGOUT_REDIRECT_URL = '/'
-
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 
@@ -198,6 +177,8 @@ STATICFILES_DIRS = (
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "media_cdn")
 
+MEDIA_URL = '/media/'
 
 django_heroku.settings(locals())

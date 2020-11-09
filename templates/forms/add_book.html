@@ -7,7 +7,7 @@
             <!--<form method="POST" action="http://es-scribd.herokuapp.com/api/addbook/">-->
             <!-- csrf protection -->
             {% csrf_token %}
-            {{ form.as_p|safe }}
+            {{ form.as_p()|safe }}
             <button type="submit">Add book</button>
         </form>
     </div>
