@@ -48,7 +48,7 @@ jobs:
       deploy:
         provider: heroku
         api_key:
-          secure: "p8aZttlVYj4suWedaRAsxHOE0zQT+MBLkvcndiRt5O10QX2qKluarWl5jtuqZj5d8UNdEnJhvUs1Q1kTtrnyT/oSUbeC2ctsJNWLKg173vYIxawvYmCmKFncCWAjAsNdmqYRUm72LF3XDNB2TugRhTi8e7CCJgIHTCZVBP7BhJ3DnOkExwqMjwbLnnxHplITli5HmGXWLilTUsn0lTGhHeA/e3f8zIHMIOR91LIqJOXEyYarEpz+ViLUpavi+ZXXDv+NckDGU4Ytum9JYIl2gt+Aly3HPFEY9PZ1GxE/W9AZLpgYUMbVJfk2rDoKxy0vpCoks/UZwX62btwc7ppKFiLgGr3FuuzmCHkLzlMvdodpjOF1vcv71R/ep++TIsLk3cCMbYu6ttBOcbSKvP3rKuKqUmQjlqhlLe/HyS2RGCGqnQJjgVrSj9vzzfz9Z36ZHJR5akuhEPJW3YKfFnGE/oLQf7Aym0fQITrvtmfCqTT2a+qqZHVi6w4EOVc2+TLMXoHORMtTqQn4Y3+dc5JZaNxPr/8IsW1WaDeafXtlHdiTzvrvWNAydFv5fQDaV+vXFI31l088KvoUnRlU23r3+u89Jby1oHz+PqIYkX6p6pR0Wh/8uTIPNBsnskavGX8MRjgLkfUF8R9LnwHl5LUFJeyjGVcnu/153W+eKo84GPo="
+          secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
           app: es-scribd-staging
           on:
             repo: UB-ES-2020/scribd
@@ -64,17 +64,14 @@ jobs:
         - python manage.py loaddata fixtures/ebooks.json
       script:
         - python manage.py test
-      branches:
-        only:
-          - master
-          - develop
       deploy:
         provider: heroku
         api_key:
-          secure: "rcVngq6e7btJeyJyBRTaY4fJ+BbVr5Vf4HibXNBSssYDqjhZV+qb0K4Ms61DuErUUBlMpVv7VsQ8gIKvFHLQQ8Lm9l/weJ0P33E4LQTlIIDGMJ0ELyfag+mWl0Ke9M2+NWwkZVBgmx4S7jDrnOfZzAYVv/gpQqlax3+SckYSApBG+5IBaUXJRMFYg0JJ3le0P2V+bTEewY4eP9PumBwEdX24pCXzm69+7gIci/zthTDJk1QRNbnFcKYcp0x6JTj0UnIbtExvub4m3w6rH8m6aceGaRBrqej9DcbOibuVw6EWmZJG42OJapOh64LgIuMrGCYoQmXfvf1BcYDc8aygEIPaeg78waj1Yd+KvFZgIR2BNk3xPKrzDn4CdcQOBDpb/VgWAul2j4w3uqaXTj2V6vTO7WKcnwF2lktp/fHt5goAE8ZaIVNODVmexNhCOfN+y0OITVPzO0OBVBIHn1NRsszJeOj2jPor+s/vs5rAJkDGm1HNC0m0amDfgXcfAiS4DRzta4ZsPqqRVCI/u6kLJtojJ64SMQzJk7jsZr39uDH95m5Ts6eowwT9GmWA4NmYzQuSJ8YXDp7uJS3KltkWQ01DV9GLgTLEoBP4smKbUrhrocQmNDsdcadkObnY1Vgf+sLTwjotmuckBedRzVCLybfSrD9MObwtoFWkRQS5hRA="
-        app:
-          master: es-scribd
-          Develop: es-scribd-staging
+          secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
+          app: es-scribd-staging
+          on:
+            repo: UB-ES-2020/scribd
+            branch: develop
 
     - stage: deploy
       name: "deploy"
@@ -90,7 +87,7 @@ jobs:
         - provider: heroku
           skip_cleanup: true
           api_key:
-            secure: "gDZ5vb4gBfIf4gFd/hDqVOEQ0RRi+g1WnjZtWh9QN0xdu+Lhw2rZH3gNx/XPwRjUb38SrUhQsxNaSNebrSzyvl1AMOkG9woPhLqsoTqHFHwjQ+q+hsvFnoysKFy4u6hoNOx51hLI7oR3/cPHVHV2cOhLkomLT+/Bj3eXbtK8/ybm8HtBMEmHlDUJaJC50SguDrg9ndR9RlHKUM49udY5ZXlop295EW146ZTJWac1pOAnIAUuVQxYA6DcOHJ3Q1zfuyo4Si8MicE47V4eKTQ58BicQmF0yGYqm7iHvrlzB/PLwArbegrOjKrjEgZ4Qx2CBgN5Kp/+3xuF7HlZpA6c8r6SkboWugr++Jcf9BKAa3yF+v+7VLn9z6wGt5GpXuItp/wXxA5xSx6h44SapjzoXdtSgplEC9Z+AQhQFoWr3Tyame0XRWSNtsQ4BZNQGNHb7bbW6H3hV53OrtGltSNR38j2EPhp3nxgwk/iShubpUWCaMqLvLxAG6keg+I3bsMknNf92v/rQQX6uzeeMaR2uq9fX+7bPV69sPrZDM2QraL5I0BMlo7d50aH7bKmYRwXhYk+dyWG/9W4/PBjAuIvgMZ7f+CdKH+cyJZ3JSkrsHPASLcjBxnl+xbxwohW2KkTpcljGkGMZhiwLQkVXLAfYGo6W0KUi+dfuphB6kDNn9s="
+            secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
           app: es-scribd
           on:
             repo: UB-ES-2020/Scribd
@@ -98,7 +95,7 @@ jobs:
         - provider: heroku
           skip_cleanup: true
           api_key:
-            secure: "p8aZttlVYj4suWedaRAsxHOE0zQT+MBLkvcndiRt5O10QX2qKluarWl5jtuqZj5d8UNdEnJhvUs1Q1kTtrnyT/oSUbeC2ctsJNWLKg173vYIxawvYmCmKFncCWAjAsNdmqYRUm72LF3XDNB2TugRhTi8e7CCJgIHTCZVBP7BhJ3DnOkExwqMjwbLnnxHplITli5HmGXWLilTUsn0lTGhHeA/e3f8zIHMIOR91LIqJOXEyYarEpz+ViLUpavi+ZXXDv+NckDGU4Ytum9JYIl2gt+Aly3HPFEY9PZ1GxE/W9AZLpgYUMbVJfk2rDoKxy0vpCoks/UZwX62btwc7ppKFiLgGr3FuuzmCHkLzlMvdodpjOF1vcv71R/ep++TIsLk3cCMbYu6ttBOcbSKvP3rKuKqUmQjlqhlLe/HyS2RGCGqnQJjgVrSj9vzzfz9Z36ZHJR5akuhEPJW3YKfFnGE/oLQf7Aym0fQITrvtmfCqTT2a+qqZHVi6w4EOVc2+TLMXoHORMtTqQn4Y3+dc5JZaNxPr/8IsW1WaDeafXtlHdiTzvrvWNAydFv5fQDaV+vXFI31l088KvoUnRlU23r3+u89Jby1oHz+PqIYkX6p6pR0Wh/8uTIPNBsnskavGX8MRjgLkfUF8R9LnwHl5LUFJeyjGVcnu/153W+eKo84GPo="
+              secure: 0ZXXKp/AS2yvKyewYRu8EuU8SW9m1AH6xo6hnh0vYIH77rpScswFBx9eU7GW/nb/wdypj6QDqD5dYRMeF40v/OwNfpnbOcc6wZJPr0dP9xMWIrnRYyzHnOkXlNpxBxgm4aAMsiJFJH3t4wJKyKQMFGvKWR94iNxrnPRMrAPLWFxONQU4q7py9zNd69hxEn36N8wPowH15Xxda1mqOFRO/bOvx6hlp9/+SZG5PtRfoCcVl49nc4XysyEWPP/KIyFlk4GBUDOUy7RwSvy8A/vuwiv3BdlO3Vo9gSILWKTZINGyfEUFEyKWUkHt7GQZ3tugSLOc2lLpuA/QaDBcr1jQQmlaLe2ZPsq8s2YCKnoMZsSMTRbhuUB88a3dfLsRSFJuOapNXhXN04Zeh34GW25KwsbOvcKsiMeJ7owgT/JYB8qymfdCsRb1KNLllh9hQ1uDg+Cwgyx+l3Un9ZelumgA+k9BrnZjkmmQ9ghDUM6ykP5mPvuyy2zDSAu0iGiOGpu3ryoQ+CSLWCei/w+2fa9gnpQZirI7IWhJYn+BWP+xt1+Mp0gl+I0qkMPmeEHfCiUI7ciTZyx2oCXbof6L2Da8owesAaLkRx0Lzh6qCgxMncbVYraGwN+To8FkQp3clNb3q1r4sEPK3rBVUPzgu4FzJjCPlQyqADEEqRH7kdaQfv0=
           app: es-scribd-staging
           on:
             repo: UB-ES-2020/Scribd

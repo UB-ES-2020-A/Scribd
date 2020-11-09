@@ -2,9 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
-from rest_framework import generics, viewsets, permissions
-from rest_framework.response import Response
-
+from rest_framework import generics, viewsets
 from Scribd.user_model import User, UserManager
 from Scribd.forms import EbookForm, RegisterForm
 from Scribd.models import Ebook
@@ -150,26 +148,3 @@ def signup_create_view(request):
         signup_form = RegisterForm()
     return render(request, 'registration/signup.html', {'form': signup_form})
 
-
-class UpdateEbook(generics.UpdateAPIView):
-    queryset = Ebook.objects.all()
-    serializer_class = EbookSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def update(self, request, *args, **kwargs):
-        instance = self.get_object()
-        instance.ebook_number = request.data.get("ebook_number")
-        instance.title = request.data.get("title")
-        instance.autor = request.data.get("autor")
-        instance.description = request.data.get("description")
-        instance.ebook_number = request.data.get("is_promot")
-        instance.title = request.data.get("featured_photo")
-        instance.autor = request.data.get("media_type")
-        instance.description = request.data.get("count_downloads")
-        instance.save()
-
-        serializer = self.get_serializer(instance)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        return Response(serializer.data)
