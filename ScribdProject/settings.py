@@ -58,11 +58,12 @@ AUTHENTICATION_BACKENDS = (
 )
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny'
-    ]
+      # Use Django's standard `django.contrib.auth` permissions,
+      # or allow read-only access for unauthenticated users.
+      'DEFAULT_PERMISSION_CLASSES': [
+          'rest_framework.permissions.AllowAny'],
+      'PAGE_SIZE': 20,
+      'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
 
 MIDDLEWARE = [
