@@ -25,7 +25,7 @@ router.register(r'ebooks', EbookViewSet)
 router.register(r'accounts', AccountsViewSet)
 
 urlpatterns = [
-    url(r'admin/', admin.site.urls),
+    url(r'admin/', admin.site.urls,name="admin_page"),
     url(r'', include('Scribd.urls')),
     url(r'scribd/', include('Scribd.urls')),
     url(r'api/', include(router.urls)),
