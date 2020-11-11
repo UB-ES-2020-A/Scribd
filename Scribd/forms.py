@@ -25,17 +25,12 @@ class EbookForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    name = forms.TextInput()
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "password1", "password2", "email", "type"]
-
-        widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'password1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
-
-        }
+        fields = ["username",
+                  "first_name","last_name",
+                  "password1", "password2",
+                  "email","card_titular",
+                  "card_number","card_expiration",
+                  "card_cvv","subs_type"]

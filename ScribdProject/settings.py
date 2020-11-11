@@ -43,12 +43,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'bootstrap4',
     'django_jinja',
-    'social_django'
+    'social_django',
+    'widget_tweaks',
+    'crispy_forms'
 ]
-
 AUTH_USER_MODEL = 'Scribd.User'
 CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
-CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',

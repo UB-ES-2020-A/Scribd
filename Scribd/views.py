@@ -104,7 +104,7 @@ class AccountsViewSet(viewsets.ModelViewSet):
 
 
 def login_create_view(request):
-    login_form = AuthenticationForm()
+
     if request.method == "POST":
         login_form = AuthenticationForm(None, data=request.POST)
         username = request.POST['username']
@@ -122,6 +122,8 @@ def login_create_view(request):
 
         login_form = AuthenticationForm()
 
+
+
     return render(request, 'registration/login.html', {'form': login_form})
 
 
@@ -130,13 +132,13 @@ def signup_create_view(request):
 
         signup_form = RegisterForm(request.POST, request.FILES)
         if signup_form.is_valid():
-            user = User.objects.create_user(email = signup_form.cleaned_data.get('email'),
+            user = User.objects.create_user(
+                email = signup_form.cleaned_data.get('email'),
                 username=signup_form.cleaned_data.get('username'),
                 first_name=signup_form.cleaned_data.get('first_name'),
-                last_name="",
-                type=signup_form.cleaned_data.get('type'),
+                last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'))
-            print(user.type)
+
             login(request, user)
             if user.type == "provider":
                 return redirect('provider_page')
@@ -146,5 +148,11 @@ def signup_create_view(request):
     else:
         print(request)
         signup_form = RegisterForm()
-    return render(request, 'registration/signup.html', {'form': signup_form})
+
+    context = {
+        "form" : signup_form
+    }
+    return render(request, 'registration/signup.html', context)
+
+
 
