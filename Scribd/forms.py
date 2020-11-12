@@ -8,19 +8,17 @@ from django import forms
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
-        fields = ['ebook_number', 'title', 'autor', 'description', 'is_promot', 'size', 'media_type', 'featured_photo',
-                  'count_downloads']
+        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo',
+    ]
 
         # TODO Gestionar featured_photo
         widgets = {
-            'ebook_number': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 50 characters'}),
-            'autor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 50 characters'}),
+            'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
+            'title': forms.TextInput(attrs={'class': 'form-control' }),
+            'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'is_promot': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
-            'count_downloads': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
 
