@@ -114,13 +114,11 @@ class User(AbstractBaseUser):
     def is_active(self):
             return True
 
-    class Meta:
-        abstract = True
 
-class UserProvider(models.Model):
+"""class UserProvider(models.Model):
     address = models.CharField(max_length=100, blank=False, default='')
     phone_number = models.CharField(max_length=100, blank=False, default='')
-    books_to_sell = ArrayField(models.ForeignKey("models.ReporterProfile", on_delete=models.CASCADE, blank=True))
+    books_to_sell = ArrayField(models.ForeignKey("models.ReporterProfile", on_delete=models.CASCADE, blank=True))"""
 
 class SubscribedUsers(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
