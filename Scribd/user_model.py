@@ -1,7 +1,7 @@
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 from django.contrib.postgres.fields import ArrayField
 from django.db import models
-
+import Scribd.models
 
 class UserManager(BaseUserManager):
     def create_user(self, email, username,
@@ -42,7 +42,6 @@ class UserManager(BaseUserManager):
         user.is_admin = True
         user.save(using=self._db)
         return user
-
 
 class User(AbstractBaseUser):
     email = models.EmailField(
@@ -115,6 +114,13 @@ class User(AbstractBaseUser):
     def is_active(self):
             return True
 
+    class Meta:
+        abstract = True
+
+class UserProvider(models.Model):
+    address = models.CharField(max_length=100, blank=False, default='')
+    phone_number = models.CharField(max_length=100, blank=False, default='')
+    books_to_sell = ArrayField(models.ForeignKey("models.ReporterProfile", on_delete=models.CASCADE, blank=True))
 
 class SubscribedUsers(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
