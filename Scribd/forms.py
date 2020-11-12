@@ -25,17 +25,22 @@ class EbookForm(forms.ModelForm):
 
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    name = forms.TextInput()
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "password1", "password2", "email", "type"]
+        fields = ["username",
+                  "first_name","last_name",
+                  "password1", "password2",
+                  "email","card_titular",
+                  "card_number","card_expiration",
+                  "card_cvv","subs_type"]
 
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'password1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
-
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_titular': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Full name as displayed on the card'}),
+            'card_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
         }

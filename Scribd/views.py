@@ -8,6 +8,9 @@ from Scribd.forms import EbookForm, RegisterForm
 from Scribd.models import Ebook
 from Scribd.serializers import UserSerializer, EbookSerializer
 
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
@@ -103,8 +106,8 @@ class AccountsViewSet(viewsets.ModelViewSet):
         return User.objects.all().order_by('date_registration')
 
 
-def login_create_view(request):
-    login_form = AuthenticationForm()
+def login_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
+
     if request.method == "POST":
         login_form = AuthenticationForm(None, data=request.POST)
         username = request.POST['username']
@@ -112,39 +115,56 @@ def login_create_view(request):
         user = authenticate(request,username=username,password=password)
 
         if user is not None:
-            login(request, user)
-            if user.type == "provider":
+            login(request, user,backend)
+            if user.user_type == "provider":
                 return redirect('provider_page')
-            elif user.type == "support":
+            elif user.user_type == "support":
                 return redirect('support_page')
+            elif user.user_type == "admin":
+                return HttpResponseRedirect(reverse('admin:index'))
             return redirect('mainpage')
+
     else:
 
         login_form = AuthenticationForm()
 
+
+
     return render(request, 'registration/login.html', {'form': login_form})
 
-
-def signup_create_view(request):
+def signup_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
         if signup_form.is_valid():
-            user = User.objects.create_user(email = signup_form.cleaned_data.get('email'),
+            user = User.objects.create_user(
+                email = signup_form.cleaned_data.get('email'),
                 username=signup_form.cleaned_data.get('username'),
                 first_name=signup_form.cleaned_data.get('first_name'),
-                last_name="",
-                type=signup_form.cleaned_data.get('type'),
-                password=signup_form.cleaned_data.get('password1'))
-            print(user.type)
-            login(request, user)
-            if user.type == "provider":
+                last_name=signup_form.cleaned_data.get('last_name'),
+                password=signup_form.cleaned_data.get('password1'),
+                card_titular = signup_form.cleaned_data.get('card_titular'),
+                card_number=signup_form.cleaned_data.get('card_number'),
+                card_expiration=signup_form.cleaned_data.get('card_expiration'),
+                card_cvv=signup_form.cleaned_data.get('card_cvv'),
+                subs_type=signup_form.cleaned_data.get('subs_type'))
+
+            login(request, user,backend)
+            if user.user_type == "provider":
                 return redirect('provider_page')
-            elif user.type == "support":
+            elif user.user_type == "support":
                 return redirect('support_page')
+            elif user.user_type == "admin":
+                return HttpResponseRedirect(reverse('admin:index'))
             return redirect('mainpage')
     else:
-        print(request)
+
         signup_form = RegisterForm()
-    return render(request, 'registration/signup.html', {'form': signup_form})
+
+    context = {
+        "form" : signup_form
+    }
+    return render(request, 'registration/signup.html', context)
+
+
 

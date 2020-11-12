@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework.urlpatterns import format_suffix_patterns
+from django.contrib import admin
 
 from Scribd import views
 from Scribd.views import UserList, UserDetail
