@@ -29,6 +29,7 @@ class libro(object):
 
 
 def base(request):
+
     return render(request, 'scribd/base.html')
 
 
@@ -54,7 +55,7 @@ def ebook_create_view(request):
             return redirect('mainpage')
     else:
         form = EbookForm()
-    return render(request, 'forms/add_book.html', {'form': form})
+    return render(request, 'forms/add_book.html', {'book_form': form})
 
 
 class ebookMainView(ListView):
@@ -128,9 +129,7 @@ def login_create_view(request,backend='django.contrib.auth.backends.ModelBackend
 
         login_form = AuthenticationForm()
 
-
-
-    return render(request, 'registration/login.html', {'form': login_form})
+    return render(request, 'scribd/base.html', {'login_form': login_form})
 
 def signup_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
@@ -162,7 +161,7 @@ def signup_create_view(request,backend='django.contrib.auth.backends.ModelBacken
         signup_form = RegisterForm()
 
     context = {
-        "form" : signup_form
+        "register_form" : signup_form
     }
     return render(request, 'registration/signup.html', context)
 
