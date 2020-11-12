@@ -60,9 +60,9 @@ class User(AbstractBaseUser):
     is_subscribed = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     card_titular = models.CharField(max_length=20,default='')
-    card_number = models.CharField(unique=True,max_length=20,default='')
-    card_expiration = models.CharField(max_length=20,default='')
-    card_cvv = models.CharField(max_length=20,default='')
+    card_number = models.CharField(unique=True,max_length=16,default='')
+    card_expiration = models.CharField(max_length=7,default='')
+    card_cvv = models.CharField(max_length=3,default='')
 
     SUBS_TYPE =(
         ("Free trial","Free trial"),

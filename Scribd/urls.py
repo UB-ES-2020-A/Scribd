@@ -9,7 +9,6 @@ from Scribd.views import ebook_create_view, ebookListView, ebookDetailView, sign
     provider_page, ebookMainView
 
 urlpatterns = [
-    url(r'admin/', admin.site.urls,name="admin_page"),
     url(r'^$', ebookMainView.as_view(), name='mainpage'),
     url(r'^base/$', views.base, name='base'),
     url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),

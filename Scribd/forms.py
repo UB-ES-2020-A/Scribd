@@ -34,3 +34,13 @@ class RegisterForm(UserCreationForm):
                   "email","card_titular",
                   "card_number","card_expiration",
                   "card_cvv","subs_type"]
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_titular': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Full name as displayed on the card'}),
+            'card_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
+        }
