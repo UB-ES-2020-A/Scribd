@@ -18,6 +18,9 @@ def provider_page(request):
 def support_page(request):
     return render(request, 'scribd/support_page.html')
 
+def ticket_page(request):
+    return render(request, 'scribd/tickets.html')
+
 
 class libro(object):
 
