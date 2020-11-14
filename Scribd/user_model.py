@@ -3,7 +3,7 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, password=None):
+    def create_user(self, email, username, first_name, last_name,subs_type= "Free Trial", password=None):
         # crea un usuari
         if not email:
             raise ValueError('Users must have an email address')
@@ -11,9 +11,11 @@ class UserManager(BaseUserManager):
                           username=username,
                           first_name=first_name,
                           last_name=last_name,
+                          subs_type=subs_type,
                           )
 
         user.set_password(password)
+        user.user_type = "User"
         user.save(using=self._db)
         return user
 
@@ -25,9 +27,9 @@ class UserManager(BaseUserManager):
                                 password=password)
 
         user.is_admin = True
-        user.save(using=self._db)
         user.user_type = "Admin"
         user.subs_type = "Pro"
+        user.save(using=self._db)
         return user
 
 
@@ -104,7 +106,7 @@ class SubscribedUsers(models.Model):
     # username = models.ForeignKey(User, on_delete=models.CASCADE)
     type = models.OneToOneField('User', on_delete=models.CASCADE)
     date_subs = models.DateField(auto_now_add=True)
-    card_titular = models.CharField(max_length=20, default='')
-    card_number = models.CharField(unique=True, max_length=16, default='')
-    card_expiration = models.CharField(max_length=7, default='')
-    card_cvv = models.CharField(max_length=3, default='')
+    card_titular = models.CharField(max_length=20, default='', blank=True)
+    card_number = models.CharField(unique=True, max_length=16, default='',blank=True)
+    card_expiration = models.CharField(max_length=7, default='',blank=True)
+    card_cvv = models.CharField(max_length=3, default='',blank=True)
