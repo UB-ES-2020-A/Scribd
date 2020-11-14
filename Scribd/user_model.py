@@ -1,12 +1,9 @@
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
-from django.contrib.postgres.fields import ArrayField
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username,
-                    first_name, last_name,subs_type,card_titular,card_number,card_expiration,
-                    card_cvv,user_type="user",password=None):
+    def create_user(self, email, username, first_name, last_name, password=None):
         # crea un usuari
         if not email:
             raise ValueError('Users must have an email address')
@@ -14,12 +11,6 @@ class UserManager(BaseUserManager):
                           username=username,
                           first_name=first_name,
                           last_name=last_name,
-                          user_type = user_type,
-                          subs_type= subs_type,
-                          card_titular= card_titular,
-                          card_number= card_number,
-                          card_expiration=card_expiration,
-                          card_cvv=card_cvv,
                           )
 
         user.set_password(password)
@@ -27,60 +18,53 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, username, first_name, last_name, password=None):
-        user = self.create_user(email= email,
+        user = self.create_user(email=email,
                                 username=username,
                                 first_name=first_name,
                                 last_name=last_name,
-                                password=password,
-                                user_type ="admin",
-                                subs_type='Pro',
-                                card_titular='',
-                                card_number='',
-                                card_expiration='',
-                                card_cvv='')
+                                password=password)
 
         user.is_admin = True
         user.save(using=self._db)
+        user.user_type = "Admin"
+        user.subs_type = "Pro"
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
         unique=True,
     )
-
     username = models.CharField(primary_key=True, unique=True, max_length=20)
-    first_name = models.CharField(max_length=100,blank=False,default='')
-    last_name = models.CharField(max_length=100,blank=False, default='')
+    first_name = models.CharField(max_length=100, blank=False, default='')
+    last_name = models.CharField(max_length=100, blank=False, default='')
     # no posem password perque esta ja fet a la mateixa classe
     date_registration = models.DateField(auto_now_add=True)
-    is_active = models.BooleanField(default=True,)
-    is_subscribed = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
-    card_titular = models.CharField(max_length=20,default='')
-    card_number = models.CharField(unique=True,max_length=16,default='')
-    card_expiration = models.CharField(max_length=7,default='')
-    card_cvv = models.CharField(max_length=3,default='')
 
-    SUBS_TYPE =(
-        ("Free trial","Free trial"),
+    USER_TYPE = (
+        ("Admin", "Admin"),
+        ("Provider", "Provider"),
+        ("Support", "Support"),
+        ("User", "User"),
+    )
+    _type_user = dict(USER_TYPE)
+
+    SUBS_TYPE = (
+        ("Free trial", "Free trial"),
         ("Regular", "Regular"),
         ("Pro", "Pro"),
     )
-    USER_TYPE = (
-        ("admin", "admin"),
-        ("provider", "provider"),
-        ("support", "support"),
-        ("user", "user"),
-    )
-    _type_user = dict(USER_TYPE)
-    user_type = models.CharField(max_length=15, choices=USER_TYPE, default="user")
-    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="regular")
-    USERNAME_FIELD = 'username'  # el que identificara a la classe
-    REQUIRED_FIELDS = ['first_name', 'last_name','email']
+    _subs_type = dict(SUBS_TYPE)
 
+    user_type = models.CharField(max_length=15, choices=USER_TYPE, default="User")
+    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial")
+
+    USERNAME_FIELD = 'username'  # el que identificara a la classe
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
 
     objects = UserManager()
 
@@ -113,10 +97,14 @@ class User(AbstractBaseUser):
 
     @property
     def is_active(self):
-            return True
+        return True
 
 
 class SubscribedUsers(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    # username = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.OneToOneField('User', on_delete=models.CASCADE)
     date_subs = models.DateField(auto_now_add=True)
-    free_trial = models.BooleanField()
+    card_titular = models.CharField(max_length=20, default='')
+    card_number = models.CharField(unique=True, max_length=16, default='')
+    card_expiration = models.CharField(max_length=7, default='')
+    card_cvv = models.CharField(max_length=3, default='')
