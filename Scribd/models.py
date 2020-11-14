@@ -11,18 +11,38 @@ class Ebook(models.Model):
     )
     _type_files = dict(TYPE_FILE)
 
+    CATEGORY_EBOOK = (
+        ("Thriller", "Thriller"),
+        ("Drama", "Drama"),
+    )
+    _category = dict(CATEGORY_EBOOK)
+
     ebook_number = models.CharField(max_length=8, unique=True, default='')  # IBAN?
     title = models.CharField(max_length=50, blank=False, default='')
     autor = models.CharField(max_length=50, blank=False, default='')
     description = models.TextField(default='')
-    is_promot = models.BooleanField(default='False')
+    is_promot = models.BooleanField(default='False', blank=True, null=True)
     size = models.IntegerField(default=0)
+    category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="static/images/", default='static/images/unknown.png')
+    url = models.URLField(max_length=200, default='static/ebooks/unknown.png', blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
+
+    def get_category(self):
+        return self._category[self.category]
+
+    def get_ebook_number(self):
+        return self.ebook_number
+
+    def get_autor(self):
+        return self.autor
+
+    def get_url(self):
+        return self.url
 
     def __str__(self):
         return self.title
