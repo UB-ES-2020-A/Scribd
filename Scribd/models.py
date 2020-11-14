@@ -30,7 +30,6 @@ class Ebook(models.Model):
         verbose_name = 'Ebook'
         verbose_name_plural = 'Ebooks'
 
-
 class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets
 from Scribd.user_model import User, UserManager
-from Scribd.forms import EbookForm, RegisterForm
+from Scribd.forms import EbookForm, RegisterForm, TicketForm
 from Scribd.models import Ebook
 from Scribd.serializers import UserSerializer, EbookSerializer
 
@@ -19,8 +19,16 @@ def support_page(request):
     return render(request, 'scribd/support_page.html')
 
 def ticket_page(request):
-    return render(request, 'scribd/tickets.html')
 
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket_form.save()
+            return redirect('mainpage')
+    else:
+        ticket_form = TicketForm()
+
+    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
 class libro(object):
 
