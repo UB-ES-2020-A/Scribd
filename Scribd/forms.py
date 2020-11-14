@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-
-from Scribd.models import Ebook
+from datetime import datetime
+from Scribd.models import Ebook, userTickets
 from Scribd.user_model import User
 
 
@@ -40,3 +40,16 @@ class RegisterForm(UserCreationForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
+
+class TicketForm(forms.ModelForm):
+
+    class Meta:
+        model = userTickets
+        fields = ["ticket_title", "ticket_summary"]
+
+        widgets = {
+            'ticket_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+            'ticket_summary': forms.Textarea(attrs={'class': 'form-control' }),
+        }
+
+
