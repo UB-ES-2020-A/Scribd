@@ -1,19 +1,22 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, permissions
 from Scribd.user_model import User, UserManager
 from Scribd.forms import EbookForm, RegisterForm, TicketForm
+from requests import Response
 from Scribd.models import Ebook
+from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer
-
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from Scribd.user_model import User
 
 
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
+
 
 def support_page(request):
     return render(request, 'scribd/support_page.html')
@@ -40,7 +43,6 @@ class libro(object):
 
 
 def base(request):
-
     return render(request, 'scribd/base.html')
 
 
@@ -118,16 +120,15 @@ class AccountsViewSet(viewsets.ModelViewSet):
         return User.objects.all().order_by('date_registration')
 
 
-def login_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
-
+def login_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == "POST":
         login_form = AuthenticationForm(None, data=request.POST)
         username = request.POST['username']
         password = request.POST['password']
-        user = authenticate(request,username=username,password=password)
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user,backend)
+            login(request, user, backend)
             if user.user_type == "provider":
                 return redirect('provider_page')
             elif user.user_type == "support":
@@ -142,24 +143,25 @@ def login_create_view(request,backend='django.contrib.auth.backends.ModelBackend
 
     return render(request, 'scribd/base.html', {'login_form': login_form})
 
-def signup_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
+
+def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
         if signup_form.is_valid():
             user = User.objects.create_user(
-                email = signup_form.cleaned_data.get('email'),
+                email=signup_form.cleaned_data.get('email'),
                 username=signup_form.cleaned_data.get('username'),
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'),
-                card_titular = signup_form.cleaned_data.get('card_titular'),
+                card_titular=signup_form.cleaned_data.get('card_titular'),
                 card_number=signup_form.cleaned_data.get('card_number'),
                 card_expiration=signup_form.cleaned_data.get('card_expiration'),
                 card_cvv=signup_form.cleaned_data.get('card_cvv'),
                 subs_type=signup_form.cleaned_data.get('subs_type'))
 
-            login(request, user,backend)
+            login(request, user, backend)
             if user.user_type == "provider":
                 return redirect('provider_page')
             elif user.user_type == "support":
@@ -172,9 +174,32 @@ def signup_create_view(request,backend='django.contrib.auth.backends.ModelBacken
         signup_form = RegisterForm()
 
     context = {
-        "register_form" : signup_form
+        "register_form": signup_form
     }
     return render(request, 'registration/signup.html', context)
 
 
+class BookUpdateView(generics.RetrieveUpdateAPIView):
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)
+    queryset = Ebook
+    serializer_class = EbookSerializer
 
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        instance.ebook_number = request.data.get("ebook_number")
+        instance.title = request.data.get("title")
+        instance.autor = request.data.get("autor")
+        instance.description = request.data.get("description")
+        instance.is_promot = request.data.get("is_promot")
+        instance.featured_photo = request.data.get("featured_photo")
+        instance.category = request.data.get("category")
+        instance.media_type = request.data.get("media_type")
+        instance.count_downloads = request.data.get("count_downloads")
+        instance.url = request.data.get("url")
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
