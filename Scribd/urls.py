@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^$', ebookMainView.as_view(), name='mainpage'),
     url(r'^base/$', views.base, name='base'),
     url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),
+    url(r'^ebooklist/(?P<category>.*)/$', views.ebook_search, name='ebook_search'),
     url('ebookdetail/(?P<pk>[0-9]+)/$', ebookDetailView.as_view(), name='ebook_custom_detail'),
     url('changebook/(?P<pk>[0-9]+)/$', BookUpdateView.as_view(), name='Ebook_change_details'),
     url('addbook/', ebook_create_view, name='add_book'),
