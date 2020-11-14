@@ -137,9 +137,6 @@ TEMPLATES = [
         },
     },
 
-
-
-
 ]
 
 WSGI_APPLICATION = 'ScribdProject.wsgi.application'
@@ -190,17 +187,13 @@ USE_TZ = True
 
 LOGOUT_REDIRECT_URL = '/'
 
-
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'Scribd/static'),
 )
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 
 django_heroku.settings(locals())
