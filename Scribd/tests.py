@@ -1,14 +1,14 @@
 # Create your tests here.
-from django.test import TestCase
-from Scribd.models import Ebook
-from Scribd.user_model import User
-
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
+from Scribd.models import Ebook
 
 
 class EbookTestCase(TestCase):
     def setUp(self):
-        Ebook.objects.create(ebook_number="74564",title="Don Quijote", autor="Miguel de Cervantes", description="", is_promot=False,size=2,media_type="pdf")
+        Ebook.objects.create(ebook_number="74564", title="Don Quijote", autor="Miguel de Cervantes", description="",
+                             is_promot=False, size=2, media_type="pdf")
 
     def test_ebook_search(self):
         quijote = Ebook.objects.get(title="Don Quijote")
@@ -20,6 +20,7 @@ class EbookTestCase(TestCase):
         quijote = Ebook.objects.get(title="Don Quijote")
         quijote.delete()
         self.assertEqual(quijote, '')
+
 
 class UserTestCase(TestCase):
 
