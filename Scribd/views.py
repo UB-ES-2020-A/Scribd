@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets, permissions
+from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer
 
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager
@@ -22,6 +23,29 @@ def provider_page(request):
 
 def support_page(request):
     return render(request, 'scribd/support_page.html')
+
+def ebook_search(request, title="", category="", media_type=""):
+    if title or category or media_type:
+        if title:
+            ebooks_ = Ebook.objects.filter(title__iexact=title)
+        if category:
+            ebooks_ = Ebook.objects.filter(category__iexact=category).order_by('category')
+        if media_type:
+            ebooks_ = Ebook.objects.filter(media_type__iexact=media_type)
+    else:
+        ebooks_ = Ebook.objects.all()
+
+    if request.method == "GET":
+        dictionary = request.GET.dict()
+        token = dictionary.get("category")
+        if token:
+            ebooks_by_category = Ebook.objects.filter(category__iexact=category)
+    context = {
+        'tittle': title,
+        'category': category,
+        'ebooks': ebooks_,
+    }
+    return render(request, 'Scribd/ebooks_list.html', context)
 
 def ticket_page(request):
 
@@ -190,13 +214,13 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
 
 
 class BookUpdateView(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)
-    queryset = Ebook
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) # NOT WORKING
+    queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
+    renderer_classes = (BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer)
 
-    def update(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.ebook_number = request.data.get("ebook_number")
         instance.title = request.data.get("title")
         instance.autor = request.data.get("autor")
         instance.description = request.data.get("description")
@@ -208,7 +232,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         instance.url = request.data.get("url")
         instance.save()
 
-        serializer = self.get_serializer(instance)
+        serializer = EbookSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
