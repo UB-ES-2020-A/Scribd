@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets, permissions
+from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer
 
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager
@@ -190,9 +191,10 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
 
 
 class BookUpdateView(generics.RetrieveUpdateAPIView):
-    #permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) NOT WORKING
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) # NOT WORKING
     queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
+    renderer_classes = (BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer)
 
     def patch(self, request, *args, **kwargs):
         instance = self.get_object()
