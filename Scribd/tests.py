@@ -30,6 +30,7 @@ class UserTestCase(TestCase):
             username='pepito123',
             first_name='Pepito',
             last_name='123',
+            subs_type='Free Trial',
             password='xTu<3D\R'
         )
 

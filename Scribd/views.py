@@ -5,6 +5,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets, permissions
+
+from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager
 from Scribd.forms import EbookForm, RegisterForm, TicketForm
 from requests import Response
@@ -148,6 +150,7 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
+        credit_form = CreditCardForm(request.POST, request.FILES)
         if signup_form.is_valid():
             user = User.objects.create_user(
                 email=signup_form.cleaned_data.get('email'),
@@ -155,26 +158,29 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'),
-                card_titular=signup_form.cleaned_data.get('card_titular'),
-                card_number=signup_form.cleaned_data.get('card_number'),
-                card_expiration=signup_form.cleaned_data.get('card_expiration'),
-                card_cvv=signup_form.cleaned_data.get('card_cvv'),
                 subs_type=signup_form.cleaned_data.get('subs_type'))
+            if signup_form.cleaned_data.get('subs_type')== "Pro" or "Regular" and credit_form.is_valid():
+                card_titular = credit_form.cleaned_data.get('card_titular'),
+                card_number = credit_form.cleaned_data.get('card_number'),
+                card_expiration = credit_form.cleaned_data.get('card_expiration'),
+                card_cvv = credit_form.cleaned_data.get('card_cvv')
 
             login(request, user, backend)
-            if user.user_type == "provider":
+            if user.user_type == "Provider":
                 return redirect('provider_page')
-            elif user.user_type == "support":
+            elif user.user_type == "Support":
                 return redirect('support_page')
-            elif user.user_type == "admin":
+            elif user.user_type == "Admin":
                 return HttpResponseRedirect(reverse('admin:index'))
             return redirect('mainpage')
     else:
 
         signup_form = RegisterForm()
+        credit_form = CreditCardForm()
 
     context = {
-        "register_form": signup_form
+        "register_form": signup_form,
+        "credit_form": credit_form
     }
     return render(request, 'registration/signup.html', context)
 
