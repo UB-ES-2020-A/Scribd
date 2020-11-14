@@ -32,6 +32,7 @@
                     </div>
                 {% endif %}
 
+                {% csrf_token %}
                 {% if credit_form.non_field_errors %}
                     <div class="alert alert-danger" role="alert">
                         {% for error in credit_form.non_field_errors %}

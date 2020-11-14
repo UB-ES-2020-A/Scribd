@@ -103,9 +103,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class SubscribedUsers(models.Model):
-    # username = models.ForeignKey(User, on_delete=models.CASCADE)
-    type = models.OneToOneField('User', on_delete=models.CASCADE)
-    date_subs = models.DateField(auto_now_add=True)
+
+    username = models.ForeignKey(User, on_delete=models.CASCADE,null=True, blank=True)
+    #type = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
+    date_subs = models.DateField(auto_now_add=True,null=True, blank=True)
     card_titular = models.CharField(max_length=20, default='', blank=True)
     card_number = models.CharField(unique=True, max_length=16, default='',blank=True)
     card_expiration = models.CharField(max_length=7, default='',blank=True)

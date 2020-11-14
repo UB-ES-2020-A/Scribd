@@ -159,11 +159,15 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'),
                 subs_type=signup_form.cleaned_data.get('subs_type'))
-            if signup_form.cleaned_data.get('subs_type')== "Pro" or "Regular" and credit_form.is_valid():
+            user.save()
+            if credit_form.is_valid():
+                username = user  # or something similar
+                credit_form.instance.username = username
                 card_titular = credit_form.cleaned_data.get('card_titular'),
                 card_number = credit_form.cleaned_data.get('card_number'),
                 card_expiration = credit_form.cleaned_data.get('card_expiration'),
                 card_cvv = credit_form.cleaned_data.get('card_cvv')
+                credit_form.save()
 
             login(request, user, backend)
             if user.user_type == "Provider":
