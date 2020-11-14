@@ -190,13 +190,12 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
 
 
 class BookUpdateView(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)
-    queryset = Ebook
+    #permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) NOT WORKING
+    queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
 
-    def update(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.ebook_number = request.data.get("ebook_number")
         instance.title = request.data.get("title")
         instance.autor = request.data.get("autor")
         instance.description = request.data.get("description")
@@ -208,7 +207,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         instance.url = request.data.get("url")
         instance.save()
 
-        serializer = self.get_serializer(instance)
+        serializer = EbookSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
