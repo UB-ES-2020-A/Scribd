@@ -10,8 +10,10 @@
       "is_promot": "False",
       "size": "1",
       "featured_photo": "static/images/eldiaqueseperdiolacordura.jpg",
+      "category": "thriller",
       "media_type": "pdf",
-      "count_downloads": "1"
+      "count_downloads": "1",
+      "publisher": "SUMA"
     }
   },
   {
@@ -25,8 +27,11 @@
       "is_promot": "False",
       "featured_photo": "static/images/SACdA.jpg",
       "size": "635",
+      "category": "thriller",
       "media_type": "epub",
-      "count_downloads": "1"
+      "count_downloads": "1",
+      "publisher": "Santillana"
+
     }
   },
   {
@@ -40,8 +45,11 @@
       "is_promot": "False",
       "featured_photo": "static/images/HP3.jpg",
       "size": "251",
+      "category": "thriller",
       "media_type": "epub",
-      "count_downloads": "1"
+      "count_downloads": "1",
+      "publisher": "Santillana"
+
     }
   }
 ]

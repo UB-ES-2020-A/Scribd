@@ -218,6 +218,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
     queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
     renderer_classes = (BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer)
+    template_name = 'scribd/ebooks_list.html'
 
     def patch(self, request, *args, **kwargs):
         instance = self.get_object()
