@@ -12,7 +12,6 @@ class EbookTestCase(TestCase):
 
     def test_ebook_search(self):
         quijote = Ebook.objects.get(title="Don Quijote")
-        print(quijote.autor)
         self.assertEqual(quijote.autor, 'Miguel de Cervantes')
         self.assertEqual(quijote.is_promot, False)
 
@@ -31,8 +30,6 @@ class UserTestCase(TestCase):
             username='pepito123',
             first_name='Pepito',
             last_name='123',
-            user_type='User',
-            subs_type='Free Trial',
             password='xTu<3D\R'
         )
 
