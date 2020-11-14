@@ -8,34 +8,37 @@ from django import forms
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
-        fields = ['ebook_number', 'title', 'autor', 'description', 'is_promot', 'size', 'media_type', 'featured_photo',
-                  'count_downloads']
+        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo',
+    ]
 
         # TODO Gestionar featured_photo
         widgets = {
-            'ebook_number': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
-            'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 50 characters'}),
-            'autor': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 50 characters'}),
+            'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
+            'title': forms.TextInput(attrs={'class': 'form-control' }),
+            'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
-            'is_promot': forms.CheckboxInput(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
-            'count_downloads': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    name = forms.TextInput()
 
     class Meta:
         model = User
-        fields = ["username", "first_name", "password1", "password2", "email", "type"]
+        fields = ["username",
+                  "first_name","last_name",
+                  "password1", "password2",
+                  "email","card_titular",
+                  "card_number","card_expiration",
+                  "card_cvv","subs_type"]
 
         widgets = {
-            'username': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'password1': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 20 digits'}),
-            'email': forms.TextInput(attrs={'class': 'form-control'}),
-
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_titular': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Full name as displayed on the card'}),
+            'card_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
         }

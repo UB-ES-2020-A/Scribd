@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework.urlpatterns import format_suffix_patterns
+from django.contrib import admin
 
 from Scribd import views
 from Scribd.views import UserList, UserDetail
@@ -17,7 +18,7 @@ urlpatterns = [
     url('User/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
     url('accounts/login/', login_create_view, name='login'),
     url('accounts/signup/', signup_create_view, name='signup'),
-    url('provider/', provider_page, name='provider_page')
+    url('provider/', provider_page, name='provider_page'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

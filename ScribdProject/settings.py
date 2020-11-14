@@ -43,12 +43,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'bootstrap4',
     'django_jinja',
-    'social_django'
+    'social_django',
+    'widget_tweaks',
+    'crispy_forms'
 ]
-
 AUTH_USER_MODEL = 'Scribd.User'
 CRISPY_ALLOWED_TEMPLATE_PACKS = ('bootstrap', 'uni_form', 'bootstrap3', 'bootstrap4', 'materialize_css_forms')
-CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
@@ -76,7 +77,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware'
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'ScribdProject.urls'
@@ -95,7 +96,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
                 'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect'
+                'social_django.context_processors.login_redirect',
+                'Scribd.context_processors.inject_login_form'
             ],
             "extensions": [
                 "jinja2.ext.do",
@@ -130,6 +132,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Scribd.context_processors.inject_login_form'
             ],
         },
     },

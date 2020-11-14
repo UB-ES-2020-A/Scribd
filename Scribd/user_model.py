@@ -4,7 +4,9 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name,type, password=None):
+    def create_user(self, email, username,
+                    first_name, last_name,subs_type,card_titular,card_number,card_expiration,
+                    card_cvv,user_type="user",password=None):
         # crea un usuari
         if not email:
             raise ValueError('Users must have an email address')
@@ -12,7 +14,13 @@ class UserManager(BaseUserManager):
                           username=username,
                           first_name=first_name,
                           last_name=last_name,
-                          type = type)
+                          user_type = user_type,
+                          subs_type= subs_type,
+                          card_titular= card_titular,
+                          card_number= card_number,
+                          card_expiration=card_expiration,
+                          card_cvv=card_cvv,
+                          )
 
         user.set_password(password)
         user.save(using=self._db)
@@ -24,7 +32,12 @@ class UserManager(BaseUserManager):
                                 first_name=first_name,
                                 last_name=last_name,
                                 password=password,
-                                type ="admin")
+                                user_type ="admin",
+                                subs_type='Pro',
+                                card_titular='',
+                                card_number='',
+                                card_expiration='',
+                                card_cvv='')
 
         user.is_admin = True
         user.save(using=self._db)
@@ -43,20 +56,28 @@ class User(AbstractBaseUser):
     last_name = models.CharField(max_length=100,blank=False, default='')
     # no posem password perque esta ja fet a la mateixa classe
     date_registration = models.DateField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=True,)
     is_subscribed = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
+    card_titular = models.CharField(max_length=20,default='')
+    card_number = models.CharField(unique=True,max_length=16,default='')
+    card_expiration = models.CharField(max_length=7,default='')
+    card_cvv = models.CharField(max_length=3,default='')
 
+    SUBS_TYPE =(
+        ("Free trial","Free trial"),
+        ("Regular", "Regular"),
+        ("Pro", "Pro"),
+    )
     USER_TYPE = (
         ("admin", "admin"),
         ("provider", "provider"),
         ("support", "support"),
-        ("free_trial", "free_trial"),
-        ("subscribed", "subscribed"),
+        ("user", "user"),
     )
     _type_user = dict(USER_TYPE)
-    type = models.CharField(max_length=15, choices=USER_TYPE, default="subscribed")
-
+    user_type = models.CharField(max_length=15, choices=USER_TYPE, default="user")
+    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="regular")
     USERNAME_FIELD = 'username'  # el que identificara a la classe
     REQUIRED_FIELDS = ['first_name', 'last_name','email']
 
