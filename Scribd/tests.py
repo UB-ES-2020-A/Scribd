@@ -31,12 +31,8 @@ class UserTestCase(TestCase):
             username='pepito123',
             first_name='Pepito',
             last_name='123',
-            user_type='provider',
+            user_type='User',
             subs_type='Free Trial',
-            card_titular='',
-            card_number='',
-            card_expiration='',
-            card_cvv='',
             password='xTu<3D\R'
         )
 
