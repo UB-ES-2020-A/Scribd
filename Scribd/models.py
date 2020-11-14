@@ -35,6 +35,13 @@ class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
 
+class userTickets(models.Model):
+    id_uTicket = models.AutoField(primary_key=True)
+    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
+    ticket_summary = models.CharField(max_length=300)
+    ticket_date_added = models.DateTimeField(auto_now_add=True)
+    ticket_solved = models.BooleanField(default=False)
+
 
 class EbookInsertDate(models.Model):
     viewed_ebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
