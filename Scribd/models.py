@@ -109,7 +109,6 @@ class Review(models.Model):
         verbose_name_plural = 'Reviews'
 
 
-
 class UploadedResources(models.Model):
     # Available extensions
     VISIBILITY_CHOICES = (
