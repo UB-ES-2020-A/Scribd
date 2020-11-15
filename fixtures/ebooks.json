@@ -9,7 +9,8 @@
       "description": "Tematica Thriller",
       "is_promot": "False",
       "size": "1",
-      "featured_photo": "static/images/eldiaqueseperdiolacordura.jpg",
+      "featured_photo": "images/eldiaqueseperdiolacordura.jpg",
+      "category": "Thriller",
       "media_type": "pdf",
       "count_downloads": "1"
     }
@@ -23,10 +24,12 @@
       "autor": "J.K Rowling",
       "description": "4to saga Harry Potter",
       "is_promot": "False",
-      "featured_photo": "static/images/SACdA.jpg",
+      "featured_photo": "images/SACdA.jpg",
       "size": "635",
+      "category": "Thriller",
       "media_type": "epub",
       "count_downloads": "1"
+
     }
   },
   {
@@ -38,10 +41,12 @@
       "autor": "J.K Rowling",
       "description": "2ndo saga Harry Potter",
       "is_promot": "False",
-      "featured_photo": "static/images/HP3.jpg",
+      "featured_photo": "images/HP3.jpg",
       "size": "251",
+      "category": "Thriller",
       "media_type": "epub",
       "count_downloads": "1"
+
     }
   }
 ]

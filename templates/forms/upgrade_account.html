@@ -1,0 +1,56 @@
+{% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Upgrade your account</h1>
+    </div>
+    <form method="post" style="margin-top: 60px">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <div class="container">
+            <div class="card-deck mb-3 text-center">
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Free</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small>
+                        </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Meh, just checking out the page</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Regular</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small>
+                        </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>You have fun reading books, and this plan is for you!</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card mb-4 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">Addict</h4>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small>
+                        </h1>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>You are a book connoisseur and don't want to miss anything</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
+                    <h7 style="color: #FFFFFF">Upgrade now!</h7>
+        </button>
+    </form>
+</div>
+{% endblock %}

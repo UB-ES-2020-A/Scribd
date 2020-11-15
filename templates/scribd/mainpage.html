@@ -4,20 +4,28 @@
     <div id='cards'>
         <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
             <div class="container">
-            <h2 style="color: #323232">Recently <strong>saved</strong></h2>
+                <h2 style="color: #323232">Recently <strong>saved</strong></h2>
                 <div class="row">
                     {% for ebook in object_list %}
                         <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
                             <div class="card" style="width: 500px">
                                 <div class="card-body" style="text-align: center;">
                                     <!-- Modify dimensions later-->
-                                    <img src="{{ ebook.featured_photo }}" height="400px" width="280px" alt=""
-                                         style="border-radius: 2%">
+                                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                        {% load static %}
+                                        <img src="{% static 'images/unknown.png' %}" height="400px" width="280px" alt=""
+                                             style="border-radius: 2%">
+                                    {% else %}
+                                        <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px" alt=""
+                                             style="border-radius: 2%">
+                                    {% endif %}
                                     <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
                                     <br>
                                     <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
                                     <br>
-                                    <a href="ebookdetail/{{ ebook.id }}" class="btn" style="background-color: #367C85"><h7 style="color: #FFFFFF">More info</h7></a>
+                                    <a href="ebookdetail/{{ ebook.id }}" class="btn" style="background-color: #367C85">
+                                        <h7 style="color: #FFFFFF">More info</h7>
+                                    </a>
                                 </div>
                             </div>
                         </div>

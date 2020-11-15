@@ -32,6 +32,15 @@
                     </div>
                 {% endif %}
 
+                {% csrf_token %}
+                {% if credit_form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in credit_form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
 
                 <div class="form-row">
                     <div class="form-group col-md-6 mb-0">
@@ -55,6 +64,7 @@
                 </div>
 
                 <hr/>
+
                 <div class="info-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
                     <h4 class="mb-3">Payment info</h4>
                 </div>
@@ -62,20 +72,20 @@
                 <div class="form-row">
                     <div class="form-group col-md-6 mb-0">
 
-                        {{ register_form.card_titular|as_crispy_field }}
+                        {{ credit_form.card_titular|as_crispy_field }}
 
                     </div>
                     <div class="form-group col-md-6 mb-0">
-                        {{ register_form.card_number|as_crispy_field }}
+                        {{ credit_form.card_number|as_crispy_field }}
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-3 mb-3">
-                        {{ register_form.card_expiration|as_crispy_field }}
+                        {{ credit_form.card_expiration|as_crispy_field }}
                     </div>
                     <div class="form-group col-md-3 mb-3">
-                        {{ register_form.card_cvv|as_crispy_field }}
+                        {{ credit_form.card_cvv|as_crispy_field }}
                     </div>
                 </div>
                 <hr/>
@@ -85,8 +95,6 @@
                     </div>
                     <hr/>
                    {{ register_form.subs_type|as_crispy_field}}
-
-
                     <div class="container">
                         <div class="card-deck mb-3 text-center">
                             <div class="card mb-4 shadow-sm">
@@ -122,9 +130,7 @@
                                     </h1>
                                     <ul class="list-unstyled mt-3 mb-4">
                                         <li>You are a book connoisseur and don't want to miss anything</li>
-
                                     </ul>
-
                                 </div>
                             </div>
                         </div>
@@ -141,6 +147,3 @@
 
 
 {% endblock %}
-
-
-

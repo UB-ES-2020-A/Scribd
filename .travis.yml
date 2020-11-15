@@ -24,7 +24,7 @@ install:
   - pip install -r requirements.txt
 
 stages:
-    # CUALQUIER PUSH
+  # CUALQUIER PUSH
   - name: compile
     if: type = pull_request
   - name: test
@@ -38,7 +38,7 @@ jobs:
   include:
     - stage: compile
       name: "Compile"
-        # Create test database
+      # Create test database
       before_script:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
