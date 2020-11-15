@@ -18,11 +18,12 @@ from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
 
-from Scribd.views import EbookViewSet, AccountsViewSet
+from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet
 
 router = routers.DefaultRouter()
 router.register(r'ebooks', EbookViewSet)
 router.register(r'accounts', AccountsViewSet)
+router.register(r'tickets', ticketViewSet)
 
 urlpatterns = [
     url(r'admin/', admin.site.urls, name="admin_page"),
