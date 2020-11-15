@@ -28,7 +28,8 @@ class Ebook(models.Model):
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
     url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf', blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
-    publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
+    publisher = models.ForeignKey(User, related_name='providers_key', on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
+    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'User'})
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -120,4 +121,3 @@ class UploadedResources(models.Model):
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='')
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
     file = models.FileField(upload_to='uploads', default='')
-
