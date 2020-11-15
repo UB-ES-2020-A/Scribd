@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-from Scribd.user_model import User
+from Scribd.user_model import User, Provider
 
 
 class Ebook(models.Model):
@@ -19,6 +19,7 @@ class Ebook(models.Model):
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="static/images/", default='static/images/unknown.png')
     count_downloads = models.PositiveIntegerField(default=0)
+    provider = models.ForeignKey('Provider', on_delete=models.CASCADE, blank=True)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]

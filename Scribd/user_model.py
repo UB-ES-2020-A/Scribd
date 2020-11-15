@@ -115,10 +115,9 @@ class User(AbstractBaseUser):
             return True
 
 
-"""class UserProvider(models.Model):
-    address = models.CharField(max_length=100, blank=False, default='')
-    phone_number = models.CharField(max_length=100, blank=False, default='')
-    books_to_sell = ArrayField(models.ForeignKey("models.ReporterProfile", on_delete=models.CASCADE, blank=True))"""
+class Provider(models.Model):
+    username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
+    # la llista de llibres s'implementa a models.Ebook fent que cada llibre tingui una foreignkey a un provider (OneToMany)
 
 class SubscribedUsers(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
