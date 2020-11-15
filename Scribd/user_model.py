@@ -16,6 +16,14 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.user_type = "User"
+
+        if user.subs_type == "Free Trial":
+            user.nbooks_by_subs = 10
+        if user.subs_type == "Regular":
+            user.nbooks_by_subs = 100
+        if user.subs_type == "Pro":
+            user.nbooks_by_subs = 1000
+
         user.save(using=self._db)
         return user
 
@@ -46,6 +54,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_registration = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+
+    # profile attributes
+    profile_image = models.ImageField(upload_to="static/images/", default='/static/images/unknown.png')
+    about_me = models.CharField(max_length=500, blank=True, default='Description not modified')
+    nbooks_by_subs = models.IntegerField(default=10)
 
     USER_TYPE = (
         ("Admin", "Admin"),

@@ -1,14 +1,14 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager
-from Scribd.forms import EbookForm, RegisterForm, TicketForm
+from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm
 from requests import Response
 from Scribd.models import Ebook
 from Scribd.permissions import EditBookPermissions
@@ -24,7 +24,6 @@ def support_page(request):
     return render(request, 'scribd/support_page.html')
 
 def ticket_page(request):
-
     if request.method == 'POST':
         ticket_form = TicketForm(request.POST, request.FILES)
         if ticket_form.is_valid():
@@ -36,7 +35,6 @@ def ticket_page(request):
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
 class libro(object):
-
     def __init__(self, titulo, autor, descripcion, portada):
         self.titulo = titulo
         self.autor = autor
@@ -213,3 +211,39 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
 
         return Response(serializer.data)
+
+
+class user_profile_page(DetailView):
+    model = User
+    template_name = 'scribd/user_profile_page.html'
+
+"""
+def edit_profile_page2(request, pk):
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('userprofile/'+pk+'/')
+    else:
+        form = UserChangeForm(instance=request.user)
+    return render(request, 'forms/edit_user_profile.html', {'profile_form': form})
+"""
+
+
+def edit_profile_page(request, pk):
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('userprofile/'+pk+"/")
+    else:
+        form = ProfileForm(instance=request.user)
+
+    context = {
+        "form":form
+    }
+
+    return render(request, 'forms/edit_user_profile.html', context)
+

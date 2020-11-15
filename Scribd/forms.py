@@ -22,6 +22,19 @@ class EbookForm(forms.ModelForm):
         }
 
 
+# TODO Not Working
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'about_me', 'profile_image']
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'about_me': forms.Textarea(attrs={'class': 'form-control'})
+        }
+
+
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
@@ -35,6 +48,7 @@ class RegisterForm(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 
 class CreditCardForm(forms.ModelForm):
     class Meta:

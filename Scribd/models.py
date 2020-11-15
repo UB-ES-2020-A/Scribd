@@ -31,9 +31,11 @@ class Ebook(models.Model):
         verbose_name = 'Ebook'
         verbose_name_plural = 'Ebooks'
 
+
 class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
+
 
 class userTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
@@ -69,3 +71,21 @@ class Review(models.Model):
 
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
+
+
+# TODO UploadedResources. This is a primal implementation
+class UploadedResources(models.Model):
+    # Available extensions
+    TYPE_FILE = (
+        ("pdf", "pdf"),
+        ("txt", "txt"),
+        ("doc", "doc"),
+        ("docx", "docx"),
+        ("odt", "odt")
+    )
+    _type_files = dict(TYPE_FILE)
+
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=50, blank=False, default='')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)  # One to many
+    public = models.BooleanField(default=True)
