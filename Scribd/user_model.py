@@ -1,9 +1,11 @@
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 
+from ScribdProject import settings
+
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name, password=None):
+    def create_user(self, email, username, first_name, last_name,subs_type = "Free Trial", password=None):
         # crea un usuari
         if not email:
             raise ValueError('Users must have an email address')
@@ -11,6 +13,7 @@ class UserManager(BaseUserManager):
                           username=username,
                           first_name=first_name,
                           last_name=last_name,
+                          subs_type=subs_type
                           )
 
         user.set_password(password)
@@ -27,21 +30,17 @@ class UserManager(BaseUserManager):
 
         user.is_admin = True
         user.user_type = "Admin"
+        user.subs_type = "Pro"
         user.save(using=self._db)
         return user
 
 
 class SubscribedUsers(models.Model):
-    SUBS_TYPE = (
-        ("Free trial", "Free trial"),
-        ("Regular", "Regular"),
-        ("Pro", "Pro"),
-    )
-    _subs_type = dict(SUBS_TYPE)
+
 
     #username = models.ForeignKey('User', on_delete=models.CASCADE,null=True, blank=True)
-    username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
-    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial", null=True)
+    #username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
+    username = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     date_subs = models.DateField(auto_now_add=True,null=True, blank=True)
     card_titular = models.CharField(max_length=20, default='', blank=True)
     card_number = models.CharField(unique=True, max_length=16, default='',blank=True)
@@ -74,11 +73,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     _type_user = dict(USER_TYPE)
 
+    SUBS_TYPE = (
+        ("Free trial", "Free trial"),
+        ("Regular", "Regular"),
+        ("Pro", "Pro"),
+    )
+    _subs_type = dict(SUBS_TYPE)
+
 
 
     user_type = models.CharField(max_length=15, choices=USER_TYPE, default="User")
-    #subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial")
-    subs_type = models.ForeignKey(SubscribedUsers, verbose_name='subs_type', on_delete=models.PROTECT, null=True)
+    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial")
+    #subs_type = models.ForeignKey(SubscribedUsers, verbose_name='subs_type', on_delete=models.CASCADE, null=True)
 
 
     USERNAME_FIELD = 'username'  # el que identificara a la classe

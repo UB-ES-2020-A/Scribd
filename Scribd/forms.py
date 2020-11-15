@@ -28,7 +28,7 @@ class RegisterForm(UserCreationForm):
         fields = ["username",
                   "first_name", "last_name",
                   "password1", "password2",
-                  "email"]
+                  "email","subs_type"]
 
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
@@ -39,7 +39,7 @@ class RegisterForm(UserCreationForm):
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = SubscribedUsers
-        fields = ["subs_type","card_titular",
+        fields = ['username',"card_titular",
                   "card_number","card_expiration",
                   "card_cvv",]
 

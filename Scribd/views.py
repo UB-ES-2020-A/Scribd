@@ -8,7 +8,7 @@ from rest_framework import generics, viewsets, permissions
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
 
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
-from Scribd.user_model import User, UserManager
+from Scribd.user_model import User, UserManager, SubscribedUsers
 from Scribd.forms import EbookForm, RegisterForm, TicketForm
 from requests import Response
 from Scribd.models import Ebook
@@ -170,27 +170,28 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
     return render(request, 'scribd/base.html', {'login_form': login_form})
 
 
-def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
+def signup_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
         credit_form = CreditCardForm(request.POST, request.FILES)
         if signup_form.is_valid():
+            user = User.objects.create_user(
             email=signup_form.cleaned_data.get('email'),
             username=signup_form.cleaned_data.get('username'),
             first_name=signup_form.cleaned_data.get('first_name'),
             last_name=signup_form.cleaned_data.get('last_name'),
-            password=signup_form.cleaned_data.get('password1')
+            password=signup_form.cleaned_data.get('password1'),
+            subs_type = signup_form.cleaned_data.get('subs_type'))
+            user.save()
             if credit_form.is_valid():
-                username = user  # or something similar
-                credit_form.instance.username = username
-                subs_type = credit_form.cleaned_data.get('subs_type'),
+                user = User.objects.get(username=user.username)
+                credit_form.instance.username = user
                 card_titular = credit_form.cleaned_data.get('card_titular'),
                 card_number = credit_form.cleaned_data.get('card_number'),
                 card_expiration = credit_form.cleaned_data.get('card_expiration'),
                 card_cvv = credit_form.cleaned_data.get('card_cvv')
                 credit_form.save()
-            user = User.objects.create_user()
 
             login(request, user, backend)
             if user.user_type == "Provider":
