@@ -196,6 +196,11 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'Scribd/static'),
 )
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = (
+    os.path.join(BASE_DIR, 'media').replace('\\', '/')
+)
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 django_heroku.settings(locals())

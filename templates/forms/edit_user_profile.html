@@ -1,0 +1,16 @@
+{% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container">
+    <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Edit your profile</h1>
+    </div>
+    <form method="post" style="margin-top: 60px" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
+                    <h7 style="color: #FFFFFF">Update</h7>
+        </button>
+    </form>
+</div>
+{% endblock %}

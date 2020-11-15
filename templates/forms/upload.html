@@ -1,0 +1,42 @@
+{% extends 'scribd/base.html' %}
+{% load widget_tweaks %}
+{% load crispy_forms_tags %}
+{% block title %}Upload Page{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Upload files</h1>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                Upload your stories (pdf, txt, doc, docx, epub...) here.
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col" style="margin-left: 50px">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <!--<input type="file" name="document">-->
+                    {{ upload_file_form.title|as_crispy_field  }}
+                </div>
+                <div class="row">
+                    <!--<input type="file" name="document">-->
+                    {{ upload_file_form.visibility|as_crispy_field  }}
+                </div>
+                <div class="row">
+                    <!--<input type="file" name="document">-->
+                    {{ upload_file_form.file|as_crispy_field  }}
+                </div>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
+                        <h7 style="color: #FFFFFF">Upload file here</h7>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

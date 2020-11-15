@@ -25,9 +25,11 @@ class Ebook(models.Model):
     size = models.IntegerField(default=0)
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = models.ImageField(upload_to="static/images/", default='static/images/unknown.png')
+
+    featured_photo = models.ImageField(upload_to="images/", default='images/unknown.png')
     url = models.URLField(max_length=200, default='static/ebooks/unknown.png', blank=True, null=True)
     publisher = models.ForeignKey(Provider, verbose_name='Publisher', on_delete=models.PROTECT, null=True)
+
     count_downloads = models.PositiveIntegerField(default=0)
     provider = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
 
@@ -53,12 +55,14 @@ class Ebook(models.Model):
         verbose_name = 'Ebook'
         verbose_name_plural = 'Ebooks'
 
+
 class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
     class Meta:
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
+
 
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
@@ -103,3 +107,20 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
+"""
+class UploadedResources(models.Model):
+    # Available extensions
+    VISIBILITY_CHOICES = (
+        ("public", "public"),
+        ("private", "private"),
+    )
+    _v_choices = dict(VISIBILITY_CHOICES)
+
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=50, blank=False, default='')
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)  # One to many
+    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='')
+    featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
+    file = models.FileField(upload_to='uploads', default='')
+"""
+
