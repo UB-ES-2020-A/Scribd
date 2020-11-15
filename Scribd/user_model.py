@@ -1,6 +1,12 @@
+from datetime import datetime
+
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
 from ScribdProject import settings
+from django.contrib import auth
+from datetime import date
+from django.utils.translation import ugettext as _, ungettext, ugettext_lazy
+
 import Scribd.models
 
 
@@ -53,7 +59,12 @@ class UserManager(BaseUserManager):
 
 
 class SubscribedUsers(models.Model):
-
+    SUBS_TYPE = (
+        ("Free trial", "Free trial"),
+        ("Regular", "Regular"),
+        ("Pro", "Pro"),
+    )
+    _subs_type = dict(SUBS_TYPE)
 
     #username = models.ForeignKey('User', on_delete=models.CASCADE,null=True, blank=True)
     #username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
@@ -64,11 +75,37 @@ class SubscribedUsers(models.Model):
     card_expiration = models.CharField(max_length=7, default='',blank=True)
     card_cvv = models.CharField(max_length=3, default='',blank=True)
 
+    price = models.DecimalField(max_digits=64, decimal_places=2)
+    trial_period = models.PositiveIntegerField(null=True, blank=True)
+    trial_unit = models.CharField(max_length=1, null=True, choices=_subs_type)
+    recurrence_period = models.PositiveIntegerField(null=True, blank=True)
+    recurrence_unit = models.CharField(max_length=1, null=True,
+                                       choices=_subs_type)
+    group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
+
+
+
     class Meta:
         verbose_name = 'SubscribedUser'
         verbose_name_plural = 'SubscribedUsers'
 
 class User(AbstractBaseUser, PermissionsMixin):
+    USER_TYPE = (
+        ("Admin", "Admin"),
+        ("Provider", "Provider"),
+        ("Support", "Support"),
+        ("User", "User"),
+    )
+    _type_user = dict(USER_TYPE)
+
+    SUBS_TYPE = (
+        ("Free trial", "Free trial"),
+        ("Regular", "Regular"),
+        ("Pro", "Pro"),
+    )
+    _subs_type = dict(SUBS_TYPE)
+
+
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -86,28 +123,19 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
     about_me = models.CharField(max_length=500, blank=True, default='Description not modified')
     nbooks_by_subs = models.IntegerField(default=10)
-
-    USER_TYPE = (
-        ("Admin", "Admin"),
-        ("Provider", "Provider"),
-        ("Support", "Support"),
-        ("User", "User"),
-    )
-    _type_user = dict(USER_TYPE)
-
-    SUBS_TYPE = (
-        ("Free trial", "Free trial"),
-        ("Regular", "Regular"),
-        ("Pro", "Pro"),
-    )
-    _subs_type = dict(SUBS_TYPE)
-
+    group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
 
 
     user_type = models.CharField(max_length=15, choices=USER_TYPE, default="User")
     subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial")
     #subs_type = models.ForeignKey(SubscribedUsers, verbose_name='subs_type', on_delete=models.CASCADE, null=True)
 
+
+    expires = models.DateField(null=True, default=date.today)
+    active = models.BooleanField(default=True)
+    cancelled = models.BooleanField(default=True)
+
+    objects = models.Manager()
 
     USERNAME_FIELD = 'username'  # el que identificara a la classe
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
@@ -153,6 +181,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Provider(models.Model):
     username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
     publisher = models.CharField(verbose_name='Publisher', max_length=255,blank=True)
+    group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Provider'
