@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from Scribd.models import Ebook, userTickets, UploadedResources
+from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.user_model import User, SubscribedUsers
 
 
