@@ -5,14 +5,15 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets, permissions
+from django.contrib.auth.decorators import user_passes_test
 
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager
 from Scribd.forms import EbookForm, RegisterForm, TicketForm
 from requests import Response
-from Scribd.models import Ebook
+from Scribd.models import Ebook, userTickets
 from Scribd.permissions import EditBookPermissions
-from Scribd.serializers import UserSerializer, EbookSerializer
+from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer
 from Scribd.user_model import User
 
 
@@ -35,32 +36,8 @@ def ticket_page(request):
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
-class libro(object):
-
-    def __init__(self, titulo, autor, descripcion, portada):
-        self.titulo = titulo
-        self.autor = autor
-        self.descripcion = descripcion
-        self.portada = portada
-
-
 def base(request):
     return render(request, 'scribd/base.html')
-
-
-"""
-def lista_libros(request):
-    l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller", "/static/images/SACdA.jpg")
-    l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller", "/static/images/HP3.jpg")
-    l3 = libro("Don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller", "/static/images/Q.jpeg")
-
-    libros = [l1, l2, l3]
-
-    ctx = {"lista_libros": libros}
-
-    return render(request, "scribd/mainpage.html", ctx)
-"""
-
 
 def ebook_create_view(request):
     if request.method == 'POST':
@@ -72,6 +49,23 @@ def ebook_create_view(request):
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
 
+
+'''
+def support_group(user):
+    return 'support' in user.groups
+'''
+
+#@user_passes_test(support_group)
+class ticketListView(ListView):
+    model = userTickets
+    template_name = 'scribd/support_page.html'    
+
+class ticketViewSet(viewsets.ModelViewSet):
+    queryset = userTickets.objects.all().order_by('id_uTicket')
+    serializer_class = ticketSerializer
+
+    def get_queryset(self):
+        return userTickets.objects.all().order_by('id')
 
 class ebookMainView(ListView):
     model = Ebook
