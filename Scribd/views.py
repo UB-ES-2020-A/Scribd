@@ -174,6 +174,7 @@ class AccountsViewSet(viewsets.ModelViewSet):
         return User.objects.all().order_by('date_registration')
 
 
+
 def login_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == "POST":
         login_form = AuthenticationForm(None, data=request.POST)
