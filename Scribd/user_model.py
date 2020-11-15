@@ -56,7 +56,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_admin = models.BooleanField(default=False)
 
     # profile attributes
-    profile_image = models.ImageField(upload_to="static/images/", default='/static/images/unknown.png')
+    profile_image = models.ImageField(upload_to="images", default='/static/images/unknown.png')
     about_me = models.CharField(max_length=500, blank=True, default='Description not modified')
     nbooks_by_subs = models.IntegerField(default=10)
 

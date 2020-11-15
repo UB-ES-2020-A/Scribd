@@ -1,3 +1,4 @@
+from django.conf.urls.static import static
 from django.conf.urls import url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework.urlpatterns import format_suffix_patterns
@@ -6,6 +7,7 @@ from Scribd import views
 from Scribd.views import UserList, UserDetail, BookUpdateView
 from Scribd.views import ebook_create_view, ebookListView, ebookDetailView, signup_create_view, login_create_view, \
     provider_page, ebookMainView, ticket_page, user_profile_page, edit_profile_page
+from ScribdProject import settings
 
 urlpatterns = [
     url(r'^$', ebookMainView.as_view(), name='mainpage'),
@@ -25,4 +27,6 @@ urlpatterns = [
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
-urlpatterns += staticfiles_urlpatterns()
+#urlpatterns += staticfiles_urlpatterns()
+urlpatterns += [
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

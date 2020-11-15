@@ -18,7 +18,7 @@ class Ebook(models.Model):
     is_promot = models.BooleanField(default='False')
     size = models.IntegerField(default=0)
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = models.ImageField(upload_to="static/images/", default='static/images/unknown.png')
+    featured_photo = models.ImageField(upload_to="images", default='static/images/unknown.png')
     count_downloads = models.PositiveIntegerField(default=0)
 
     def get_ebook_media_type(self):
