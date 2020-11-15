@@ -79,6 +79,17 @@ class CreditCardForm(forms.ModelForm):
             'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
         }
 
+class ProfileFormProvider(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name','email']
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
 
 class TicketForm(forms.ModelForm):
 
@@ -90,5 +101,4 @@ class TicketForm(forms.ModelForm):
             'ticket_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control' }),
         }
-
 
