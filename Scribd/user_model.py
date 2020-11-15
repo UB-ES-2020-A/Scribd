@@ -24,7 +24,15 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.save(using=self._db)
+        """if user_type == "Provider":
+            self.create_provider(user)"""
         return user
+
+    """def create_provider(self, user):
+        provider = Provider(username=user.username)
+        provider.save(using=self._db)
+        return provider"""
+
 
     def create_superuser(self, email, username, first_name, last_name, password=None):
         user = self.create_user(email= email,
@@ -69,10 +77,10 @@ class User(AbstractBaseUser):
         ("Pro", "Pro"),
     )
     USER_TYPE = (
-        ("admin", "admin"),
-        ("provider", "provider"),
-        ("support", "support"),
-        ("user", "user"),
+        ("Admin", "Admin"),
+        ("Provider", "Provider"),
+        ("Support", "Support"),
+        ("User", "User"),
     )
     _type_user = dict(USER_TYPE)
     user_type = models.CharField(max_length=15, choices=USER_TYPE, default="user")
@@ -115,9 +123,10 @@ class User(AbstractBaseUser):
             return True
 
 
-class Provider(models.Model):
-    username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
+"""class Provider(models.Model):
+    username = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     # la llista de llibres s'implementa a models.Ebook fent que cada llibre tingui una foreignkey a un provider (OneToMany)
+    objects = UserManager()"""
 
 class SubscribedUsers(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
