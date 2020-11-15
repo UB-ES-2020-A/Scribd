@@ -329,15 +329,15 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
-"""
+
 def follow(request, pk):
     if request.method == 'POST':
         form = FollowForm(request.POST)
         if form.is_valid():
-            instance = form.save(commit=False)
-            instance.follower = request.user
-            print(instance.title)
-            form.save()
+            user = request.user
+            instance = Ebook.objects.get(id=pk)
+            instance.follower = user
+            instance.save()
             return redirect('mainpage')
     else:
         form = FollowForm()
@@ -347,7 +347,7 @@ def follow(request, pk):
             "ebook": ebook
         }
     return render(request, 'scribd/ebook_detail.html', context)
-"""
+
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
