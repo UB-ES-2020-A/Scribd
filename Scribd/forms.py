@@ -42,3 +42,14 @@ class RegisterForm(UserCreationForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
         }
+
+class ProfileFormProvider(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name','email']
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+        }

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets
 from Scribd.user_model import User, UserManager
-from Scribd.forms import EbookForm, RegisterForm
+from Scribd.forms import EbookForm, RegisterForm, ProfileFormProvider
 from Scribd.models import Ebook
 from Scribd.serializers import UserSerializer, EbookSerializer
 
@@ -14,6 +14,9 @@ from django.urls import reverse
 
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
+
+def provider_page(request):
+    return render(request, 'scribd/contract.html')
 
 def support_page(request):
     return render(request, 'scribd/support_page.html')
@@ -56,6 +59,19 @@ def ebook_create_view(request):
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
+
+def edit_profile_page_provider(request):
+    if request.method == "POST":
+        form = ProfileFormProvider(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('mainpage')
+    else:
+        form = ProfileFormProvider(instance=request.user)
+    context = {
+        "form": form
+    }
+    return render(request, 'forms/edit_provider_profile.html', context)
 
 
 class ebookMainView(ListView):
