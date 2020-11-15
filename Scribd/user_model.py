@@ -77,11 +77,10 @@ class SubscribedUsers(models.Model):
 
     price = models.DecimalField(max_digits=64, decimal_places=2)
     trial_period = models.PositiveIntegerField(null=True, blank=True)
-    trial_unit = models.CharField(max_length=1, null=True, choices=_subs_type)
+    #trial_unit = models.CharField(max_length=1, null=True, choices=_subs_type)
     recurrence_period = models.PositiveIntegerField(null=True, blank=True)
-    recurrence_unit = models.CharField(max_length=1, null=True,
-                                       choices=_subs_type)
-    group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
+    #recurrence_unit = models.CharField(max_length=1, null=True,choices=_subs_type)
+    #group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
 
 
 
@@ -123,7 +122,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
     about_me = models.CharField(max_length=500, blank=True, default='Description not modified')
     nbooks_by_subs = models.IntegerField(default=10)
-    group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
+    #group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
 
 
     user_type = models.CharField(max_length=15, choices=USER_TYPE, default="User")
@@ -181,7 +180,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Provider(models.Model):
     username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
     publisher = models.CharField(verbose_name='Publisher', max_length=255,blank=True)
-    group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
+    #group = models.ForeignKey(auth.models.Group, null=False, blank=False, unique=False, on_delete=models.PROTECT)
 
     class Meta:
         verbose_name = 'Provider'
