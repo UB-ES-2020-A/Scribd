@@ -22,7 +22,7 @@ from django.contrib.auth.decorators import user_passes_test
 from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager, SubscribedUsers
-from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm
+from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm, FollowForm
 from requests import Response
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
@@ -328,6 +328,26 @@ def upload_file(request):
     else:
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
+
+
+def follow(request, pk):
+    if request.method == 'POST':
+        form = FollowForm(request.POST)
+        if form.is_valid():
+            user = request.user
+            instance = Ebook.objects.get(id=pk)
+            instance.follower = user
+            instance.save()
+            return redirect('mainpage')
+    else:
+        form = FollowForm()
+        ebook = Ebook.objects.get(id=pk)
+        context = {
+            "form": form,
+            "ebook": ebook
+        }
+    return render(request, 'scribd/ebook_detail.html', context)
+
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
