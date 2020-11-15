@@ -27,7 +27,7 @@ class Ebook(models.Model):
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
 
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='static/ebooks/unknown.pdf', blank=True, null=True)
+    url = models.URLField(max_length=200, default='ebooks/unknown.pdf', blank=True, null=True)
     publisher = models.ForeignKey(Provider, verbose_name='Publisher', on_delete=models.PROTECT, blank=True, null=True)
 
     count_downloads = models.PositiveIntegerField(default=0)
