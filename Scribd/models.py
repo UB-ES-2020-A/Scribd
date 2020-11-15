@@ -121,3 +121,9 @@ class UploadedResources(models.Model):
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
     file = models.FileField(upload_to='uploads', default='')
 
+
+class Payments(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    ammount = models.FloatField(default=0.0)
+    date = models.DateTimeField(auto_now_add=True)
