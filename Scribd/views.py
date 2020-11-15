@@ -245,7 +245,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
       
 class user_profile_page(DetailView):
     model = User
-    template_name = 'scribd/user_profile_page_notworking.html'
+    template_name = 'scribd/user_profile_page.html'
 
 
 def edit_profile_page(request, pk):
