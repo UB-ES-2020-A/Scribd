@@ -25,13 +25,10 @@ class Ebook(models.Model):
     size = models.IntegerField(default=0)
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='ebooks/unknown.pdf', blank=True, null=True)
-    publisher = models.ForeignKey(Provider, verbose_name='Publisher', on_delete=models.PROTECT, blank=True, null=True)
-
+    url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf', blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
-    provider = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
+    publisher = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
