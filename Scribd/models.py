@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from Scribd.user_model import User
+from Scribd.user_model import User, Provider
 
 
 class Ebook(models.Model):
@@ -27,7 +27,9 @@ class Ebook(models.Model):
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="static/images/", default='static/images/unknown.png')
     url = models.URLField(max_length=200, default='static/ebooks/unknown.png', blank=True, null=True)
+    publisher = models.ForeignKey(Provider, verbose_name='Publisher', on_delete=models.PROTECT, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
+    provider = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -54,13 +56,19 @@ class Ebook(models.Model):
 class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
+    class Meta:
+        verbose_name = 'ViewedEbooks'
+        verbose_name_plural = 'ViewedEbooks'
 
-class userTickets(models.Model):
+class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
     ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
     ticket_solved = models.BooleanField(default=False)
+    class Meta:
+        verbose_name = 'UserTickets'
+        verbose_name_plural = 'UserTickets'
 
 
 class EbookInsertDate(models.Model):
@@ -69,6 +77,8 @@ class EbookInsertDate(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
+        verbose_name = 'EbookInsertDate'
+        verbose_name_plural = 'EbookInsertDates'
         ordering = ['-date_added']
 
 
@@ -89,3 +99,7 @@ class Review(models.Model):
 
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
+
+    class Meta:
+        verbose_name = 'Review'
+        verbose_name_plural = 'Reviews'

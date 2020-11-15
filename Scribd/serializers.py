@@ -1,5 +1,4 @@
 from rest_framework import serializers
-
 from Scribd.models import Ebook, UserTickets
 from .user_model import User
 

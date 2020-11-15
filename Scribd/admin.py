@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from .models import Ebook, ViewedEbooks, Review, EbookInsertDate, User, userTickets
+from .models import Ebook, ViewedEbooks, Review, EbookInsertDate, UserTickets
 # Register your models here
-from .user_model import SubscribedUsers
+from .user_model import SubscribedUsers, User, Provider
 
 
 class EbookAdmin(admin.ModelAdmin):
@@ -14,8 +14,9 @@ admin.site.register(Review)
 admin.site.register(ViewedEbooks)
 admin.site.register(EbookInsertDate)
 admin.site.register(User)
+admin.site.register(Provider)
 admin.site.register(SubscribedUsers)
-admin.site.register(userTickets)
+admin.site.register(UserTickets)
 
 # Configurar el titulo del panel admin
 title = "Administration Scribd"
