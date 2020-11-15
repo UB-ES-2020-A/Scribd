@@ -10,6 +10,7 @@
       "is_promot": "False",
       "size": "1",
       "featured_photo": "static/images/eldiaqueseperdiolacordura.jpg",
+      "category": "Thriller",
       "media_type": "pdf",
       "count_downloads": "1"
     }
@@ -25,8 +26,10 @@
       "is_promot": "False",
       "featured_photo": "static/images/SACdA.jpg",
       "size": "635",
+      "category": "Thriller",
       "media_type": "epub",
       "count_downloads": "1"
+
     }
   },
   {
@@ -40,8 +43,10 @@
       "is_promot": "False",
       "featured_photo": "static/images/HP3.jpg",
       "size": "251",
+      "category": "Thriller",
       "media_type": "epub",
       "count_downloads": "1"
+
     }
   }
 ]

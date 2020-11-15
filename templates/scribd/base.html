@@ -68,7 +68,8 @@
                 </li>
                 <li class="nav-item">
                     <a class="navbar-brand">
-                        <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#login" type="submit" style="background-color: #367C85">
+                        <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#login" type="submit"
+                                style="background-color: #367C85">
                             <h7 style="color: #FFFFFF">Log In</h7>
                         </button>
                     </a>
@@ -145,12 +146,12 @@
                 </div>
                 <div class="modal-body">
                     <form action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
+                        {% csrf_token %}
 
                         {{ login_form.username|as_crispy_field }}
                         {{ login_form.password|as_crispy_field }}
 
-                    <button type="submit" class="btn btn-success btn-lg btn-block">Log In</button>
+                        <button type="submit" class="btn btn-success btn-lg btn-block">Log In</button>
                     </form>
 
                 </div>
