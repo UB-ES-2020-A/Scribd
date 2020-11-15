@@ -15,7 +15,7 @@ from django.urls import reverse
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
 
-def provider_page(request):
+def contract_page(request):
     return render(request, 'scribd/contract.html')
 
 def support_page(request):
