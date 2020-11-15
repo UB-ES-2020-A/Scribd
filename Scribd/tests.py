@@ -22,6 +22,7 @@ class EbookTestCase(TestCase):
         self.assertEqual(quijote, '')
 
 
+
 class UserTestCase(TestCase):
 
     def test_user(self):
