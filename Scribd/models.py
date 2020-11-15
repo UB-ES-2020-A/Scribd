@@ -29,6 +29,7 @@ class Ebook(models.Model):
     url = models.URLField(max_length=200, default='static/ebooks/unknown.png', blank=True, null=True)
     publisher = models.ForeignKey(Provider, verbose_name='Publisher', on_delete=models.PROTECT, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
+    provider = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
