@@ -2,7 +2,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from Scribd.models import Ebook
+from Scribd.models import Ebook, UploadedResources
 
 
 class EbookTestCase(TestCase):
@@ -21,7 +21,6 @@ class EbookTestCase(TestCase):
         self.assertEqual(quijote, '')
 
 
-
 class UserTestCase(TestCase):
 
     def test_user(self):
@@ -38,3 +37,22 @@ class UserTestCase(TestCase):
         self.assertEqual(user.email, 'pepito123@gmail.com')
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_staff)
+
+
+class UploadFilesTestCase(TestCase):
+
+    def setUp(self):
+        uf = UploadedResources.objects.create(title='MyStory', user='MarcosPlaza', visibility='public',
+                             featured_photo='images/HP3.jpg', file='uploads/LoremIpsum.pdf')
+
+    def test_uploadedFile_search(self):
+        uf = UploadedResources.objects.get(title='MyStory')
+        self.assertEqual(uf.user, 'MarcosPlaza')
+        self.assertEqual(uf.visibility, 'public')
+        self.assertEqual(uf.featured_photo, 'images/HP3.jpg')
+        self.assertEqual(uf.file, 'uploads/LoremIpsum.pdf')
+
+    def delete_uploadedFile(self):
+        uf = UploadedResources.objects.get(title='MyStory')
+        uf.delete()
+        self.assertEqual(uf, '')
