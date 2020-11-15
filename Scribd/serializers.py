@@ -1,6 +1,5 @@
 from rest_framework import serializers
-
-from Scribd.models import Ebook, userTickets
+from Scribd.models import Ebook, UserTickets
 from .user_model import User
 
 
@@ -17,6 +16,6 @@ class EbookSerializer(serializers.ModelSerializer):
 
 class ticketSerializer(serializers.ModelSerializer):
     class Meta:
-        model = userTickets
+        model = UserTickets
         fields = '__all__'
 

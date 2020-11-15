@@ -11,7 +11,7 @@ from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager, SubscribedUsers
 from Scribd.forms import EbookForm, RegisterForm, TicketForm
 from requests import Response
-from Scribd.models import Ebook, userTickets
+from Scribd.models import Ebook, UserTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer
 from Scribd.user_model import User
@@ -80,15 +80,15 @@ def support_group(user):
 
 #@user_passes_test(support_group)
 class ticketListView(ListView):
-    model = userTickets
+    model = UserTickets
     template_name = 'scribd/support_page.html'    
 
 class ticketViewSet(viewsets.ModelViewSet):
-    queryset = userTickets.objects.all().order_by('id_uTicket')
+    queryset = UserTickets.objects.all().order_by('id_uTicket')
     serializer_class = ticketSerializer
 
     def get_queryset(self):
-        return userTickets.objects.all().order_by('id')
+        return UserTickets.objects.all().order_by('id')
 
 class ebookMainView(ListView):
     model = Ebook
@@ -232,6 +232,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data)
       
+#@user_passes_test(support_group)
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
     form = EbookForm(request.POST or None, instance=instance)
