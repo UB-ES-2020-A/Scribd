@@ -67,7 +67,7 @@ class RegisterForm(UserCreationForm):
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = SubscribedUsers
-        fields = ["card_titular",
+        fields = ['username',"card_titular",
                   "card_number","card_expiration",
                   "card_cvv",]
 
@@ -83,7 +83,7 @@ class CreditCardForm(forms.ModelForm):
 class TicketForm(forms.ModelForm):
 
     class Meta:
-        model = userTickets
+        model = UserTickets
         fields = ["ticket_title", "ticket_summary"]
 
         widgets = {

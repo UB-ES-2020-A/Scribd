@@ -1,3 +1,4 @@
+from django.contrib.auth.models import Group
 from rest_framework import permissions
 
 
@@ -7,11 +8,15 @@ class EditBookPermissions(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
+        if request.user.is_superuser:
             return True
-        return request.user.groups.filter(name='Admin').exists() or \
-               request.user.groups.filter(name='Support').exists() or \
-               request.user.groups.filter(name='Provider').exists()
+        if request.user.is_admin:
+            return True
+        if request.method in permissions.SAFE_METHODS:
+            return request.user.groups.filter(name='Provider') or \
+                   request.user.groups.filter(name='Support')
+
+        return False
 
     def has_object_permission(self, request, view, obj):
         return True
@@ -23,10 +28,14 @@ class DeleteBookPermissions(permissions.BasePermission):
     """
 
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
+        if request.user.is_superuser:
             return True
-        return request.user.groups.filter(name='Admin').exists() or \
-               request.user.groups.filter(name='Support').exists()
+        if request.user.is_admin:
+            return True
+        if request.method in permissions.SAFE_METHODS:
+            return request.user.groups.filter(name='Support')
+
+        return False
 
     def has_object_permission(self, request, view, obj):
         return True
