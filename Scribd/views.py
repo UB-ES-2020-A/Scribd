@@ -1,28 +1,45 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.shortcuts import render, redirect
+from django.views.generic import ListView, DetailView
+from rest_framework import generics, viewsets
+from Scribd.user_model import User, UserManager
+from Scribd.forms import EbookForm, RegisterForm, ProfileFormProvider
+from Scribd.models import Ebook
+from Scribd.serializers import UserSerializer, EbookSerializer
+import json
+
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.views.generic import ListView, DetailView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, DetailView, UpdateView
 from rest_framework import generics, viewsets, permissions
-from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
 
+from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import user_passes_test
+from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager, SubscribedUsers
-from Scribd.forms import EbookForm, RegisterForm, TicketForm
+from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm
 from requests import Response
-from Scribd.models import Ebook
+from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
-from Scribd.serializers import UserSerializer, EbookSerializer
+from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
 from Scribd.user_model import User
 
 
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
 
+def contract_page(request):
+    return render(request, 'scribd/contract.html')
+
 
 def support_page(request):
     return render(request, 'scribd/support_page.html')
+
 
 def ebook_search(request, title="", category="", media_type=""):
     if title or category or media_type:
@@ -47,8 +64,8 @@ def ebook_search(request, title="", category="", media_type=""):
     }
     return render(request, 'Scribd/ebooks_list.html', context)
 
-def ticket_page(request):
 
+def ticket_page(request):
     if request.method == 'POST':
         ticket_form = TicketForm(request.POST, request.FILES)
         if ticket_form.is_valid():
@@ -59,43 +76,54 @@ def ticket_page(request):
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
-class libro(object):
-
-    def __init__(self, titulo, autor, descripcion, portada):
-        self.titulo = titulo
-        self.autor = autor
-        self.descripcion = descripcion
-        self.portada = portada
-
-
+  
 def base(request):
     return render(request, 'scribd/base.html')
-
-
-"""
-def lista_libros(request):
-    l1 = libro("El señor de los anillos la comunidad del anillo", "John R.R. Tolkien", "Thriller", "/static/images/SACdA.jpg")
-    l2 = libro("Harry potter y el prisionero de Azkaban", "Joanne Rowling", "Thriller", "/static/images/HP3.jpg")
-    l3 = libro("Don quijote de la mancha", "Miguel de Cervantes Saavedra", "Thriller", "/static/images/Q.jpeg")
-
-    libros = [l1, l2, l3]
-
-    ctx = {"lista_libros": libros}
-
-    return render(request, "scribd/mainpage.html", ctx)
-"""
-
-
+  
+  
 def ebook_create_view(request):
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
         if form.is_valid():
+            form.save(commit=False)
+            instance = form.save(commit=False)
+            print(instance.featured_photo)
             form.save()
             return redirect('mainpage')
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
 
+def edit_profile_page_provider(request):
+    if request.method == "POST":
+        form = ProfileFormProvider(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('mainpage')
+    else:
+        form = ProfileFormProvider(instance=request.user)
+    context = {
+        "form": form
+    }
+    return render(request, 'forms/edit_provider_profile.html', context)
+
+
+'''
+def support_group(user):
+    return 'support' in user.groups
+'''
+
+#@user_passes_test(support_group)
+class ticketListView(ListView):
+    model = UserTickets
+    template_name = 'scribd/support_page.html'    
+
+class ticketViewSet(viewsets.ModelViewSet):
+    queryset = UserTickets.objects.all().order_by('id_uTicket')
+    serializer_class = ticketSerializer
+
+    def get_queryset(self):
+        return UserTickets.objects.all().order_by('id')
 
 class ebookMainView(ListView):
     model = Ebook
@@ -154,7 +182,8 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user, backend)
+            login(request, user,backend)
+
             if user.user_type == "Provider":
                 return redirect('provider_page')
             elif user.user_type == "Support":
@@ -238,7 +267,80 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
 
         return Response(serializer.data)
+
       
+class user_profile_page(DetailView):
+    model = User
+    template_name = 'scribd/user_profile_page.html'
+
+
+def edit_profile_page(request, pk):
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('mainpage')
+    else:
+        form = ProfileForm(instance=request.user)
+    context = {
+        "form": form
+    }
+    return render(request, 'forms/edit_user_profile.html', context)
+
+
+def upgrade_account_view(request, pk):
+    if request.method == "POST":
+        form = UpgradeAccountForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+
+            user = User.objects.get(username=pk)
+            if user.subs_type == "Free trial":
+                user.nbooks_by_subs = 10
+            if user.subs_type == "Regular":
+                user.nbooks_by_subs = 100
+            if user.subs_type == "Pro":
+                user.nbooks_by_subs = 1000
+
+            user.save()
+
+            return redirect('mainpage')
+    else:
+        form = UpgradeAccountForm(instance=request.user)
+
+    context = {
+        "form": form
+    }
+
+    return render(request, 'forms/upgrade_account.html', context)
+
+
+def upload_file(request):
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            print(instance.user.uploadedresources_set.all())
+            form.save()
+            return redirect('mainpage')
+    else:
+        form = UploadFileForm()
+    return render(request, 'forms/upload.html', {'upload_file_form': form})
+
+
+class UploadsViewSet(viewsets.ModelViewSet):
+    queryset = UploadedResources.objects.all().order_by('id')
+    serializer_class = UploadResourcesSerializer
+
+    # permission_classes = permissions.IsAuthenticatedOrReadOnly
+
+    def get_queryset(self):
+        return UploadedResources.objects.all().order_by('id')
+
+      
+#@user_passes_test(support_group)
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
     form = EbookForm(request.POST or None, instance=instance)

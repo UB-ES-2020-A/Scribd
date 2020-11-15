@@ -14,3 +14,6 @@ django-boundfield-renderer==1.4
 social-auth-app-django==4.0.0
 django-widget-tweaks==1.4.8
 django-crispy-forms==1.9.2
+
+patterns~=0.3
+requests~=2.25.0

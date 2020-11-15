@@ -2,7 +2,8 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from Scribd.models import Ebook
+from Scribd.models import Ebook, UploadedResources, Payments
+from Scribd.user_model import User
 
 
 class EbookTestCase(TestCase):
@@ -21,6 +22,7 @@ class EbookTestCase(TestCase):
         self.assertEqual(quijote, '')
 
 
+
 class UserTestCase(TestCase):
 
     def test_user(self):
@@ -37,3 +39,46 @@ class UserTestCase(TestCase):
         self.assertEqual(user.email, 'pepito123@gmail.com')
         self.assertTrue(user.is_active)
         self.assertTrue(user.is_staff)
+
+
+class PaymentTestCase(TestCase):
+
+    def test_payment(self):
+        user = User.objects.create_user(
+            email='pepito123@gmail.com',
+            username='pepito123',
+            first_name='Pepito',
+            last_name='123',
+            subs_type='Free Trial',
+            password='xTu<3D\R'
+        )
+        p = Payments.objects.create(user=user, ammount=100.0)
+        self.assertEqual(p.user.email, 'pepito123@gmail.com')
+        self.assertTrue(p.ammount == 100.0)
+
+
+class UploadFilesTestCase(TestCase):
+
+    def setUp(self):
+        user = User.objects.create_user(
+            email='pepito123@gmail.com',
+            username='pepito123',
+            first_name='Pepito',
+            last_name='123',
+            subs_type='Free Trial',
+            password='xTu<3D\R'
+        )
+        uf = UploadedResources.objects.create(title='MyStory', user=user, visibility='public',
+                             featured_photo='images/HP3.jpg', file='uploads/LoremIpsum.pdf')
+
+    def test_uploadedFile_search(self):
+        uf = UploadedResources.objects.get(title='MyStory')
+        self.assertEqual(uf.user.username, 'pepito123')
+        self.assertEqual(uf.visibility, 'public')
+        self.assertEqual(uf.featured_photo, 'images/HP3.jpg')
+        self.assertEqual(uf.file, 'uploads/LoremIpsum.pdf')
+
+    def delete_uploadedFile(self):
+        uf = UploadedResources.objects.get(title='MyStory')
+        uf.delete()
+        self.assertEqual(uf, '')

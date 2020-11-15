@@ -1,17 +1,15 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from Scribd.models import Ebook, UserTickets
+from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.user_model import User, SubscribedUsers
 
 
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
-        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo',
-                  ]
+        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo']
 
-        # TODO Gestionar featured_photo
         widgets = {
             'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -19,6 +17,35 @@ class EbookForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'about_me', 'profile_image']
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'about_me': forms.Textarea(attrs={'class': 'form-control'})
+        }
+
+
+class UpgradeAccountForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['subs_type']
+
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadedResources
+        fields = ['title', 'visibility', 'file', 'featured_photo']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
 
@@ -36,6 +63,7 @@ class RegisterForm(UserCreationForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = SubscribedUsers
@@ -51,6 +79,17 @@ class CreditCardForm(forms.ModelForm):
             'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
         }
 
+class ProfileFormProvider(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name','email']
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
 
 class TicketForm(forms.ModelForm):
 
@@ -62,5 +101,4 @@ class TicketForm(forms.ModelForm):
             'ticket_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control' }),
         }
-
 

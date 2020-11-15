@@ -11,8 +11,14 @@
                             <div class="card" style="width: 500px">
                                 <div class="card-body" style="text-align: center;">
                                     <!-- Modify dimensions later-->
-                                    <img src="{{ ebook.featured_photo }}" height="400px" width="280px" alt=""
-                                         style="border-radius: 2%">
+                                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                        {% load static %}
+                                        <img src="{% static 'images/unknown.png' %}" height="400px" width="280px" alt=""
+                                             style="border-radius: 2%">
+                                    {% else %}
+                                        <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px" alt=""
+                                             style="border-radius: 2%">
+                                    {% endif %}
                                     <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
                                     <br>
                                     <h6 class="card-subtitle"> {{ ebook.autor }} </h6>

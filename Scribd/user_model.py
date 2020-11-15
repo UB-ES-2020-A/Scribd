@@ -1,7 +1,7 @@
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 from django.db import models
-
 from ScribdProject import settings
+import Scribd.models
 
 
 class UserManager(BaseUserManager):
@@ -18,8 +18,24 @@ class UserManager(BaseUserManager):
 
         user.set_password(password)
         user.user_type = "User"
+
+        if user.subs_type == "Free Trial":
+            user.nbooks_by_subs = 10
+        if user.subs_type == "Regular":
+            user.nbooks_by_subs = 100
+        if user.subs_type == "Pro":
+            user.nbooks_by_subs = 1000
+
         user.save(using=self._db)
+        """if user_type == "Provider":
+            self.create_provider(user)"""
         return user
+
+    """def create_provider(self, user):
+        provider = Provider(username=user.username)
+        provider.save(using=self._db)
+        return provider"""
+
 
     def create_superuser(self, email, username, first_name, last_name, password=None):
         user = self.create_user(email=email,
@@ -33,6 +49,7 @@ class UserManager(BaseUserManager):
         user.subs_type = "Pro"
         user.save(using=self._db)
         return user
+
 
 
 class SubscribedUsers(models.Model):
@@ -64,6 +81,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_registration = models.DateField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
+
+    # profile attributes
+    profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
+    about_me = models.CharField(max_length=500, blank=True, default='Description not modified')
+    nbooks_by_subs = models.IntegerField(default=10)
 
     USER_TYPE = (
         ("Admin", "Admin"),
@@ -128,7 +150,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 
-
 class Provider(models.Model):
     username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
     publisher = models.CharField(verbose_name='Publisher', max_length=255,blank=True)
@@ -136,3 +157,4 @@ class Provider(models.Model):
     class Meta:
         verbose_name = 'Provider'
         verbose_name_plural = 'Providers'
+
