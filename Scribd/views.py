@@ -6,9 +6,9 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets, permissions
 from django.contrib.auth.decorators import user_passes_test
-
+from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
-from Scribd.user_model import User, UserManager
+from Scribd.user_model import User, UserManager, SubscribedUsers
 from Scribd.forms import EbookForm, RegisterForm, TicketForm
 from requests import Response
 from Scribd.models import Ebook, userTickets
@@ -23,6 +23,29 @@ def provider_page(request):
 
 def support_page(request):
     return render(request, 'scribd/support_page.html')
+
+def ebook_search(request, title="", category="", media_type=""):
+    if title or category or media_type:
+        if title:
+            ebooks_ = Ebook.objects.filter(title__iexact=title)
+        if category:
+            ebooks_ = Ebook.objects.filter(category__iexact=category).order_by('category')
+        if media_type:
+            ebooks_ = Ebook.objects.filter(media_type__iexact=media_type)
+    else:
+        ebooks_ = Ebook.objects.all()
+
+    if request.method == "GET":
+        dictionary = request.GET.dict()
+        token = dictionary.get("category")
+        if token:
+            ebooks_by_category = Ebook.objects.filter(category__iexact=category)
+    context = {
+        'tittle': title,
+        'category': category,
+        'ebooks': ebooks_,
+    }
+    return render(request, 'Scribd/ebooks_list.html', context)
 
 def ticket_page(request):
 
@@ -140,23 +163,23 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
     return render(request, 'scribd/base.html', {'login_form': login_form})
 
 
-def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
+def signup_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
         credit_form = CreditCardForm(request.POST, request.FILES)
         if signup_form.is_valid():
             user = User.objects.create_user(
-                email=signup_form.cleaned_data.get('email'),
-                username=signup_form.cleaned_data.get('username'),
-                first_name=signup_form.cleaned_data.get('first_name'),
-                last_name=signup_form.cleaned_data.get('last_name'),
-                password=signup_form.cleaned_data.get('password1'),
-                subs_type=signup_form.cleaned_data.get('subs_type'))
+            email=signup_form.cleaned_data.get('email'),
+            username=signup_form.cleaned_data.get('username'),
+            first_name=signup_form.cleaned_data.get('first_name'),
+            last_name=signup_form.cleaned_data.get('last_name'),
+            password=signup_form.cleaned_data.get('password1'),
+            subs_type = signup_form.cleaned_data.get('subs_type'))
             user.save()
             if credit_form.is_valid():
-                username = user  # or something similar
-                credit_form.instance.username = username
+                user = User.objects.get(username=user.username)
+                credit_form.instance.username = user
                 card_titular = credit_form.cleaned_data.get('card_titular'),
                 card_number = credit_form.cleaned_data.get('card_number'),
                 card_expiration = credit_form.cleaned_data.get('card_expiration'),
@@ -184,13 +207,14 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
 
 
 class BookUpdateView(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)
-    queryset = Ebook
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) # NOT WORKING
+    queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
+    template_name = 'scribd/ebook_change.html'
+    form_class = EbookForm
 
-    def update(self, request, *args, **kwargs):
+    def patch(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.ebook_number = request.data.get("ebook_number")
         instance.title = request.data.get("title")
         instance.autor = request.data.get("autor")
         instance.description = request.data.get("description")
@@ -202,8 +226,16 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         instance.url = request.data.get("url")
         instance.save()
 
-        serializer = self.get_serializer(instance)
+        serializer = EbookSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 
         return Response(serializer.data)
+      
+def change_ebook(request, pk):
+    instance = Ebook.objects.get(pk=pk)
+    form = EbookForm(request.POST or None, instance=instance)
+    if form.is_valid():
+          form.save()
+          return redirect('mainpage')
+    return render(request, 'scribd/ebook_change.html', {'form': form})
