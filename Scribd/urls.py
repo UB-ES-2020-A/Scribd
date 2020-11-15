@@ -15,7 +15,6 @@ urlpatterns = [
     url('ebookdetail/(?P<pk>[0-9]+)/$', ebookDetailView.as_view(), name='ebook_custom_detail'),
     url('addbook/', ebook_create_view, name='add_book'),
     url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'),
-    url('contract/$', edit_profile_page_provider, name='edituserprofileprovider'),
     url('User/$', UserList.as_view()),
     url('User/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
     url('accounts/login/', login_create_view, name='login'),
