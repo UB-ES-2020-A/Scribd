@@ -107,7 +107,8 @@ class Review(models.Model):
     class Meta:
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
-"""
+
+
 class UploadedResources(models.Model):
     # Available extensions
     VISIBILITY_CHOICES = (
@@ -122,5 +123,4 @@ class UploadedResources(models.Model):
     visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='')
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
     file = models.FileField(upload_to='uploads', default='')
-"""
 
