@@ -13,5 +13,11 @@
         <p>Number of pages {{ ebook.size }}</p>
         <p>Media file type {{ ebook.media_type }}</p>
         <p>Number of downloads on Scribd {{ ebook.count_downloads }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
+                    <h7 style="color: #FFFFFF">Follow</h7>
+            </button>
+        </form>
     </div>
 {% endblock %}

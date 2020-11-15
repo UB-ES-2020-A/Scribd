@@ -38,6 +38,12 @@ class UpgradeAccountForm(forms.ModelForm):
         fields = ['subs_type']
 
 
+class FollowForm(forms.ModelForm):
+    class Meta:
+        model = Ebook
+        fields = ['follower']
+
+
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = UploadedResources
