@@ -1,4 +1,5 @@
 {% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}Profile page{% endblock %}
 {% block content %}
     <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px; margin-left: 50px">
@@ -12,7 +13,7 @@
                 <p>{{ user.about_me }}</p>
             </div>
             <div class="col" style="text-align: center">
-                    <img src="{{ user.profile_image.url }}" height="90%" width="35%" alt="" style="border-radius: 2%">
+                    <img src="{{ user.profile_image.url }}" height="100%" width="50%" alt="" style="border-radius: 5%; margin-left: -300px">
             </div>
         </div>
         <div class="row">
@@ -35,14 +36,16 @@
         </div>
         <div class="row">
             <div class="col">
-                <a href="#" class="btn" style="background-color: #367C85; margin-top: 20px"><h7 style="color: #FFFFFF">Upgrade my subscription</h7></a>
+                <a href="upgrade/" class="btn" style="background-color: #367C85; margin-top: 20px"><h7 style="color: #FFFFFF">Upgrade my subscription</h7></a>
             </div>
         </div>
+
         <hr style="margin-right: 50px; margin-top: 50px">
         <div class="row">
             <div class="col">
                 <h3 style="color:dimgray">Followed resources</h3>
-                <div class="container text-center my-3">
+                <h1>Not supported yet. This feature will be available in the next Sprint.</h1>
+                <!--<div class="container text-center my-3">
                     <div class="row mx-auto my-auto">
                         <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
                             <div class="carousel-inner w-100" role="listbox">
@@ -64,7 +67,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
 
@@ -72,7 +75,28 @@
         <div class="row">
             <div class="col">
                 <h3 style="color:dimgray">Uploads</h3>
-                <div class="container text-center my-3">
+
+        <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
+            <div class="container">
+                <div class="row">
+                     {% for res in user.uploadedresources_set.values %}
+                        <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
+                            <div class="card" style="width: 500px">
+                                <div class="card-body" style="text-align: center;">
+                                    <h5 class="card-title pt-5"><strong>{{ res.title }}</strong></h5>
+                                <br>
+                                    Access link:
+                                <a href="/media/{{ res.file }}">{{ res.file }}</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+                <!--<div class="container text-center my-3">
                     <div class="row mx-auto my-auto">
                         <div id="recipeCarousel" class="carousel slide w-100" data-ride="carousel">
                             <div class="carousel-inner w-100" role="listbox">
@@ -109,7 +133,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>-->
             </div>
         </div>
     </div>

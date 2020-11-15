@@ -11,14 +11,14 @@ class Ebook(models.Model):
     )
     _type_files = dict(TYPE_FILE)
 
-    ebook_number = models.CharField(max_length=8, unique=True, default='')  # IBAN?
+    ebook_number = models.CharField(max_length=8, unique=True, default='')
     title = models.CharField(max_length=50, blank=False, default='')
     autor = models.CharField(max_length=50, blank=False, default='')
     description = models.TextField(default='')
     is_promot = models.BooleanField(default='False')
     size = models.IntegerField(default=0)
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = models.ImageField(upload_to="images", default='static/images/unknown.png')
+    featured_photo = models.ImageField(upload_to="images/", default='images/unknown.png')
     count_downloads = models.PositiveIntegerField(default=0)
 
     def get_ebook_media_type(self):
@@ -72,20 +72,19 @@ class Review(models.Model):
     def get_human_stars(self):
         return self._d_stars[self.value_stars]
 
-
-# TODO UploadedResources. This is a primal implementation
+"""
 class UploadedResources(models.Model):
     # Available extensions
-    TYPE_FILE = (
-        ("pdf", "pdf"),
-        ("txt", "txt"),
-        ("doc", "doc"),
-        ("docx", "docx"),
-        ("odt", "odt")
+    VISIBILITY_CHOICES = (
+        ("public", "public"),
+        ("private", "private"),
     )
-    _type_files = dict(TYPE_FILE)
+    _v_choices = dict(VISIBILITY_CHOICES)
 
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50, blank=False, default='')
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)  # One to many
-    public = models.BooleanField(default=True)
+    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='')
+    featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
+    file = models.FileField(upload_to='uploads', default='')
+"""
