@@ -3,7 +3,7 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, first_name, last_name,subs_type= "Free Trial", password=None):
+    def create_user(self, email, username, first_name, last_name, password=None):
         # crea un usuari
         if not email:
             raise ValueError('Users must have an email address')
@@ -11,7 +11,6 @@ class UserManager(BaseUserManager):
                           username=username,
                           first_name=first_name,
                           last_name=last_name,
-                          subs_type=subs_type,
                           )
 
         user.set_password(password)
@@ -28,10 +27,30 @@ class UserManager(BaseUserManager):
 
         user.is_admin = True
         user.user_type = "Admin"
-        user.subs_type = "Pro"
         user.save(using=self._db)
         return user
 
+
+class SubscribedUsers(models.Model):
+    SUBS_TYPE = (
+        ("Free trial", "Free trial"),
+        ("Regular", "Regular"),
+        ("Pro", "Pro"),
+    )
+    _subs_type = dict(SUBS_TYPE)
+
+    #username = models.ForeignKey('User', on_delete=models.CASCADE,null=True, blank=True)
+    username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
+    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial", null=True)
+    date_subs = models.DateField(auto_now_add=True,null=True, blank=True)
+    card_titular = models.CharField(max_length=20, default='', blank=True)
+    card_number = models.CharField(unique=True, max_length=16, default='',blank=True)
+    card_expiration = models.CharField(max_length=7, default='',blank=True)
+    card_cvv = models.CharField(max_length=3, default='',blank=True)
+
+    class Meta:
+        verbose_name = 'SubscribedUser'
+        verbose_name_plural = 'SubscribedUsers'
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
@@ -55,15 +74,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     _type_user = dict(USER_TYPE)
 
-    SUBS_TYPE = (
-        ("Free trial", "Free trial"),
-        ("Regular", "Regular"),
-        ("Pro", "Pro"),
-    )
-    _subs_type = dict(SUBS_TYPE)
+
 
     user_type = models.CharField(max_length=15, choices=USER_TYPE, default="User")
-    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial")
+    #subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial")
+    subs_type = models.ForeignKey(SubscribedUsers, verbose_name='subs_type', on_delete=models.PROTECT, null=True)
+
 
     USERNAME_FIELD = 'username'  # el que identificara a la classe
     REQUIRED_FIELDS = ['first_name', 'last_name', 'email']
@@ -100,14 +116,17 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_active(self):
         return True
+    class Meta:
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
 
 
-class SubscribedUsers(models.Model):
 
-    #username = models.ForeignKey('User', on_delete=models.CASCADE,null=True, blank=True)
+
+class Provider(models.Model):
     username = models.OneToOneField('User', on_delete=models.CASCADE, blank=True, null=True)
-    date_subs = models.DateField(auto_now_add=True,null=True, blank=True)
-    card_titular = models.CharField(max_length=20, default='', blank=True)
-    card_number = models.CharField(unique=True, max_length=16, default='',blank=True)
-    card_expiration = models.CharField(max_length=7, default='',blank=True)
-    card_cvv = models.CharField(max_length=3, default='',blank=True)
+    publisher = models.CharField(verbose_name='Publisher', max_length=255,blank=True)
+
+    class Meta:
+        verbose_name = 'Provider'
+        verbose_name_plural = 'Providers'

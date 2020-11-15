@@ -12,8 +12,7 @@
       "featured_photo": "static/images/eldiaqueseperdiolacordura.jpg",
       "category": "Thriller",
       "media_type": "pdf",
-      "count_downloads": "1",
-      "publisher": "SUMA"
+      "count_downloads": "1"
     }
   },
   {
@@ -29,8 +28,7 @@
       "size": "635",
       "category": "Thriller",
       "media_type": "epub",
-      "count_downloads": "1",
-      "publisher": "Santillana"
+      "count_downloads": "1"
 
     }
   },
@@ -47,8 +45,7 @@
       "size": "251",
       "category": "Thriller",
       "media_type": "epub",
-      "count_downloads": "1",
-      "publisher": "Santillana"
+      "count_downloads": "1"
 
     }
   }

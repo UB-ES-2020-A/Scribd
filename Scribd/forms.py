@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from Scribd.models import Ebook, userTickets
+from Scribd.models import Ebook, UserTickets
 from Scribd.user_model import User, SubscribedUsers
 
 
@@ -28,7 +28,7 @@ class RegisterForm(UserCreationForm):
         fields = ["username",
                   "first_name", "last_name",
                   "password1", "password2",
-                  "email","subs_type"]
+                  "email"]
 
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
@@ -39,7 +39,7 @@ class RegisterForm(UserCreationForm):
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = SubscribedUsers
-        fields = ["card_titular",
+        fields = ["subs_type","card_titular",
                   "card_number","card_expiration",
                   "card_cvv",]
 
@@ -55,7 +55,7 @@ class CreditCardForm(forms.ModelForm):
 class TicketForm(forms.ModelForm):
 
     class Meta:
-        model = userTickets
+        model = UserTickets
         fields = ["ticket_title", "ticket_summary"]
 
         widgets = {
