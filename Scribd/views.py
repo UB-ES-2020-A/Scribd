@@ -166,4 +166,10 @@ def signup_create_view(request,backend='django.contrib.auth.backends.ModelBacken
     return render(request, 'registration/signup.html', context)
 
 
-
+def change_ebook(request, pk):
+    instance = Ebook.objects.get(pk=pk)
+    form = EbookForm(request.POST or None, instance=instance)
+    if form.is_valid():
+          form.save()
+          return redirect('mainpage')
+    return render(request, 'scribd/ebook_change.html', {'form': form})
