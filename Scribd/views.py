@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from rest_framework import generics, viewsets, permissions
-from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer
+from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
 
 from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
 from Scribd.user_model import User, UserManager
@@ -217,8 +217,8 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) # NOT WORKING
     queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
-    renderer_classes = (BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer)
-    template_name = 'scribd/ebooks_list.html'
+    template_name = 'scribd/ebook_change.html'
+    form_class = EbookForm
 
     def patch(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -238,3 +238,11 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         self.perform_update(serializer)
 
         return Response(serializer.data)
+
+def change_ebook(request, pk):
+    instance = Ebook.objects.get(pk=pk)
+    form = EbookForm(request.POST or None, instance=instance)
+    if form.is_valid():
+          form.save()
+          return redirect('mainpage')
+    return render(request, 'scribd/ebook_change.html', {'form': form})
