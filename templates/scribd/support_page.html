@@ -9,12 +9,12 @@
                     <div class="col-lg-6 col-md-6 mb-3 d-flex">
                         <div class="card" style="width: 500px">
                             {% if not ticket.ticket_solved %}
-                            <div class="card-body" style="text-align: center;">
-                                <h5 class="card-title pt-5"><strong>{{ ticket.ticket_title }}</strong></h5>
-                                <br>
-                                <p> {{ ticket.ticket_summary }} </p>
-                                <br>
-                            </div>
+                                <div class="card-body" style="text-align: center;">
+                                    <h5 class="card-title pt-5"><strong>{{ ticket.ticket_title }}</strong></h5>
+                                    <br>
+                                    <p> {{ ticket.ticket_summary }} </p>
+                                    <br>
+                                </div>
                             {% endif %}
                         </div>
                     </div>

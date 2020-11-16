@@ -61,7 +61,7 @@ class RegisterForm(UserCreationForm):
         fields = ["username",
                   "first_name", "last_name",
                   "password1", "password2",
-                  "email","subs_type"]
+                  "email", "subs_type"]
 
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
@@ -73,22 +73,24 @@ class RegisterForm(UserCreationForm):
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = SubscribedUsers
-        fields = ['username',"card_titular",
-                  "card_number","card_expiration",
-                  "card_cvv",]
+        fields = ['username', "card_titular",
+                  "card_number", "card_expiration",
+                  "card_cvv", ]
 
         # TODO Gestionar featured_photo
         widgets = {
-            'card_titular': forms.TextInput(attrs={'class': 'form-control','placeholder': 'Full name as displayed on the card'}),
+            'card_titular': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Full name as displayed on the card'}),
             'card_number': forms.TextInput(attrs={'class': 'form-control'}),
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
-            'card_expiration': forms.TextInput(attrs={'class': 'form-control','placeholder': 'mm/yy'}),
+            'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
+
 
 class ProfileFormProvider(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name','email']
+        fields = ['first_name', 'last_name', 'email']
 
         widgets = {
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
@@ -98,13 +100,12 @@ class ProfileFormProvider(forms.ModelForm):
 
 
 class TicketForm(forms.ModelForm):
-
     class Meta:
         model = UserTickets
         fields = ["ticket_title", "ticket_summary"]
 
         widgets = {
-            'ticket_title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
-            'ticket_summary': forms.Textarea(attrs={'class': 'form-control' }),
+            'ticket_title': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+            'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
         }
-

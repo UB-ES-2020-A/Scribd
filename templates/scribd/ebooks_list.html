@@ -3,28 +3,28 @@
 {% block content %}
     <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
 
-        {% ifequal 'Provider' user.user_type%}
+        {% ifequal 'Provider' user.user_type %}
             <h3>List of added ebooks by {{ user.username }}</h3>
-                <div>
-                    {% for ebook in object_list %}
-                        {% ifequal user.username ebook.provider%}
-                            <ul>
-                                <li>{{ ebook.title }} written by {{ ebook.autor }}
-                            </ul>
-                            <ul>Synopsis: {{ ebook.description }}</ul>
-                        {% endifequal %}
-                    {% endfor %}
-                </div>
-        {% else %}
-            <h3>List of added ebooks</h3>
-                <div>
-                    {% for ebook in object_list %}
+            <div>
+                {% for ebook in object_list %}
+                    {% ifequal user.username ebook.provider %}
                         <ul>
                             <li>{{ ebook.title }} written by {{ ebook.autor }}
                         </ul>
                         <ul>Synopsis: {{ ebook.description }}</ul>
-                    {% endfor %}
-                </div>
+                    {% endifequal %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <h3>List of added ebooks</h3>
+            <div>
+                {% for ebook in object_list %}
+                    <ul>
+                        <li>{{ ebook.title }} written by {{ ebook.autor }}
+                    </ul>
+                    <ul>Synopsis: {{ ebook.description }}</ul>
+                {% endfor %}
+            </div>
 
         {% endifequal %}
 

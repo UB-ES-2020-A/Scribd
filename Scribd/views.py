@@ -1,29 +1,16 @@
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView
-from rest_framework import generics, viewsets
-from Scribd.user_model import User, UserManager
-from Scribd.forms import EbookForm, RegisterForm, ProfileFormProvider
-from Scribd.models import Ebook
-from Scribd.serializers import UserSerializer, EbookSerializer
-import json
-
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, UpdateView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView
+from requests import Response
 from rest_framework import generics, viewsets, permissions
 
-from django.core.files.storage import FileSystemStorage
-from django.contrib.auth.decorators import user_passes_test
-from rest_framework.renderers import BrowsableAPIRenderer, JSONRenderer, HTMLFormRenderer, TemplateHTMLRenderer
-from Scribd.forms import EbookForm, RegisterForm, CreditCardForm
-from Scribd.user_model import User, UserManager, SubscribedUsers
-from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm, FollowForm
-from requests import Response
+from Scribd.forms import CreditCardForm
+from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm, \
+    FollowForm
+from Scribd.forms import ProfileFormProvider
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
@@ -32,6 +19,7 @@ from Scribd.user_model import User
 
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
+
 
 def contract_page(request):
     return render(request, 'scribd/contract.html')
@@ -76,11 +64,11 @@ def ticket_page(request):
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
-  
+
 def base(request):
     return render(request, 'scribd/base.html')
-  
-  
+
+
 def ebook_create_view(request):
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
@@ -93,6 +81,7 @@ def ebook_create_view(request):
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
+
 
 def edit_profile_page_provider(request):
     if request.method == "POST":
@@ -113,10 +102,12 @@ def support_group(user):
     return 'support' in user.groups
 '''
 
-#@user_passes_test(support_group)
+
+# @user_passes_test(support_group)
 class ticketListView(ListView):
     model = UserTickets
-    template_name = 'scribd/support_page.html'    
+    template_name = 'scribd/support_page.html'
+
 
 class ticketViewSet(viewsets.ModelViewSet):
     queryset = UserTickets.objects.all().order_by('id_uTicket')
@@ -124,6 +115,7 @@ class ticketViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return UserTickets.objects.all().order_by('id')
+
 
 class ebookMainView(ListView):
     model = Ebook
@@ -174,7 +166,6 @@ class AccountsViewSet(viewsets.ModelViewSet):
         return User.objects.all().order_by('date_registration')
 
 
-
 def login_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == "POST":
         login_form = AuthenticationForm(None, data=request.POST)
@@ -183,7 +174,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user,backend)
+            login(request, user, backend)
 
             if user.user_type == "Provider":
                 return redirect('provider_page')
@@ -200,19 +191,19 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
     return render(request, 'scribd/base.html', {'login_form': login_form})
 
 
-def signup_create_view(request,backend='django.contrib.auth.backends.ModelBackend'):
+def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
         credit_form = CreditCardForm(request.POST, request.FILES)
         if signup_form.is_valid():
             user = User.objects.create_user(
-            email=signup_form.cleaned_data.get('email'),
-            username=signup_form.cleaned_data.get('username'),
-            first_name=signup_form.cleaned_data.get('first_name'),
-            last_name=signup_form.cleaned_data.get('last_name'),
-            password=signup_form.cleaned_data.get('password1'),
-            subs_type = signup_form.cleaned_data.get('subs_type'))
+                email=signup_form.cleaned_data.get('email'),
+                username=signup_form.cleaned_data.get('username'),
+                first_name=signup_form.cleaned_data.get('first_name'),
+                last_name=signup_form.cleaned_data.get('last_name'),
+                password=signup_form.cleaned_data.get('password1'),
+                subs_type=signup_form.cleaned_data.get('subs_type'))
             user.save()
             if credit_form.is_valid():
                 user = User.objects.get(username=user.username)
@@ -244,7 +235,7 @@ def signup_create_view(request,backend='django.contrib.auth.backends.ModelBacken
 
 
 class BookUpdateView(generics.RetrieveUpdateAPIView):
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions) # NOT WORKING
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)  # NOT WORKING
     queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
     template_name = 'scribd/ebook_change.html'
@@ -269,7 +260,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data)
 
-      
+
 class user_profile_page(DetailView):
     model = User
     template_name = 'scribd/user_profile_page.html'
@@ -350,7 +341,6 @@ def follow(request, pk):
     return render(request, 'scribd/ebook_detail.html', context)
 
 
-
 class UploadsViewSet(viewsets.ModelViewSet):
     queryset = UploadedResources.objects.all().order_by('id')
     serializer_class = UploadResourcesSerializer
@@ -360,12 +350,12 @@ class UploadsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return UploadedResources.objects.all().order_by('id')
 
-      
-#@user_passes_test(support_group)
+
+# @user_passes_test(support_group)
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
     form = EbookForm(request.POST or None, instance=instance)
     if form.is_valid():
-          form.save()
-          return redirect('mainpage')
+        form.save()
+        return redirect('mainpage')
     return render(request, 'scribd/ebook_change.html', {'form': form})

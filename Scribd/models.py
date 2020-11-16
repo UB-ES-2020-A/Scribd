@@ -26,10 +26,13 @@ class Ebook(models.Model):
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf', blank=True, null=True)
+    url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf',
+                          blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
-    publisher = models.ForeignKey(User, related_name='providers_key', on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'Provider'})
-    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True, limit_choices_to={'user_type': 'User'})
+    publisher = models.ForeignKey(User, related_name='providers_key', on_delete=models.CASCADE, null=True, blank=True,
+                                  limit_choices_to={'user_type': 'Provider'})
+    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True,
+                                 limit_choices_to={'user_type': 'User'})
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -57,6 +60,7 @@ class Ebook(models.Model):
 class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
+
     class Meta:
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
@@ -68,6 +72,7 @@ class UserTickets(models.Model):
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
     ticket_solved = models.BooleanField(default=False)
+
     class Meta:
         verbose_name = 'UserTickets'
         verbose_name_plural = 'UserTickets'
