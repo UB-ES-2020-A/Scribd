@@ -311,3 +311,9 @@ modules.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm+all,django,python
 staticfiles/
+
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
