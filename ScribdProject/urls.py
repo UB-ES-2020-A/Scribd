@@ -14,9 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
-from django.conf import settings
 from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
@@ -28,7 +28,6 @@ router.register(r'ebooks', EbookViewSet)
 router.register(r'accounts', AccountsViewSet)
 router.register(r'uploaded_files', UploadsViewSet)
 router.register(r'tickets', ticketViewSet)
-
 
 urlpatterns = [
     url(r'admin/', admin.site.urls, name="admin_page"),

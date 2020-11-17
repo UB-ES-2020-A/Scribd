@@ -22,7 +22,6 @@ class EbookTestCase(TestCase):
         self.assertEqual(quijote, '')
 
 
-
 class UserTestCase(TestCase):
 
     def test_user(self):
@@ -69,7 +68,7 @@ class UploadFilesTestCase(TestCase):
             password='xTu<3D\R'
         )
         uf = UploadedResources.objects.create(title='MyStory', user=user, visibility='public',
-                             featured_photo='images/HP3.jpg', file='uploads/LoremIpsum.pdf')
+                                              featured_photo='images/HP3.jpg', file='uploads/LoremIpsum.pdf')
 
     def test_uploadedFile_search(self):
         uf = UploadedResources.objects.get(title='MyStory')

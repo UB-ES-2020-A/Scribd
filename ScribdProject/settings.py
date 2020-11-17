@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 from pathlib import Path
 
-import django_heroku
+import django_on_heroku
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
@@ -60,12 +61,12 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 REST_FRAMEWORK = {
-      # Use Django's standard `django.contrib.auth` permissions,
-      # or allow read-only access for unauthenticated users.
-      'DEFAULT_PERMISSION_CLASSES': [
-          'rest_framework.permissions.IsAuthenticatedOrReadOnly'],
-      'PAGE_SIZE': 20,
-      'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly'],
+    'PAGE_SIZE': 20,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
 }
 
 MIDDLEWARE = [
@@ -203,4 +204,4 @@ MEDIA_ROOT = (
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-django_heroku.settings(locals())
+django_on_heroku.settings(locals())

@@ -13,19 +13,23 @@
                 <p>{{ user.about_me }}</p>
             </div>
             <div class="col" style="text-align: center">
-                    <img src="{{ user.profile_image.url }}" height="100%" width="50%" alt="" style="border-radius: 5%; margin-left: -300px">
+                <img src="{{ user.profile_image.url }}" height="100%" width="50%" alt=""
+                     style="border-radius: 5%; margin-left: -300px">
             </div>
         </div>
         <div class="row">
             <div class="col">
-                    <a href="edit/" class="btn" style="background-color: #367C85; margin-top: 20px"><h7 style="color: #FFFFFF">Edit profile</h7></a>
+                <a href="edit/" class="btn" style="background-color: #367C85; margin-top: 20px">
+                    <h7 style="color: #FFFFFF">Edit profile</h7>
+                </a>
             </div>
         </div>
         <hr style="margin-right: 50px; margin-top: 50px">
         <div class="row">
             <div class="col">
                 <h3 style="color:dimgray">Type of subscription</h3>
-                <h1 style="color: dimgray"><small style="font-size: 50px; color: #367C85">{{ user.subs_type }}</small></h1>
+                <h1 style="color: dimgray"><small style="font-size: 50px; color: #367C85">{{ user.subs_type }}</small>
+                </h1>
             </div>
             <div class="col">
                 <div>
@@ -36,7 +40,9 @@
         </div>
         <div class="row">
             <div class="col">
-                <a href="upgrade/" class="btn" style="background-color: #367C85; margin-top: 20px"><h7 style="color: #FFFFFF">Upgrade my subscription</h7></a>
+                <a href="upgrade/" class="btn" style="background-color: #367C85; margin-top: 20px">
+                    <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                </a>
             </div>
         </div>
 
@@ -51,21 +57,24 @@
                                 <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
                                     <div class="card" style="width: 500px">
                                         <div class="card-body" style="text-align: center;">
-                                        {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                                            {% load static %}
-                                            <img src="{% static 'images/unknown.png' %}" height="400px" width="280px" alt=""
-                                                 style="border-radius: 2%">
-                                        {% else %}
-                                            <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px" alt=""
-                                                 style="border-radius: 2%">
-                                        {% endif %}
-                                        <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
-                                        <br>
-                                        <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
-                                        <br>
-                                        <a href="ebookdetail/{{ ebook.id }}" class="btn" style="background-color: #367C85">
-                                            <h7 style="color: #FFFFFF">More info</h7>
-                                        </a>
+                                            {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                                {% load static %}
+                                                <img src="{% static 'images/unknown.png' %}" height="400px"
+                                                     width="280px" alt=""
+                                                     style="border-radius: 2%">
+                                            {% else %}
+                                                <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px"
+                                                     alt=""
+                                                     style="border-radius: 2%">
+                                            {% endif %}
+                                            <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
+                                            <br>
+                                            <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
+                                            <br>
+                                            <a href="ebookdetail/{{ ebook.id }}" class="btn"
+                                               style="background-color: #367C85">
+                                                <h7 style="color: #FFFFFF">More info</h7>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
