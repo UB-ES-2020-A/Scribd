@@ -48,7 +48,7 @@ jobs:
       script:
         - coverage run --source='.' manage.py test Scribd
       after_success:
-        - coveralls report
+        - coveralls
 
     - stage: test
       name: "test"
@@ -61,7 +61,7 @@ jobs:
       script:
         - coverage run --source='.' manage.py test Scribd
       after_success:
-        - coveralls report
+        - coveralls
       true:
         repo: UB-ES-2020/Scribd
       branches:
@@ -87,7 +87,7 @@ jobs:
       script:
         - coverage run --source='.' manage.py test Scribd
       after_success:
-        - coveralls report
+        - coveralls
       deploy:
         - provider: heroku
           skip_cleanup: true
