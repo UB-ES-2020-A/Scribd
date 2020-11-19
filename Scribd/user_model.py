@@ -3,7 +3,7 @@ from django.db import models
 
 from ScribdProject import settings
 
-
+# TODO ESTO SE VA A CAMBIAR
 class UserManager(BaseUserManager):
     def create_user(self, email, username, first_name, last_name, subs_type="Free Trial", password=None):
         # crea un usuari
