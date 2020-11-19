@@ -7,7 +7,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/UB-ES-2020/Scribd/badge.svg)](https://coveralls.io/github/UB-ES-2020/Scribd)
 
 
-# Software Distribuit
+# Enginyeria del Software
 
 Este Repositorio es de la asignatura de Enginyeria del Software, Ultima asignatura la carrera de Ingenieria Informatica de la Universidad de Barcelona.
 Se basa en trabajo en equipo basado en métodos ágiles: Utilizamos Scrum, Trello, Kanban, XP...
