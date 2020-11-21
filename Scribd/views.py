@@ -177,7 +177,6 @@ def edit_profile_page_provider(request):
 def edit_profile_page(request, username):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
-
         if form.is_valid():
             form.save()
             return redirect('mainpage')
@@ -227,8 +226,12 @@ class UserList(generics.ListCreateAPIView):
 
 
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+    def get_object(self):
+        UserName = self.kwargs.get("username")
+        return get_object_or_404(User, username=UserName)
 
 
 ##################################
