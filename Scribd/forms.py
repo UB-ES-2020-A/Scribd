@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from Scribd.models import Ebook, UserTickets, UploadedResources
-from Scribd.user_model import User, SubscribedUsers
+from Scribd.user_model import User, Subscription, Profile
 
 
 class EbookForm(forms.ModelForm):
@@ -22,11 +22,10 @@ class EbookForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'about_me', 'profile_image']
+        model = Profile
+        fields = ['about_me', 'profile_image']
 
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'about_me': forms.Textarea(attrs={'class': 'form-control'})
         }
@@ -34,7 +33,7 @@ class ProfileForm(forms.ModelForm):
 
 class UpgradeAccountForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = Subscription
         fields = ['subs_type']
 
 
@@ -61,7 +60,7 @@ class RegisterForm(UserCreationForm):
         fields = ["username",
                   "first_name", "last_name",
                   "password1", "password2",
-                  "email", "subs_type"]
+                  "email"]
 
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
@@ -70,10 +69,10 @@ class RegisterForm(UserCreationForm):
         }
 
 
-class CreditCardForm(forms.ModelForm):
+class Subscription(forms.ModelForm):
     class Meta:
-        model = SubscribedUsers
-        fields = ['username', "card_titular",
+        model = Profile
+        fields = ["card_titular",
                   "card_number", "card_expiration",
                   "card_cvv", ]
 

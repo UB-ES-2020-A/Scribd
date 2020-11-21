@@ -1,8 +1,8 @@
 from datetime import datetime
 from datetime import timedelta
-from django.contrib.auth.models import User
-import models
 
+from django.db import models
+from django.contrib.auth.models import User
 
 class Subscription(models.Model):
     SUBS_TYPE = (

@@ -7,7 +7,6 @@ from django.views.generic import ListView, DetailView
 from requests import Response
 from rest_framework import generics, viewsets, permissions
 
-from Scribd.forms import CreditCardForm
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm, \
     FollowForm
 from Scribd.forms import ProfileFormProvider
@@ -157,7 +156,7 @@ def add_books_form(request):
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('date_registration')
+    queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
 
     # permission_classes = permissions.IsAuthenticatedOrReadOnly
