@@ -89,10 +89,10 @@ class CreditCardForm(forms.ModelForm):
         }
 """
 
-"""
+
 class Subscription(forms.ModelForm):
     class Meta:
-        model = Profile
+        model = userProfile
         fields = ["card_titular",
                   "card_number", "card_expiration",
                   "card_cvv", ]
@@ -105,7 +105,7 @@ class Subscription(forms.ModelForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
-"""
+
 
 
 class ProfileFormProvider(forms.ModelForm):

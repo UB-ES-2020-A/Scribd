@@ -37,7 +37,6 @@ class userProfile(models.Model):
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="client", on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
-    name = models.CharField(max_length=64)
     bio = models.CharField(max_length=500, blank=True, default='Description not modified')
     nbooks_by_subs = models.IntegerField(default=10, blank=True, null=True)
 

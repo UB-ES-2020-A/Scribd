@@ -13,7 +13,6 @@ admin.site.register(User)
 admin.site.register(providerProfile)
 admin.site.register(supportProfile)
 admin.site.register(userProfile)
-
 admin.site.register(Ebook)
 admin.site.register(Review)
 admin.site.register(ViewedEbooks)
