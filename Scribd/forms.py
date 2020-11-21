@@ -93,7 +93,7 @@ class CreditCardForm(forms.ModelForm):
 class Subscription(forms.ModelForm):
     class Meta:
         model = userProfile
-        fields = ["card_titular",
+        fields = ["subs_type","card_titular",
                   "card_number", "card_expiration",
                   "card_cvv", ]
 

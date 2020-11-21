@@ -200,24 +200,23 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 username=signup_form.cleaned_data.get('username'),
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
-                password=signup_form.cleaned_data.get('password1'),
-                subs_type=signup_form.cleaned_data.get('subs_type'))
-            user.save()
+                password=signup_form.cleaned_data.get('password1'))
             if credit_form.is_valid():
                 user = User.objects.get(username=user.username)
                 credit_form.instance.username = user
+                subs_type=credit_form.cleaned_data.get('subs_type'),
                 card_titular = credit_form.cleaned_data.get('card_titular'),
                 card_number = credit_form.cleaned_data.get('card_number'),
                 card_expiration = credit_form.cleaned_data.get('card_expiration'),
                 card_cvv = credit_form.cleaned_data.get('card_cvv')
-                credit_form.save()
+                #credit_form.save()
 
             login(request, user, backend)
-            if user.user_type == "Provider":
+            if user.is_provider:
                 return redirect('provider_page')
-            elif user.user_type == "Support":
+            elif user.is_support:
                 return redirect('support_page')
-            elif user.user_type == "Admin":
+            elif user.is_provider:
                 return HttpResponseRedirect(reverse('admin:index'))
             return redirect('mainpage')
     else:
