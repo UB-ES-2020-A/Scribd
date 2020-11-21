@@ -1,8 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from Scribd.user_model import User, Provider
-
 
 class Ebook(models.Model):
     TYPE_FILE = (

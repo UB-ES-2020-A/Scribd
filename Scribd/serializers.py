@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from Scribd.models import Ebook, UploadedResources, UserTickets
-from .user_model import User
+from .refactor_models import User
 
 
 class UserSerializer(serializers.ModelSerializer):

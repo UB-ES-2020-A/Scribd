@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from Scribd.models import Ebook, UserTickets, UploadedResources
-from Scribd.user_model import User, Subscription, Profile
+from .refactor_models import User, userProfile
 
 
 class EbookForm(forms.ModelForm):
@@ -22,19 +22,21 @@ class EbookForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
     class Meta:
-        model = Profile
-        fields = ['about_me', 'profile_image']
+        model = userProfile
+        fields = ['bio']
 
         widgets = {
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'about_me': forms.Textarea(attrs={'class': 'form-control'})
+            'bio': forms.Textarea(attrs={'class': 'form-control'})
         }
 
 
+"""
 class UpgradeAccountForm(forms.ModelForm):
     class Meta:
         model = Subscription
         fields = ['subs_type']
+"""
 
 
 class FollowForm(forms.ModelForm):
@@ -69,6 +71,25 @@ class RegisterForm(UserCreationForm):
         }
 
 
+"""
+class CreditCardForm(forms.ModelForm):
+    class Meta:
+        model = SubscribedUsers
+        fields = ['username', "card_titular",
+                  "card_number", "card_expiration",
+                  "card_cvv", ]
+
+        # TODO Gestionar featured_photo
+        widgets = {
+            'card_titular': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Full name as displayed on the card'}),
+            'card_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
+        }
+"""
+
+"""
 class Subscription(forms.ModelForm):
     class Meta:
         model = Profile
@@ -84,6 +105,7 @@ class Subscription(forms.ModelForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
+"""
 
 
 class ProfileFormProvider(forms.ModelForm):

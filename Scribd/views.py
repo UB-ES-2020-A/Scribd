@@ -7,13 +7,13 @@ from django.views.generic import ListView, DetailView
 from requests import Response
 from rest_framework import generics, viewsets, permissions
 
-from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UpgradeAccountForm, UploadFileForm, \
+from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm
 from Scribd.forms import ProfileFormProvider
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
-from Scribd.user_model import User
+from .refactor_models import User
 
 
 def provider_page(request):
@@ -162,7 +162,7 @@ class AccountsViewSet(viewsets.ModelViewSet):
     # permission_classes = permissions.IsAuthenticatedOrReadOnly
 
     def get_queryset(self):
-        return User.objects.all().order_by('date_registration')
+        return User.objects.all().order_by('-date_joined')
 
 
 def login_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
@@ -194,7 +194,7 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
     if request.method == 'POST':
 
         signup_form = RegisterForm(request.POST, request.FILES)
-        credit_form = CreditCardForm(request.POST, request.FILES)
+        credit_form = Subscription(request.POST, request.FILES)
         if signup_form.is_valid():
             user = User.objects.create_user(
                 email=signup_form.cleaned_data.get('email'),
@@ -224,7 +224,7 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
     else:
 
         signup_form = RegisterForm()
-        credit_form = CreditCardForm()
+        credit_form = Subscription()
 
     context = {
         "register_form": signup_form,
