@@ -179,7 +179,7 @@ def edit_profile_page(request, username):
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('mainpage')
+            return redirect('userprofilepage', username=username)
     else:
         form = ProfileForm(instance=request.user)
     context = {
