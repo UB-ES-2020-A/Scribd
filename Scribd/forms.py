@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.db import transaction
 
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from .user_models import User, userProfile
@@ -57,7 +56,7 @@ class UploadFileForm(forms.ModelForm):
         }
 
 
-class RegisterUserForm(UserCreationForm):
+class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username",
@@ -70,6 +69,7 @@ class RegisterUserForm(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+
 
 """
 class CreditCardForm(forms.ModelForm):
