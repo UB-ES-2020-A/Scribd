@@ -41,7 +41,7 @@ class userProfile(models.Model):
     nbooks_by_subs = models.IntegerField(default=10, blank=True, null=True)
 
     # suscription
-    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, blank=True, null=True)
+    subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial", null=True)
     expires = models.DateTimeField(default=datetime.now() + timedelta(days=7))
     cancelled = models.BooleanField(default=True)
 
