@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
 from Scribd.models import Ebook, UserTickets, UploadedResources
-from .refactor_models import User, userProfile
+from .user_models import User, userProfile
 
 
 class EbookForm(forms.ModelForm):

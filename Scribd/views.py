@@ -12,7 +12,7 @@ from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, Uploa
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
-from .refactor_models import User
+from .user_models import User
 
 ##################################
 ####### VISTA MAINPAGE ###########

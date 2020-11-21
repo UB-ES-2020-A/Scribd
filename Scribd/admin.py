@@ -1,15 +1,16 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import Ebook, ViewedEbooks, Review, EbookInsertDate, UserTickets
 # Register your models here
-from .refactor_models import User, providerProfile, supportProfile, userProfile
+from .user_models import User, providerProfile, supportProfile, userProfile
 
 
 class EbookAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
 
 
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(providerProfile)
 admin.site.register(supportProfile)
 admin.site.register(userProfile)
