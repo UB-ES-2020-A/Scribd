@@ -42,7 +42,6 @@ class userProfile(models.Model):
     _subs_type = dict(SUBS_TYPE)
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user_profile", on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
     bio = models.CharField(max_length=500, blank=True, default='Description not modified')
     nbooks_by_subs = models.IntegerField(default=10, blank=True, null=True)
 
@@ -63,7 +62,6 @@ class userProfile(models.Model):
 
 class providerProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="provider_profile", on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
     name = models.CharField(max_length=64)
     publisher = models.CharField(verbose_name='Provider', max_length=255, blank=True)
 
@@ -72,12 +70,11 @@ class providerProfile(models.Model):
         verbose_name_plural = 'Providers'
 
     def __str__(self):
-        return 'Profile of Provider: {}'.format(self.provider.username)
+        return 'Profile of Provider: {}'.format(self.publisher)
 
 
 class supportProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="support_profile", on_delete=models.CASCADE)
-    active = models.BooleanField(default=True)
     name = models.CharField(max_length=64)
     user.is_staff = True
 
@@ -85,4 +82,4 @@ class supportProfile(models.Model):
         verbose_name = 'Support'
         verbose_name_plural = 'Supports'
     def __str__(self):
-        return 'Profile of Support: {}'.format(self.support.username)
+        return 'Profile of Support: {}'.format(self.name)
