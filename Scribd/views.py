@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
 from requests import Response
@@ -174,7 +174,7 @@ def edit_profile_page_provider(request):
     return render(request, 'forms/edit_provider_profile.html', context)
 
 
-def edit_profile_page(request, pk):
+def edit_profile_page(request, username):
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=request.user)
 
@@ -192,6 +192,11 @@ def edit_profile_page(request, pk):
 class user_profile_page(DetailView):
     model = User
     template_name = 'scribd/user_profile_page.html'
+    queryset = User.objects.all()
+
+    def get_object(self):
+        UserName = self.kwargs.get("username")
+        return get_object_or_404(User, username=UserName)
 
 
 def provider_page(request):
@@ -230,13 +235,13 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 ####### UPGRADE AND FILES ########
 ##################################
 
-def upgrade_account_view(request, pk):
+def upgrade_account_view(request, username):
     if request.method == "POST":
         form = UpgradeAccountForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
 
-            user = User.objects.get(username=pk)
+            user = User.objects.get(username=username)
             if user.subs_type == "Free trial":
                 user.nbooks_by_subs = 10
             if user.subs_type == "Regular":
