@@ -1,9 +1,8 @@
 #!/bin/sh
 
-if [[ -f "db.sqlite3" ]]
-then
-    echo "Eliminando 'db.sqlite3'"
-    rm "db.sqlite3"
+if [[ -f "db.sqlite3" ]]; then
+  echo "Eliminando 'db.sqlite3'"
+  rm "db.sqlite3"
 fi
 
 python3 manage.py makemigrations

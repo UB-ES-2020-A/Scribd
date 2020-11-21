@@ -1,9 +1,9 @@
 # Create your tests here.
+from Scribd.user_model import User
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from Scribd.models import Ebook, UploadedResources, Payments
-from Scribd.user_model import User
 
 
 class EbookTestCase(TestCase):

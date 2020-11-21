@@ -1,5 +1,6 @@
-from .user_models import User
 from django.db import models
+
+from .user_models import User
 
 
 ##################################
@@ -65,6 +66,7 @@ class ViewedEbooks(models.Model):
     class Meta:
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
+
 
 class EbookInsertDate(models.Model):
     viewed_ebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)

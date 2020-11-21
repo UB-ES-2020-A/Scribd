@@ -12,7 +12,8 @@ from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, Uploa
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
-from .user_models import User
+from .user_models import User, userProfile
+
 
 ##################################
 ####### VISTA MAINPAGE ###########
@@ -20,6 +21,7 @@ from .user_models import User
 
 def base(request):
     return render(request, 'scribd/base.html')
+
 
 class ebookMainView(ListView):
     model = Ebook
@@ -50,7 +52,6 @@ def ebook_search(request, title="", category="", media_type=""):
     return render(request, 'Scribd/ebooks_list.html', context)
 
 
-
 def ebook_create_view(request):
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
@@ -63,6 +64,7 @@ def ebook_create_view(request):
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
+
 
 ##################################
 ####### VISTA TICKET #############
@@ -78,6 +80,7 @@ def ticket_page(request):
         ticket_form = TicketForm()
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+
 
 ##################################
 ####### VISTA LOGIN ###########
@@ -107,6 +110,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 
     return render(request, 'scribd/base.html', {'login_form': login_form})
 
+
 ##################################
 ####### VISTA REGISTRO ###########
 ##################################
@@ -124,14 +128,13 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'))
             if credit_form.is_valid():
-                user = User.objects.get(username=user.username)
-                credit_form.instance.username = user
-                subs_type=credit_form.cleaned_data.get('subs_type'),
-                card_titular = credit_form.cleaned_data.get('card_titular'),
-                card_number = credit_form.cleaned_data.get('card_number'),
-                card_expiration = credit_form.cleaned_data.get('card_expiration'),
-                card_cvv = credit_form.cleaned_data.get('card_cvv')
-                #credit_form.save()
+                userprofile = userProfile.objects.create(user=user)
+                userprofile.subs_type = credit_form.cleaned_data.get('subs_type'),
+                userprofile.card_titular = credit_form.cleaned_data.get('card_titular'),
+                userprofile.card_number = credit_form.cleaned_data.get('card_number'),
+                userprofile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
+                userprofile.card_cvv = credit_form.cleaned_data.get('card_cvv')
+                userprofile.save()
 
             login(request, user, backend)
             if user.is_provider:
@@ -190,6 +193,7 @@ class user_profile_page(DetailView):
     model = User
     template_name = 'scribd/user_profile_page.html'
 
+
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
 
@@ -201,6 +205,7 @@ def contract_page(request):
 def support_page(request):
     return render(request, 'scribd/support_page.html')
 
+
 class AccountsViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -210,6 +215,7 @@ class AccountsViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return User.objects.all().order_by('-date_joined')
 
+
 class UserList(generics.ListCreateAPIView):
     queryset = User.objects.all().order_by('username')
     serializer_class = UserSerializer
@@ -218,6 +224,7 @@ class UserList(generics.ListCreateAPIView):
 class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
 
 ##################################
 ####### UPGRADE AND FILES ########
@@ -293,7 +300,6 @@ class UploadsViewSet(viewsets.ModelViewSet):
         return UploadedResources.objects.all().order_by('id')
 
 
-
 ##################################
 ####### VISTA TICKETS ############
 ##################################
@@ -310,12 +316,14 @@ class ticketViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return UserTickets.objects.all().order_by('id')
 
+
 ##################################
 ####### VISTA EBOOK ##############
 ##################################
 
 def add_books_form(request):
     return render(request, 'forms/add_book.html')
+
 
 class ebookListView(ListView):
     model = Ebook
@@ -335,6 +343,7 @@ class EbookViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Ebook.objects.all().order_by('id')
+
 
 class BookUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)  # NOT WORKING
@@ -362,6 +371,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data)
 
+
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
     form = EbookForm(request.POST or None, instance=instance)
@@ -369,4 +379,3 @@ def change_ebook(request, pk):
         form.save()
         return redirect('mainpage')
     return render(request, 'scribd/ebook_change.html', {'form': form})
-

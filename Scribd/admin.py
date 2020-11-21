@@ -10,12 +10,14 @@ from .user_models import User, providerProfile, supportProfile, userProfile
 class EbookAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at')
 
+
 class CustomUserAdmin(UserAdmin):
-    add_form = RegisterForm,Subscription
+    add_form = RegisterForm, Subscription
     form = RegisterForm
     model = User
     fieldsets = UserAdmin.fieldsets + (
-    ("Custom Information", {'fields': ('is_provider','is_support','is_suscribed','profile_image')}),)
+        ("Custom Information", {'fields': ('is_provider', 'is_support', 'is_suscribed', 'profile_image')}),)
+
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(providerProfile)

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.db import transaction
 
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from .user_models import User, userProfile
@@ -56,7 +57,7 @@ class UploadFileForm(forms.ModelForm):
         }
 
 
-class RegisterForm(UserCreationForm):
+class RegisterUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username",
@@ -69,7 +70,6 @@ class RegisterForm(UserCreationForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
-
 
 """
 class CreditCardForm(forms.ModelForm):
@@ -93,7 +93,7 @@ class CreditCardForm(forms.ModelForm):
 class Subscription(forms.ModelForm):
     class Meta:
         model = userProfile
-        fields = ["subs_type","card_titular",
+        fields = ["subs_type", "card_titular",
                   "card_number", "card_expiration",
                   "card_cvv", ]
 
@@ -105,7 +105,6 @@ class Subscription(forms.ModelForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
-
 
 
 class ProfileFormProvider(forms.ModelForm):
