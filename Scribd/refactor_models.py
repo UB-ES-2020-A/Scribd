@@ -23,7 +23,6 @@ class User(AbstractUser):
         return support_profile
 
     class Meta:
-        db_table = 'auth_user'
         verbose_name = 'User'
         verbose_name_plural = 'Users'
 
@@ -36,7 +35,7 @@ class userProfile(models.Model):
     )
     _subs_type = dict(SUBS_TYPE)
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user", on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="client", on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     name = models.CharField(max_length=64)
     bio = models.CharField(max_length=500, blank=True, default='Description not modified')
@@ -55,7 +54,7 @@ class userProfile(models.Model):
 
 
 class providerProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user", on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="provider", on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     name = models.CharField(max_length=64)
     publisher = models.CharField(verbose_name='Provider', max_length=255, blank=True)
@@ -66,7 +65,7 @@ class providerProfile(models.Model):
 
 
 class supportProfile(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user", on_delete=models.CASCADE)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="support", on_delete=models.CASCADE)
     active = models.BooleanField(default=True)
     name = models.CharField(max_length=64)
     user.is_staff = True
