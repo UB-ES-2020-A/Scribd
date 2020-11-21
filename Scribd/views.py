@@ -174,11 +174,11 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
         if user is not None:
             login(request, user, backend)
 
-            if user.user_type == "Provider":
+            if user.is_provider:
                 return redirect('provider_page')
-            elif user.user_type == "Support":
+            elif user.is_support:
                 return redirect('support_page')
-            elif user.user_type == "Admin":
+            elif user.is_provider:
                 return HttpResponseRedirect(reverse('admin:index'))
             return redirect('mainpage')
 

@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
 from datetime import datetime, timedelta
 from ScribdProject import settings
@@ -9,6 +9,7 @@ class User(AbstractUser):
     is_support = models.BooleanField(default=False)
     is_suscribed = models.BooleanField(default=False)
     profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
+    group = models.ForeignKey(Group, related_name="Groups",on_delete=models.CASCADE,null=True)
 
     def get_provider_profile(self):
         provider_profile = None
