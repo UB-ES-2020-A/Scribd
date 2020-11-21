@@ -4,6 +4,7 @@ from datetime import timedelta
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Subscription(models.Model):
     SUBS_TYPE = (
         ("Free trial", "Free trial"),
@@ -20,6 +21,7 @@ class Subscription(models.Model):
     trial_period = models.PositiveIntegerField(null=True, blank=True)
     recurrence_period = models.PositiveIntegerField(null=True, blank=True)
     #group = models.ForeignKey(Group,null=True, blank=False, unique=False, on_delete=models.CASCADE, default=1)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -51,6 +53,7 @@ class Profile(models.Model):
     def is_provider(self):
         return self.provider
 
+
 class Provider(models.Model):
     user = models.OneToOneField(User, related_name="Provider", on_delete=models.CASCADE)
     publisher = models.CharField(verbose_name='Provider', max_length=255, blank=True)
@@ -58,6 +61,7 @@ class Provider(models.Model):
     class Meta:
         verbose_name = 'Provider'
         verbose_name_plural = 'Providers'
+
 
 class Support(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
