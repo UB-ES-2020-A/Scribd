@@ -3,16 +3,21 @@
     <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
         <h3>{{ ebook.title }}</h3>
         <small>written by: {{ ebook.autor }}</small>
+        <h4> Proveedor: {{ ebook.publisher.publisher }}</h4>
         <br>
         <hr>
         <p>Synopsis: {{ ebook.description }}
         </p>
+        <hr>
+        <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px" alt=""
+                                             style="border-radius: 2%">
+        </p>
         <br>
         <hr>
-        <p>IBAN {{ ebook.ebook_number }}</p>
-        <p>Number of pages {{ ebook.size }}</p>
-        <p>Media file type {{ ebook.media_type }}</p>
-        <p>Number of downloads on Scribd {{ ebook.count_downloads }}</p>
+        <p>IBAN: {{ ebook.ebook_number }}</p>
+        <p>Number of pages: {{ ebook.size }}</p>
+        <p>Media file type: {{ ebook.media_type }}</p>
+        <p>Number of downloads on Scribd: {{ ebook.count_downloads }}</p>
         <form method="post">
             {% csrf_token %}
             <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">

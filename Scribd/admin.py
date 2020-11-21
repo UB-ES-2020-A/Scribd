@@ -12,8 +12,8 @@ class EbookAdmin(admin.ModelAdmin):
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form = RegisterForm, Subscription
-    form = RegisterForm
+    #add_form = RegisterForm, Subscription
+    #form = RegisterForm
     model = User
     fieldsets = UserAdmin.fieldsets + (
         ("Custom Information", {'fields': ('is_provider', 'is_support', 'is_suscribed', 'profile_image')}),)
