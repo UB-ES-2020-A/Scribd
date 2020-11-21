@@ -2,6 +2,9 @@ from .refactor_models import User
 from django.db import models
 
 
+##################################
+####### MODELOS EBOOK ############
+##################################
 class Ebook(models.Model):
     TYPE_FILE = (
         ("pdf", "pdf"),
@@ -63,19 +66,6 @@ class ViewedEbooks(models.Model):
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
 
-
-class UserTickets(models.Model):
-    id_uTicket = models.AutoField(primary_key=True)
-    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
-    ticket_summary = models.CharField(max_length=300)
-    ticket_date_added = models.DateTimeField(auto_now_add=True)
-    ticket_solved = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name = 'UserTickets'
-        verbose_name_plural = 'UserTickets'
-
-
 class EbookInsertDate(models.Model):
     viewed_ebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
@@ -109,6 +99,26 @@ class Review(models.Model):
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
 
+
+##################################
+####### MODELOS Ticket ###########
+##################################
+
+class UserTickets(models.Model):
+    id_uTicket = models.AutoField(primary_key=True)
+    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
+    ticket_summary = models.CharField(max_length=300)
+    ticket_date_added = models.DateTimeField(auto_now_add=True)
+    ticket_solved = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'UserTickets'
+        verbose_name_plural = 'UserTickets'
+
+
+##################################
+####### MODELOS PROFILE ##########
+##################################
 
 class UploadedResources(models.Model):
     # Available extensions
