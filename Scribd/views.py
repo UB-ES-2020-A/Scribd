@@ -130,6 +130,13 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
             if credit_form.is_valid():
                 userprofile = userProfile.objects.create(user=user)
                 userprofile.subs_type = credit_form.cleaned_data.get('subs_type'),
+                if userprofile.subs_type == "Free trial":
+                    userprofile.nbooks_by_subs = 10
+                if userprofile.subs_type == "Regular":
+                    userprofile.nbooks_by_subs = 100
+                if userprofile.subs_type == "Pro":
+                    userprofile.nbooks_by_subs = 1000
+
                 userprofile.card_titular = credit_form.cleaned_data.get('card_titular'),
                 userprofile.card_number = credit_form.cleaned_data.get('card_number'),
                 userprofile.card_expiration = credit_form.cleaned_data.get('card_expiration'),

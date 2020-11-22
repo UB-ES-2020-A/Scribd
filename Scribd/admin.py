@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .forms import RegisterForm, Subscription
 from .models import Ebook, ViewedEbooks, Review, EbookInsertDate, UserTickets
 # Register your models here
 from .user_models import User, providerProfile, supportProfile, userProfile
@@ -12,8 +11,8 @@ class EbookAdmin(admin.ModelAdmin):
 
 
 class CustomUserAdmin(UserAdmin):
-    #add_form = RegisterForm, Subscription
-    #form = RegisterForm
+    # add_form = RegisterForm, Subscription
+    # form = RegisterForm
     model = User
     fieldsets = UserAdmin.fieldsets + (
         ("Custom Information", {'fields': ('is_provider', 'is_support', 'is_suscribed', 'profile_image')}),)
