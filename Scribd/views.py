@@ -9,7 +9,7 @@ from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm
-from Scribd.models import Ebook, UserTickets, UploadedResources
+from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
 from .user_models import User, userProfile
@@ -22,34 +22,50 @@ from .user_models import User, userProfile
 def base(request):
     return render(request, 'scribd/base.html')
 
+def index(request):
+    ebooks = Ebook.objects.all()
+    promoted = True
+    context = {
+        'ebooks': ebooks,
+        'promoted': promoted,
+        'viewedebooks': _check_session(request)
+    }
+    return render(request, 'scribd/mainpage.html', context)
+
+def _check_session(request):
+    if "viewedebooks" not in request.session:
+        viewedebooks = ViewedEbooks()
+        viewedebooks.save()
+        request.session["viewedebooks"] = viewedebooks.id_vr
+    else:
+        viewedebooks = ViewedEbooks.objects.get(id_vr=request.session["viewedebooks"])
+    return viewedebooks
 
 class ebookMainView(ListView):
     model = Ebook
     template_name = 'scribd/mainpage.html'
 
 
-def ebook_search(request, title="", category="", media_type=""):
-    if title or category or media_type:
-        if title:
-            ebooks_ = Ebook.objects.filter(title__iexact=title)
-        if category:
-            ebooks_ = Ebook.objects.filter(category__iexact=category).order_by('category')
-        if media_type:
-            ebooks_ = Ebook.objects.filter(media_type__iexact=media_type)
+def ebooks(request, category=""):
+    print("ESTOY ENTRANDO AQUI JODER")
+    
+    if category:
+        ebooks = Ebook.objects.filter(category__iexact=category).order_by('category')
     else:
-        ebooks_ = Ebook.objects.all()
+        ebooks = Ebook.objects.all()
 
     if request.method == "GET":
         dictionary = request.GET.dict()
-        token = dictionary.get("category")
-        if token:
-            ebooks_by_category = Ebook.objects.filter(category__iexact=category)
+        category = dictionary.get("category")
+        if category:
+            ebooks = Ebook.objects.filter(category__iexact=category)
+
     context = {
-        'tittle': title,
         'category': category,
-        'ebooks': ebooks_,
+        'ebooks': ebooks,
+        'viewedebooks': _check_session(request)
     }
-    return render(request, 'Scribd/ebooks_list.html', context)
+    return render(request, 'scribd/mainpage.html', context)
 
 
 def ebook_create_view(request):

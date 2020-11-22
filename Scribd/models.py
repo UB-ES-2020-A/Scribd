@@ -51,7 +51,7 @@ class Ebook(models.Model):
         return self.url
 
     def __str__(self):
-        return self.title
+        return ('[**Promoted**]' if self.is_promot else '') + self.title
 
     class Meta:
         verbose_name = 'Ebook'
