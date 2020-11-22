@@ -51,7 +51,7 @@ class Ebook(models.Model):
         return self.url
 
     def __str__(self):
-        return self.title
+        return ('[**Promoted**]' if self.is_promot else '') + self.title
 
     class Meta:
         verbose_name = 'Ebook'
@@ -68,15 +68,12 @@ class ViewedEbooks(models.Model):
 
 
 class EbookInsertDate(models.Model):
-    viewed_ebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
+    viewedebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'EbookInsertDate'
-        verbose_name_plural = 'EbookInsertDates'
         ordering = ['-date_added']
-
 
 class Review(models.Model):
     STARS = (

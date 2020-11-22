@@ -1,9 +1,9 @@
 # Create your tests here.
-from Scribd.user_models import User,userProfile
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from Scribd.models import Ebook, UploadedResources, Payments
+from Scribd.user_models import User, userProfile
 
 
 class EbookTestCase(TestCase):
@@ -38,10 +38,10 @@ class UserSimpleTestCase(TestCase):
         self.assertTrue(user.is_active)
         self.assertFalse(user.is_staff)
 
-class UserSimpleTestCase(TestCase):
+
+class UserTestCase(TestCase):
 
     def test_user(self):
-        User = get_user_model()
         user = User.objects.create_user(
             email='pepito123@gmail.com',
             username='pepito123',
@@ -50,10 +50,10 @@ class UserSimpleTestCase(TestCase):
             password='xTu<3D\R'
         )
         userprofile = userProfile.objects.create(user=user)
-        userprofile.bio="Soy un usuario de prueba",
-        userprofile.subs_type="Free Trial",
-        userprofile.nbooks_by_subs="10",
-        userprofile.card_titular="Pepito 123"
+        userprofile.bio = "Soy un usuario de prueba",
+        userprofile.subs_type = "Free Trial",
+        userprofile.nbooks_by_subs = "10",
+        userprofile.card_titular = "Pepito 123"
 
         self.assertEqual(user.email, 'pepito123@gmail.com')
         self.assertTrue(user.is_active)
