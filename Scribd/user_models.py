@@ -42,7 +42,7 @@ class userProfile(models.Model):
     _subs_type = dict(SUBS_TYPE)
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user_profile", on_delete=models.CASCADE)
-    bio = models.CharField(max_length=500, blank=True, default='Description not modified')
+    bio = models.CharField(max_length=500, blank=True, default='')
     nbooks_by_subs = models.IntegerField(default=10, blank=True, null=True)
 
     # suscription

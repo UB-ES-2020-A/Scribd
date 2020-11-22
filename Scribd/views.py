@@ -8,7 +8,7 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription
+    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
@@ -176,12 +176,12 @@ def edit_profile_page_provider(request):
 
 def edit_profile_page(request, username):
     if request.method == "POST":
-        form = ProfileForm(request.POST, request.FILES, instance=request.user)
+        form = ProfileForm(request.POST, request.FILES, instance=request.user.user_profile)
         if form.is_valid():
             form.save()
             return redirect('userprofilepage', username=username)
     else:
-        form = ProfileForm(instance=request.user)
+        form = ProfileForm(instance=request.user.user_profile)
     context = {
         "form": form
     }
@@ -189,9 +189,8 @@ def edit_profile_page(request, username):
 
 
 class user_profile_page(DetailView):
-    model = User
     template_name = 'scribd/user_profile_page.html'
-    queryset = User.objects.all()
+    model = userProfile
 
     def get_object(self):
         UserName = self.kwargs.get("username")
@@ -240,23 +239,20 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 def upgrade_account_view(request, username):
     if request.method == "POST":
-        form = UpgradeAccountForm(request.POST, instance=request.user)
+        form = UpgradeAccountForm(request.POST, instance=request.user.user_profile)
         if form.is_valid():
             form.save()
-
             user = User.objects.get(username=username)
-            if user.subs_type == "Free trial":
-                user.nbooks_by_subs = 10
-            if user.subs_type == "Regular":
-                user.nbooks_by_subs = 100
-            if user.subs_type == "Pro":
-                user.nbooks_by_subs = 1000
-
-            user.save()
-
-            return redirect('mainpage')
+            if user.user_profile.subs_type == "Free trial":
+                user.user_profile.nbooks_by_subs = 10
+            if user.user_profile.subs_type == "Regular":
+                user.user_profile.nbooks_by_subs = 100
+            if user.user_profile.subs_type == "Pro":
+                user.user_profile.nbooks_by_subs = 1000
+            user.user_profile.save()
+            return redirect('userprofilepage', username=username)
     else:
-        form = UpgradeAccountForm(instance=request.user)
+        form = UpgradeAccountForm(instance=request.user.user_profile)
 
     context = {
         "form": form

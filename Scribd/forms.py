@@ -31,12 +31,12 @@ class ProfileForm(forms.ModelForm):
         }
 
 
-"""
+
 class UpgradeAccountForm(forms.ModelForm):
     class Meta:
-        model = Subscription
+        model = userProfile
         fields = ['subs_type']
-"""
+
 
 
 class FollowForm(forms.ModelForm):
