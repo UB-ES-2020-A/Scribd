@@ -69,26 +69,8 @@ class RegisterForm(UserCreationForm):
         }
 
 
-"""
-class CreditCardForm(forms.ModelForm):
-    class Meta:
-        model = SubscribedUsers
-        fields = ['username', "card_titular",
-                  "card_number", "card_expiration",
-                  "card_cvv", ]
-
-        # TODO Gestionar featured_photo
-        widgets = {
-            'card_titular': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Full name as displayed on the card'}),
-            'card_number': forms.TextInput(attrs={'class': 'form-control'}),
-            'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
-            'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
-        }
-"""
-
-
 class Subscription(forms.ModelForm):
+
     class Meta:
         model = userProfile
         fields = ["subs_type", "card_titular",

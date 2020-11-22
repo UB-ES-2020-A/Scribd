@@ -115,11 +115,11 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 ####### VISTA REGISTRO ###########
 ##################################
 
+# TODO HAY UN BUG EN EL SEGUNDO FORMULARIO
+
 def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
-
         signup_form = RegisterForm(request.POST, request.FILES)
-        credit_form = Subscription(request.POST, request.FILES)
         if signup_form.is_valid():
             user = User.objects.create_user(
                 email=signup_form.cleaned_data.get('email'),
@@ -127,17 +127,19 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'))
+            credit_form = Subscription(request.POST or None, request.FILES)
             if credit_form.is_valid():
                 userprofile = userProfile.objects.create(user=user)
                 userprofile.subs_type = credit_form.cleaned_data.get('subs_type'),
+                print(credit_form.cleaned_data.get('subs_type'))
                 if userprofile.subs_type == "Free trial":
                     userprofile.nbooks_by_subs = 10
                 if userprofile.subs_type == "Regular":
                     userprofile.nbooks_by_subs = 100
                 if userprofile.subs_type == "Pro":
                     userprofile.nbooks_by_subs = 1000
-
                 userprofile.card_titular = credit_form.cleaned_data.get('card_titular'),
+                print(credit_form.cleaned_data.get('card_titular'))
                 userprofile.card_number = credit_form.cleaned_data.get('card_number'),
                 userprofile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
                 userprofile.card_cvv = credit_form.cleaned_data.get('card_cvv')
