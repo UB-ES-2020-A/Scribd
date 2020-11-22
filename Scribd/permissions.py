@@ -9,8 +9,6 @@ class EditBookPermissions(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_superuser:
             return True
-        if request.user.is_admin:
-            return True
         if request.method in permissions.SAFE_METHODS:
             return request.user.groups.filter(name='Provider') or \
                    request.user.groups.filter(name='Support')
@@ -28,8 +26,6 @@ class DeleteBookPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if request.user.is_superuser:
-            return True
-        if request.user.is_admin:
             return True
         if request.method in permissions.SAFE_METHODS:
             return request.user.groups.filter(name='Support')

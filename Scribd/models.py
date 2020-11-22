@@ -1,9 +1,11 @@
-from django.contrib.auth.models import User
 from django.db import models
 
-from Scribd.user_model import User, Provider
+from .user_models import User, providerProfile
 
 
+##################################
+####### MODELOS EBOOK ############
+##################################
 class Ebook(models.Model):
     TYPE_FILE = (
         ("pdf", "pdf"),
@@ -29,10 +31,9 @@ class Ebook(models.Model):
     url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
-    publisher = models.ForeignKey(User, related_name='providers_key', on_delete=models.CASCADE, null=True, blank=True,
-                                  limit_choices_to={'user_type': 'Provider'})
-    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True,
-                                 limit_choices_to={'user_type': 'User'})
+    publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
+                                  blank=True)
+    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -64,18 +65,6 @@ class ViewedEbooks(models.Model):
     class Meta:
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
-
-
-class UserTickets(models.Model):
-    id_uTicket = models.AutoField(primary_key=True)
-    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
-    ticket_summary = models.CharField(max_length=300)
-    ticket_date_added = models.DateTimeField(auto_now_add=True)
-    ticket_solved = models.BooleanField(default=False)
-
-    class Meta:
-        verbose_name = 'UserTickets'
-        verbose_name_plural = 'UserTickets'
 
 
 class EbookInsertDate(models.Model):
@@ -111,6 +100,26 @@ class Review(models.Model):
         verbose_name = 'Review'
         verbose_name_plural = 'Reviews'
 
+
+##################################
+####### MODELOS Ticket ###########
+##################################
+
+class UserTickets(models.Model):
+    id_uTicket = models.AutoField(primary_key=True)
+    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
+    ticket_summary = models.CharField(max_length=300)
+    ticket_date_added = models.DateTimeField(auto_now_add=True)
+    ticket_solved = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'UserTickets'
+        verbose_name_plural = 'UserTickets'
+
+
+##################################
+####### MODELOS PROFILE ##########
+##################################
 
 class UploadedResources(models.Model):
     # Available extensions

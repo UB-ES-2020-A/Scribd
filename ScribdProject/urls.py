@@ -38,6 +38,4 @@ urlpatterns = [
     url(r'^oauth/', include('social_django.urls', namespace='social')),
     url('accounts/', include('django.contrib.auth.urls'))
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
