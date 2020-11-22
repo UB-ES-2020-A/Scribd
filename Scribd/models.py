@@ -62,9 +62,6 @@ class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
 
-    def __str__(self):
-        return self.ebook
-
     class Meta:
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
@@ -75,8 +72,6 @@ class EbookInsertDate(models.Model):
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.date_added + " " + self.ebook
 
     class Meta:
         ordering = ['-date_added']
