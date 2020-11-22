@@ -72,7 +72,6 @@ class EbookInsertDate(models.Model):
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
-
     class Meta:
         ordering = ['-date_added']
 

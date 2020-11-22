@@ -70,7 +70,6 @@ class RegisterForm(UserCreationForm):
 
 
 class Subscription(forms.ModelForm):
-
     class Meta:
         model = userProfile
         fields = ["subs_type", "card_titular",

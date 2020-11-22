@@ -22,6 +22,7 @@ from .user_models import User, userProfile
 def base(request):
     return render(request, 'scribd/base.html')
 
+
 def index(request):
     ebooks = Ebook.objects.all()
     promoted = True
@@ -32,6 +33,7 @@ def index(request):
     }
     return render(request, 'scribd/mainpage.html', context)
 
+
 def _check_session(request):
     if "viewedebooks" not in request.session:
         viewedebooks = ViewedEbooks()
@@ -41,6 +43,7 @@ def _check_session(request):
         viewedebooks = ViewedEbooks.objects.get(id_vr=request.session["viewedebooks"])
     return viewedebooks
 
+
 class ebookMainView(ListView):
     model = Ebook
     template_name = 'scribd/mainpage.html'
@@ -48,7 +51,7 @@ class ebookMainView(ListView):
 
 def ebooks(request, category=""):
     print("ESTOY ENTRANDO AQUI JODER")
-    
+
     if category:
         ebooks = Ebook.objects.filter(category__iexact=category).order_by('category')
     else:
