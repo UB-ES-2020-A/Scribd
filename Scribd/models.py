@@ -62,21 +62,24 @@ class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
     ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
 
+    def __str__(self):
+        return self.ebook
+
     class Meta:
         verbose_name = 'ViewedEbooks'
         verbose_name_plural = 'ViewedEbooks'
 
 
 class EbookInsertDate(models.Model):
-    viewed_ebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
+    viewedebooks = models.ForeignKey(ViewedEbooks, on_delete=models.CASCADE)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        verbose_name = 'EbookInsertDate'
-        verbose_name_plural = 'EbookInsertDates'
-        ordering = ['-date_added']
+    def __str__(self):
+        return self.date_added + " " + self.ebook
 
+    class Meta:
+        ordering = ['-date_added']
 
 class Review(models.Model):
     STARS = (
