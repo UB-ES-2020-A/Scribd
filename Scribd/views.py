@@ -22,7 +22,6 @@ from .user_models import User, userProfile
 def base(request):
     return render(request, 'scribd/base.html')
 
-
 def index(request):
     ebooks = Ebook.objects.all()
     promoted = True
@@ -50,8 +49,6 @@ class ebookMainView(ListView):
 
 
 def ebooks(request, category=""):
-    print("ESTOY ENTRANDO AQUI JODER")
-
     if category:
         ebooks = Ebook.objects.filter(category__iexact=category).order_by('category')
     else:
@@ -79,7 +76,7 @@ def ebook_create_view(request):
             instance = form.save(commit=False)
             print(instance.featured_photo)
             form.save()
-            return redirect('mainpage')
+            return redirect('index')
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
@@ -94,7 +91,7 @@ def ticket_page(request):
         ticket_form = TicketForm(request.POST, request.FILES)
         if ticket_form.is_valid():
             ticket_form.save()
-            return redirect('mainpage')
+            return redirect('index')
     else:
         ticket_form = TicketForm()
 
@@ -121,7 +118,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
                 return redirect('support_page')
             elif user.is_provider:
                 return HttpResponseRedirect(reverse('admin:index'))
-            return redirect('mainpage')
+            return redirect('index')
 
     else:
 
@@ -171,7 +168,7 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 return redirect('support_page')
             elif user.is_provider:
                 return HttpResponseRedirect(reverse('admin:index'))
-            return redirect('mainpage')
+            return redirect('index')
     else:
 
         signup_form = RegisterForm()
@@ -193,7 +190,7 @@ def edit_profile_page_provider(request):
         form = ProfileFormProvider(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('mainpage')
+            return redirect('index')
     else:
         form = ProfileFormProvider(instance=request.user)
     context = {
@@ -297,7 +294,7 @@ def upload_file(request):
             instance.user = request.user
             print(instance.user.uploadedresources_set.all())
             form.save()
-            return redirect('mainpage')
+            return redirect('index')
     else:
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
@@ -311,7 +308,7 @@ def follow(request, pk):
             instance = Ebook.objects.get(id=pk)
             instance.follower = user
             instance.save()
-            return redirect('mainpage')
+            return redirect('index')
     else:
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
@@ -409,5 +406,5 @@ def change_ebook(request, pk):
     form = EbookForm(request.POST or None, instance=instance)
     if form.is_valid():
         form.save()
-        return redirect('mainpage')
+        return redirect('index')
     return render(request, 'scribd/ebook_change.html', {'form': form})
