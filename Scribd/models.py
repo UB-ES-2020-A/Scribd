@@ -75,6 +75,7 @@ class EbookInsertDate(models.Model):
     class Meta:
         ordering = ['-date_added']
 
+
 class Review(models.Model):
     STARS = (
         ("One star", 1),
@@ -101,6 +102,7 @@ class Review(models.Model):
 ##################################
 ####### MODELOS Ticket ###########
 ##################################
+
 
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
