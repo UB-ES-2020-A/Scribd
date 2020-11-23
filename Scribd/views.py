@@ -1,5 +1,6 @@
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
@@ -49,22 +50,32 @@ class ebookMainView(ListView):
     template_name = 'scribd/mainpage.html'
 
 
-def ebooks(request, category=""):
-    print("ESTOY ENTRANDO AQUI JODER")
+def ebooks(request, search=""):
+    # Priorizamos busqueda categoria
+    if request.method == "GET":
+        dictionary = request.GET.dict()
+        query = dictionary.get("search")
+        if query:
+            ebooks = Ebook.objects.filter(
+                Q(ebook_number__icontains=query) |
+                Q(title__icontains=query) |
+                Q(autor__icontains=query) |
+                Q(description__icontains=query) |
+                Q(is_promot__icontains=query) |
+                Q(size__icontains=query) |
+                Q(category__icontains=query) |
+                Q(media_type__icontains=query) |
+                Q(featured_photo__icontains=query) |
+                Q(url__icontains=query)
+            )
+        else:
+            ebooks = Ebook.objects.all()
 
-    if category:
-        ebooks = Ebook.objects.filter(category__iexact=category).order_by('category')
     else:
         ebooks = Ebook.objects.all()
 
-    if request.method == "GET":
-        dictionary = request.GET.dict()
-        category = dictionary.get("category")
-        if category:
-            ebooks = Ebook.objects.filter(category__iexact=category)
-
     context = {
-        'category': category,
+        'search': search,
         'ebooks': ebooks,
         'viewedebooks': _check_session(request)
     }
