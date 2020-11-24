@@ -1,12 +1,12 @@
 # Scribd
 ![GitHub release](https://img.shields.io/github/v/release/UB-ES-2020-A/Scribd)
-[![GitHub issues](https://img.shields.io/github/issues/UB-ES-2020-A/Scribd)](https://github.com/UB-ES-2020/Scribd/issues) 
+[![GitHub issues](https://img.shields.io/github/issues/UB-ES-2020-A/Scribd)](https://github.com/UB-ES-2020-A/Scribd/issues) 
 ![GitHub milestones](https://img.shields.io/github/milestones/open/UB-ES-2020-A/Scribd)
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/UB-ES-2020-A/Scribd/Demo2) 
-[![Build Status](https://travis-ci.com/UB-ES-2020/Scribd.svg?branch=main)](https://travis-ci.com/UB-ES-2020-A/Scribd) 
-[![CodeFactor](https://www.codefactor.io/repository/github/ub-es-2020/scribd/badge)](https://www.codefactor.io/repository/github/ub-es-2020-a/scribd) 
-[![Coverage Status](https://coveralls.io/repos/github/UB-ES-2020/Scribd/badge.svg)](https://coveralls.io/github/UB-ES-2020-A/Scribd) 
-[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IlVCLUVTLTIwMjAiLCJyZXBvMSI6IlNjcmliZCIsImluY2x1ZGVMaW50IjpmYWxzZSwiYXV0aG9ySWQiOjE4MDMwLCJpYXQiOjE2MDU4MDMzMDB9.tYymiV4SWNBmk00ot3n5S-LzPFzsulyE6tC-8_m3NG8)](https://www.deepcode.ai/app/gh/UB-ES-2020/Scribd/_/dashboard?utm_content=gh%2FUB-ES-2020%2FScribd)
+[![Build Status](https://travis-ci.com/UB-ES-2020-A/Scribd.svg?branch=main)](https://travis-ci.com/UB-ES-2020-A/Scribd) 
+[![CodeFactor](https://www.codefactor.io/repository/github/ub-es-2020-a/scribd/badge)](https://www.codefactor.io/repository/github/ub-es-2020-a/scribd)
+[![Coverage Status](https://coveralls.io/repos/github/UB-ES-2020-A/Scribd/badge.svg)](https://coveralls.io/github/UB-ES-2020-A/Scribd) 
+[![deepcode](https://www.deepcode.ai/api/gh/badge?key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwbGF0Zm9ybTEiOiJnaCIsIm93bmVyMSI6IlVCLUVTLTIwMjAtQSIsInJlcG8xIjoiU2NyaWJkIiwiaW5jbHVkZUxpbnQiOmZhbHNlLCJhdXRob3JJZCI6MTgwMzAsImlhdCI6MTYwNjI1NTUxOH0.Nz7weke4pFB6HK7RwPmOEDeiqNa7i-8nxqZHzxTK2vE)](https://www.deepcode.ai/app/gh/UB-ES-2020-A/Scribd/_/dashboard?utm_content=gh%2FUB-ES-2020-A%2FScribd)
 
 # Enginyeria del Software
 
