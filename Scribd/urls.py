@@ -5,24 +5,26 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from Scribd import views
 from Scribd.views import UserList, UserDetail
 from Scribd.views import ebook_create_view, ebookListView, signup_create_view, login_create_view, \
-    provider_page, ebookMainView, edit_profile_page_provider, contract_page, \
+    provider_page, edit_profile_page_provider, contract_page, \
     ticket_page, user_profile_page, edit_profile_page, upgrade_account_view, upload_file, ticketListView, follow
 from ScribdProject import settings
 
 urlpatterns = [
-    url(r'^$', ebookMainView.as_view(), name='mainpage'),
+    url(r'^$', views.index, name='index'),
     url(r'^base/$', views.base, name='base'),
+    url(r'^ebooks/$', views.ebooks, name='ebooks'),
+    url(r'^ebooks/(?P<category>.*)/$', views.ebooks, name='ebooks'),
+
     url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),
-    url(r'^ebooklist/(?P<category>.*)/$', views.ebook_search, name='ebook_search'),
     url('ebookdetail/(?P<pk>[0-9]+)/$', follow, name='ebook_custom_detail'),
     url('changebook/(?P<pk>[0-9]+)/$', views.change_ebook, name='Ebook_change_details'),
     url('addbook/', ebook_create_view, name='add_book'),
     url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'),
     url('User/$', UserList.as_view()),
-    url('User/(?P<pk>[0-9]+)/$', UserDetail.as_view()),
-    url('userprofile/(?P<pk>[a-zA-Z0-9]+)/$', user_profile_page.as_view(), name='userprofilepage'),
-    url('userprofile/(?P<pk>[a-zA-Z0-9]+)/edit/$', edit_profile_page, name='edituserprofile'),
-    url('userprofile/(?P<pk>[a-zA-Z0-9]+)/upgrade/$', upgrade_account_view, name='upgradeaccount'),
+    url('User/(?P<username>\w+)/$', UserDetail.as_view()),
+    url('profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),
+    url('profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'),
+    url('profile/(?P<username>\w+)/upgrade/$', upgrade_account_view, name='upgradeaccount'),
     url('upload_file/', upload_file, name='upload_file'),
     url('accounts/login/', login_create_view, name='login'),
     url('accounts/signup/', signup_create_view, name='signup'),
