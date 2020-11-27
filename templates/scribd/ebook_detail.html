@@ -20,9 +20,21 @@
         <p>Number of downloads on Scribd: {{ ebook.count_downloads }}</p>
         <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
-                <h7 style="color: #FFFFFF">Follow</h7>
-            </button>
+            {% if request.user.is_authenticated %}
+                {% if request.user.user_profile.nbooks_by_subs > 0 and not ebook.follower == request.user %}
+                    <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
+                        <h7 style="color: #FFFFFF">Follow</h7>
+                    </button>
+                {% elif  ebook.follower == request.user %}
+                    <a href="{% url 'userprofilepage' request.user.username %}" class="btn" style="background-color: #367C85; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Read it now!</h7>
+                    </a>
+                {% else %}
+                    <a href="{% url 'upgradeaccount' request.user.username %}" class="btn" style="background-color: #367C85; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                    </a>
+                {% endif %}
+            {% endif %}
         </form>
     </div>
 {% endblock %}

@@ -317,6 +317,10 @@ def follow(request, pk):
         form = FollowForm(request.POST)
         if form.is_valid():
             user = request.user
+            n_books_left = user.user_profile.nbooks_by_subs
+            if n_books_left > 0:
+                user.user_profile.nbooks_by_subs -= 1
+                user.user_profile.save()
             instance = Ebook.objects.get(id=pk)
             instance.follower = user
             instance.save()

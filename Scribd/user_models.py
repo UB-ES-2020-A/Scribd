@@ -14,7 +14,7 @@ class User(AbstractUser):
 
     def get_user_profile(self):
         user_profile = None
-        if hasattr(self, 'providerprofile'):
+        if hasattr(self, 'userprofile'):
             user_profile = self.userprofile
         return user_profile
 
