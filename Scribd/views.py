@@ -9,8 +9,8 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm
-from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks
+    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm, reviewForm
+from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
 from .user_models import User, userProfile
@@ -109,9 +109,31 @@ def ticket_page(request):
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
+##################################
+####### VISTA REVIEW #############
+##################################
+
+def review(request, pk):
+    if request.method == "POST":
+        ebook = Ebook.objects.get(ebook_number=128937)
+        lista = [a for a, b in Review.STARS if b == int(request.POST["star"])]
+        review = Review()
+        review.ebook = ebook
+        review.comment = request.POST["comment"]
+        review.value_stars = lista[0]
+        review.user = request.user
+        review.save()
+        return HttpResponseRedirect(reverse('ebookdetail', kwargs={"number": pk}))
+    context = {
+        'book_number': pk,
+        #'viewedrestaurants': _check_session(request)
+
+    }
+    return render(request, 'scribd/review.html', context)
+
 
 ##################################
-####### VISTA LOGIN ###########
+####### VISTA LOGIN ##############
 ##################################
 
 def login_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):

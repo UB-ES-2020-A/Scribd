@@ -1,8 +1,8 @@
+from Scribd.models import Ebook, UserTickets, UploadedResources, Review
+from .user_models import User, userProfile
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-
-from Scribd.models import Ebook, UserTickets, UploadedResources
-from .user_models import User, userProfile
 
 
 class EbookForm(forms.ModelForm):
@@ -107,4 +107,15 @@ class TicketForm(forms.ModelForm):
             'ticket_title': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+class reviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["comment", "value_stars"]
+
+        widgets = {
+            'comment_title': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'}),
         }

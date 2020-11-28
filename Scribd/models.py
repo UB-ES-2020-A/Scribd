@@ -1,6 +1,5 @@
-from django.db import models
-
 from .user_models import User, providerProfile
+from django.db import models
 
 
 ##################################
@@ -88,6 +87,7 @@ class Review(models.Model):
     id = models.AutoField(primary_key=True)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     value_stars = models.CharField(max_length=12, choices=STARS)
+    #comment_title = models.CharField(max_length=30, blank=False, default='comment')
     comment = models.TextField()
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
