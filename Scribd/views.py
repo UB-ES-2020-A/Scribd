@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
@@ -14,7 +15,6 @@ from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, R
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
 from .user_models import User, userProfile
-import datetime
 
 
 ##################################
