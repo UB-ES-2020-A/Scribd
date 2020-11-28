@@ -346,9 +346,11 @@ def follow(request, pk):
     else:
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
+        reviews = Review.objects.filter(ebook=ebook)
         context = {
             "form": form,
-            "ebook": ebook
+            "ebook": ebook,
+            "reviews": reviews
         }
     return render(request, 'scribd/ebook_detail.html', context)
 
