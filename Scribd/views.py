@@ -115,7 +115,7 @@ def ticket_page(request):
 
 def review(request, pk):
     if request.method == "POST":
-        ebook = Ebook.objects.get(ebook_number=128937)
+        ebook = Ebook.objects.get(id=pk)
         lista = [a for a, b in Review.STARS if b == int(request.POST["star"])]
         review = Review()
         review.ebook = ebook
@@ -123,7 +123,7 @@ def review(request, pk):
         review.value_stars = lista[0]
         review.user = request.user
         review.save()
-        return HttpResponseRedirect(reverse('ebookdetail', kwargs={"number": pk}))
+        return HttpResponseRedirect(reverse('ebook_custom_detail', kwargs={"pk": pk}))
     context = {
         'book_number': pk,
         #'viewedrestaurants': _check_session(request)

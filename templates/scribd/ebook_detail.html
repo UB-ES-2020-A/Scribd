@@ -18,7 +18,7 @@
         <p>Number of pages: {{ ebook.size }}</p>
         <p>Media file type: {{ ebook.media_type }}</p>
         <p>Number of downloads on Scribd: {{ ebook.count_downloads }}</p>
-        <a href="review/{{ pk }}">
+        <a href="/review/{{ ebook.id }}">
             <button class="btn btn-primary">Review</button>
         </a>
         <form method="post">
