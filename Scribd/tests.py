@@ -102,7 +102,3 @@ class UploadFilesTestCase(TestCase):
         uf = UploadedResources.objects.get(title='MyStory')
         uf.delete()
         self.assertEqual(uf, '')
-
-
-class TestViews(TestCase):
-    pass
