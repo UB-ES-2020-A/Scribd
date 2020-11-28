@@ -6,7 +6,7 @@ from Scribd import views
 from Scribd.views import UserList, UserDetail
 from Scribd.views import ebook_create_view, ebookListView, signup_create_view, login_create_view, \
     provider_page, edit_profile_page_provider, contract_page, \
-    ticket_page, user_profile_page, edit_profile_page, upgrade_account_view, upload_file, ticketListView, follow
+    ticket_page, user_profile_page, edit_profile_page, upgrade_account_view, upload_file, ticketListView, follow, update_payment_details
 from ScribdProject import settings
 
 urlpatterns = [
@@ -25,6 +25,7 @@ urlpatterns = [
     url('profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),
     url('profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'),
     url('profile/(?P<username>\w+)/upgrade/$', upgrade_account_view, name='upgradeaccount'),
+    url('profile/(?P<username>\w+)/updatepayment/$', update_payment_details, name='updatepayment'),
     url('upload_file/', upload_file, name='upload_file'),
     url('accounts/login/', login_create_view, name='login'),
     url('accounts/signup/', signup_create_view, name='signup'),
