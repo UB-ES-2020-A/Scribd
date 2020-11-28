@@ -24,5 +24,72 @@
                 <h7 style="color: #FFFFFF">Follow</h7>
             </button>
         </form>
+
+        <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum" type="submit"
+                style="background-color: #367C85">
+            <h7 style="color: #FFFFFF">Create Forum</h7>
+        </button>
+
+        <div class="modal fade" id="createforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Open discussion</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{% url 'addInForum' %}" method="POST">
+                            {% csrf_token %}
+                            {{ create_forum.as_p }}
+                            <input type="submit" class="btn btn-success" value="submit">
+                        </form>
+                        <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more
+                        </button>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for forum in forums %}
+
+            <div class="card box container">
+                <br>
+                <div class="card-title">
+                    <a href='{{ forum.link }}'><h3>{{ forum.topic }}</h3></a>
+                    <div class="card-body container">
+                        <p>{{ forum.description }}</p>
+                    </div>
+                    <hr>
+                    <p> By: {{ forum.name }}</p>
+                    email- {{ forum.email }}
+                    <hr>
+                    <h4>Views from other users</h4>
+                    {% for discuss in discussions %}
+                        {% for objs in discuss %}
+                            {% if objs.forum == forum %}
+                                {{ objs.discuss }}
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                    <form method="POST" action="{% url 'addInDiscussion' %}">
+                        {% csrf_token %}
+                        <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <br>
+
+        {% endfor %}
     </div>
 {% endblock %}

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from Scribd.models import Ebook, UserTickets, UploadedResources
+from Scribd.models import *
 from .user_models import User, userProfile
 
 
@@ -108,3 +108,20 @@ class TicketForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+
+##################################
+####### FORMS FORUM ##############
+##################################
+
+class CreateInForum(forms.ModelForm):
+    class Meta:
+        model = Forum
+        fields = ["topic","description"]
+
+
+
+class CreateInDiscussion(forms.ModelForm):
+    class Meta:
+        model = Discussion
+        fields = "__all__"

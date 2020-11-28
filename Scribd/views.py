@@ -8,11 +8,10 @@ from django.views.generic import ListView, DetailView
 from requests import Response
 from rest_framework import generics, viewsets, permissions
 
-from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm
-from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks
+from Scribd.forms import *
+from Scribd.models import *
 from Scribd.permissions import EditBookPermissions
-from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
+from Scribd.serializers import *
 from .user_models import User, userProfile
 
 
@@ -22,6 +21,7 @@ from .user_models import User, userProfile
 
 def base(request):
     return render(request, 'scribd/base.html')
+
 
 def index(request):
     ebooks = Ebook.objects.all()
@@ -47,7 +47,8 @@ def _check_session(request):
 class ebookMainView(ListView):
     model = Ebook
     template_name = 'scribd/mainpage.html'
-    
+
+
 def ebooks(request, search=""):
     # Priorizamos busqueda categoria
     if request.method == "GET":
@@ -313,6 +314,8 @@ def upload_file(request):
 
 
 def follow(request, pk):
+    print("------------------------------------------")
+
     if request.method == 'POST':
         form = FollowForm(request.POST)
         if form.is_valid():
@@ -324,9 +327,17 @@ def follow(request, pk):
     else:
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
+        forums = ebook.forum_set.all()
+        count = forums.count()
+        discussions = []
+        for i in forums:
+            discussions.append(i.discussion_set.all())
         context = {
             "form": form,
-            "ebook": ebook
+            "ebook": ebook,
+            'forums': ebook.forum_set.all(),
+            'count': count,
+            'discussions': discussions
         }
     return render(request, 'scribd/ebook_detail.html', context)
 
@@ -371,9 +382,20 @@ class ebookListView(ListView):
     template_name = 'scribd/ebooks_list.html'
 
 
-class ebookDetailView(DetailView):
-    model = Ebook
-    template_name = 'scribd/ebook_detail.html'
+def ebookDetailView(request):
+    forums = Ebook.objects.Forum.objects.all()
+    print("********************************************************")
+    count = forums.count()
+    discussions = []
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context = {
+        'forums': forums,
+        'count': count,
+        'discussions': discussions}
+
+    return render(request, 'scribd/ebook_detail.html', context)
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -420,3 +442,47 @@ def change_ebook(request, pk):
         form.save()
         return redirect('index')
     return render(request, 'scribd/ebook_change.html', {'form': form})
+
+
+##################################
+####### VISTA FORUM ##############
+##################################
+
+class ForumViewSet(viewsets.ModelViewSet):
+    queryset = Forum.objects.all().order_by('date_created')
+    serializer_class = ForumSerializer
+
+    # permission_classes = permissions.IsAuthenticatedOrReadOnly
+
+    def get_queryset(self):
+        return User.objects.all().order_by('date_created')
+
+
+def addInForum(request):
+    form = CreateInForum()
+    if request.method == 'POST':
+        form = CreateInForum(request.POST)
+
+        if form.is_valid() and request.user.is_authenticated:
+            forum = Forum.objects.create(
+                name=request.user.username,
+                email=request.user.email,
+                topic=form.cleaned_data.get('topic'),
+                description=form.cleaned_data.get('description'),
+                link=form.cleaned_data.get('link')
+            )
+            forum.save()
+            return redirect('/ebook_custom_detail/1/')
+    context = {'create_forum': form}
+    return render(request, 'forum/addInForum.html', context)
+
+
+def addInDiscussion(request):
+    form = CreateInDiscussion()
+    if request.method == 'POST':
+        form = CreateInDiscussion(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context = {'form': form}
+    return render(request, 'forum/addInDiscussion.html', context)

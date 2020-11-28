@@ -141,3 +141,28 @@ class Payments(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     ammount = models.FloatField(default=0.0)
     date = models.DateTimeField(auto_now_add=True)
+
+
+##################################
+####### MODELOS FORUM ############
+##################################
+
+class Forum(models.Model):
+    ebook = models.ForeignKey(Ebook,blank=True,on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, default="anonymous")
+    email = models.CharField(max_length=200, null=True)
+    topic = models.CharField(max_length=300)
+    description = models.CharField(max_length=1000, blank=True)
+    link = models.CharField(max_length=100, null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return str(self.topic)
+
+
+class Discussion(models.Model):
+    forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
+    discuss = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return str(self.forum)
