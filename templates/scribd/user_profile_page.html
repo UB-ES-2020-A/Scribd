@@ -55,8 +55,17 @@
                 </div>
             </div>
         {% elif user.user_profile.expires > current_time %}
-            <h5 style="color:darkred;">Your subscription will expire in {{ user.user_profile.expires }}</h5>
+            <div class="row">
+                <div class="col">
+                    <h6 style="color:darkred;">Your subscription will expire in {{ user.user_profile.expires }}</h6>
+                    <a class="btn" style="background-color: darkred; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Cancel my subscription</h7>
+                    </a>
+                </div>
+            </div>
         {% endif %}
+
+        <hr>
 
         {% if user.user_profile.n_books_followed > 0 %}
             <hr style="margin-right: 50px; margin-top: 50px">
