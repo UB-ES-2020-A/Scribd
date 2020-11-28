@@ -21,7 +21,7 @@
         <form method="post">
             {% csrf_token %}
             {% if request.user.is_authenticated %}
-                {% if request.user.user_profile.nbooks_by_subs > 0 and not ebook.follower == request.user %}
+                {% if substract > 0 and not ebook.follower == request.user %}
                     <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
                         <h7 style="color: #FFFFFF">Follow</h7>
                     </button>

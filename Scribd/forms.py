@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from crispy_forms.helper import FormHelper
 
 from Scribd.models import Ebook, UserTickets, UploadedResources
 from .user_models import User, userProfile
@@ -35,6 +36,12 @@ class UpgradeAccountForm(forms.ModelForm):
     class Meta:
         model = userProfile
         fields = ['subs_type']
+
+        widget = {
+            'subs_type': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    helper = FormHelper()
 
 
 class FollowForm(forms.ModelForm):

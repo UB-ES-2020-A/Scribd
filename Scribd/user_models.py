@@ -52,12 +52,17 @@ class userProfile(models.Model):
     # suscription
     subs_type = models.CharField(max_length=15, choices=SUBS_TYPE, default="Free trial", null=True)
     nbooks_by_subs = models.IntegerField(default=10, blank=True, null=True)
-    expires = models.DateTimeField(default=datetime.now() + timedelta(days=7))
+    expires = models.DateTimeField(default=datetime.now())
     cancelled = models.BooleanField(default=True)
+
+    # bank data control
+    first_upgrade = models.BooleanField(default=True)
+    n_uploads = models.IntegerField(default=0, blank=True, null=True)
+    n_books_followed = models.IntegerField(default=0, blank=True, null=True)
 
     # payments
     card_titular = models.CharField(max_length=20, default='', blank=True)
-    card_number = models.CharField(unique=True, max_length=16, default='', blank=True)
+    card_number = models.CharField(max_length=16, default='', blank=True)
     card_expiration = models.CharField(max_length=7, default='', blank=True)
     card_cvv = models.CharField(max_length=3, default='', blank=True)
 
