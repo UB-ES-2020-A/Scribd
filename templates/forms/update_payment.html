@@ -48,13 +48,31 @@
 
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
-                    <h7 style="color: #FFFFFF">Upgrade now!</h7>
-                </button>
+
+                 <div class="panel-footer row"><!-- panel-footer -->
+                    <div class="form-group col-md-3 mb-3">
+                        <button type="submit" class="btn btn-primary" style="background-color: #367C85">
+                            <h7 style="color: #FFFFFF">Upgrade now!</h7>
+                        </button>
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        <a href={% url 'userprofilepage' request.user.username %} class="btn" style="background-color: #ED2929">
+                            <h7 style="color: #FFFFFF">Cancel</h7>
+                        </a>
+                    </div>
+                </div>
+
+
             </form>
           </div>
         </div>
-        <br>
-
+        <div class="row">
+            <div class="col">
+                <a href={% url 'userprofilepage' request.user.username %} class="btn" style="background-color: #367C85 ; margin-top: 20px">
+                    <h7 style="color: #FFFFFF">Go back to your profile</h7>
+                </a>
+            </div>
+        </div>
+    <br>
     </div>
 {% endblock %}
