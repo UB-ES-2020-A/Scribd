@@ -304,21 +304,15 @@ def update_payment_details(request, username):
         if form.is_valid():
             form.save()
             user = User.objects.get(username=username)
+            if credit_form.is_valid():
 
-            if user.user_profile.subs_type == "Free trial":
-                user.user_profile.nbooks_by_subs = 10
-            if user.user_profile.subs_type == "Regular":
-                user.user_profile.nbooks_by_subs = 100
-            if user.user_profile.subs_type == "Pro":
-                user.user_profile.nbooks_by_subs = 1000
+                user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
+                user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
+                user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
+                user.user_profile.card_cvv = credit_form.cleaned_data.get('card_cvv')
 
-            user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
-            user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
-            user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
-            user.user_profile.card_cvv = credit_form.cleaned_data.get('card_cvv')
-
-            user.user_profile.save()
-            return redirect('userprofilepage', username=username)
+                user.user_profile.save()
+                return redirect('userprofilepage', username=username)
     else:
         form = UpgradeAccountForm(instance=request.user.user_profile)
         credit_form = Subscription()

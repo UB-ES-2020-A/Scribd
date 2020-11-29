@@ -56,7 +56,7 @@ class UploadFileForm(forms.ModelForm):
 class UpdatePayment(forms.ModelForm):
     class Meta:
         model = userProfile
-        fields = ["subs_type", "card_titular",
+        fields = ["card_titular",
                   "card_number", "card_expiration",
                   "card_cvv"]
 
