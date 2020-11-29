@@ -10,7 +10,7 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm, reviewForm
+    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm
 from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
@@ -89,7 +89,6 @@ def ebook_create_view(request):
         if form.is_valid():
             form.save(commit=False)
             instance = form.save(commit=False)
-            print(instance.featured_photo)
             form.save()
             return redirect('index')
     else:
@@ -112,6 +111,7 @@ def ticket_page(request):
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
+
 ##################################
 ####### VISTA REVIEW #############
 ##################################
@@ -129,7 +129,7 @@ def review(request, pk):
         return HttpResponseRedirect(reverse('ebookdetail', kwargs={"number": pk}))
     context = {
         'book_number': pk,
-        #'viewedrestaurants': _check_session(request)
+        # 'viewedrestaurants': _check_session(request)
 
     }
     return render(request, 'scribd/review.html', context)
@@ -315,23 +315,23 @@ def upgrade_account_view(request, username):
     if request.method == "POST":
         form = UpgradeAccountForm(request.POST, instance=request.user.user_profile)
         form_subs = Subscription(request.POST, instance=request.user.user_profile)
+        user = User.objects.get(username=username)
+        prev_state = user.user_profile.subs_type
         if form.is_valid() and form_subs.is_valid():
             form.save()
             form_subs.save()
             user = User.objects.get(username=username)
 
-            # If user cancell subscription...
+            # If user cancel subscription...
             if user.user_profile.subs_type == "Free trial":
                 # If has more than 10 books followed we must display the correct value
                 if user.user_profile.n_books_followed >= 10:
-                    user.user_profile.nbooks_by_subs = 0
-                # If now change the value displayed
-                else:
-                    user.user_profile.nbooks_by_subs = 10 - user.user_profile.n_books_followed
+                    user.user_profile.n_books_followed = 10
+                user.user_profile.nbooks_by_subs = 10
 
             # if user upgrade to regular but it's the first time then he/she has 50 books to read
             if user.user_profile.subs_type == "Regular":
-                if user.user_profile.first_upgrade:
+                if user.user_profile.first_upgrade or prev_state == "Free trial":
                     user.user_profile.first_upgrade = False  # html
                     user.user_profile.nbooks_by_subs = 50
                 # otherwise, we add 20 new books
@@ -340,7 +340,7 @@ def upgrade_account_view(request, username):
 
             # if user upgrade to pro but it's the first time then he/she has 100 books to read
             if user.user_profile.subs_type == "Pro":
-                if user.user_profile.first_upgrade:
+                if user.user_profile.first_upgrade or prev_state == "Free trial":
                     user.user_profile.first_upgrade = False  # html
                     user.user_profile.nbooks_by_subs = 100
                 # otherwise, we add 50 new books
@@ -352,13 +352,38 @@ def upgrade_account_view(request, username):
     else:
         form = UpgradeAccountForm(instance=request.user.user_profile)
         form_subs = Subscription(instance=request.user.user_profile)
-    context = {
-        "form": form,
-        "current_time": datetime.datetime.now(),
-        "form_subs": form_subs
-    }
+        context = {
+            "form": form,
+            "current_time": datetime.datetime.now(),
+            "form_subs": form_subs
+        }
 
-    return render(request, 'forms/upgrade_account.html', context)
+        return render(request, 'forms/upgrade_account.html', context)
+
+
+def downgrade_account_view(request, username):
+    if request.method == 'POST':
+        user = User.objects.get(username=username)
+        if user.user_profile.subs_type == "Regular" or user.user_profile.subs_type == "Pro":
+            # downgrade to Free trial user
+            user.user_profile.subs_type = "Free trial"
+            user.user_profile.nbooks_by_subs = 10
+            # If has more than 10 books followed we must display the correct value
+            if user.user_profile.n_books_followed >= 10:
+                user.user_profile.n_books_followed = 10
+            # If now change the value displayed
+            else:
+                user.user_profile.n_books_followed = 10 - user.user_profile.n_books_followed
+
+        user.user_profile.expires = datetime.datetime.now()
+        user.user_profile.save()
+        return redirect('userprofilepage', username=username)
+    else:
+        form = CancelSubscription(instance=request.user.user_profile)
+        context = {
+            "form": form,
+        }
+        return render(request, 'forms/cancel_suscription_confirmation.html', context)
 
 
 def upload_file(request):
@@ -369,7 +394,6 @@ def upload_file(request):
             instance.user = request.user
             instance.user.user_profile.n_uploads += 1
             instance.user.user_profile.save()
-            print(instance.user.user_profile.n_uploads)
             form.save()
             return redirect('index')
     else:
@@ -394,8 +418,6 @@ def follow(request, pk):
         return redirect('index')
 
     else:
-        print(request.user.user_profile.nbooks_by_subs)
-        print(request.user.user_profile.n_books_followed)
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
         context = {

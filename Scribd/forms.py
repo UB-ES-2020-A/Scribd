@@ -83,7 +83,6 @@ class Subscription(forms.ModelForm):
                   "card_number", "card_expiration",
                   "card_cvv", ]
 
-        # TODO Gestionar featured_photo
         widgets = {
             'card_titular': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Full name as displayed on the card'}),
@@ -91,6 +90,12 @@ class Subscription(forms.ModelForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
+
+
+class CancelSubscription(forms.ModelForm):
+    class Meta:
+        model = userProfile
+        fields = ['subs_type']
 
 
 class ProfileFormProvider(forms.ModelForm):
@@ -115,6 +120,7 @@ class TicketForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
 
 class reviewForm(forms.ModelForm):
     class Meta:
