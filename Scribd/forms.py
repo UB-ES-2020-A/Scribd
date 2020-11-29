@@ -53,6 +53,13 @@ class UploadFileForm(forms.ModelForm):
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
+class UpdatePayment(forms.ModelForm):
+    class Meta:
+        model = userProfile
+        fields = ["subs_type", "card_titular",
+                  "card_number", "card_expiration",
+                  "card_cvv"]
+
 
 class RegisterForm(UserCreationForm):
     class Meta:

@@ -9,7 +9,7 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm
+    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm, UpdatePayment
 from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
@@ -298,24 +298,34 @@ def upgrade_account_view(request, username):
     return render(request, 'forms/upgrade_account.html', context)
 
 def update_payment_details(request, username):
+    credit_form = Subscription(request.POST or None, request.FILES)
     if request.method == "POST":
-        form = UpgradeAccountForm(request.POST, instance=request.user.user_profile)
+        form = UpdatePayment(request.POST, instance=request.user.user_profile)
         if form.is_valid():
             form.save()
             user = User.objects.get(username=username)
+
             if user.user_profile.subs_type == "Free trial":
                 user.user_profile.nbooks_by_subs = 10
             if user.user_profile.subs_type == "Regular":
                 user.user_profile.nbooks_by_subs = 100
             if user.user_profile.subs_type == "Pro":
                 user.user_profile.nbooks_by_subs = 1000
+
+            user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
+            user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
+            user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
+            user.user_profile.card_cvv = credit_form.cleaned_data.get('card_cvv')
+
             user.user_profile.save()
             return redirect('userprofilepage', username=username)
     else:
         form = UpgradeAccountForm(instance=request.user.user_profile)
+        credit_form = Subscription()
 
     context = {
-        "form": form
+        "form": form,
+        "credit_form": credit_form
     }
 
     return render(request, 'forms/update_payment.html', context)
