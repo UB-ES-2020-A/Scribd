@@ -116,8 +116,15 @@ class TicketForm(forms.ModelForm):
 
 class CreateInForum(forms.ModelForm):
     class Meta:
+        print("Still creating the form-------------------------------------------")
         model = Forum
         fields = ["topic","description"]
+
+        widgets = {
+            'topic': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Forum title (cannot be left blank)'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
 
 
 
@@ -125,3 +132,20 @@ class CreateInDiscussion(forms.ModelForm):
     class Meta:
         model = Discussion
         fields = "__all__"
+
+        widgets = {
+            'discuss': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+class CreateInDiscussionTicket(forms.ModelForm):
+    class Meta:
+        model = DiscussionTickets
+        fields = "__all__"
+
+        widgets = {
+            'discuss': forms.Textarea(attrs={'class': 'form-control'}),
+        }

@@ -96,22 +96,6 @@ def ebook_create_view(request):
 
 
 ##################################
-####### VISTA TICKET #############
-##################################
-
-def ticket_page(request):
-    if request.method == 'POST':
-        ticket_form = TicketForm(request.POST, request.FILES)
-        if ticket_form.is_valid():
-            ticket_form.save()
-            return redirect('index')
-    else:
-        ticket_form = TicketForm()
-
-    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
-
-
-##################################
 ####### VISTA LOGIN ###########
 ##################################
 
@@ -243,8 +227,7 @@ def contract_page(request):
     return render(request, 'scribd/contract.html')
 
 
-def support_page(request):
-    return render(request, 'scribd/support_page.html')
+
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
@@ -314,17 +297,52 @@ def upload_file(request):
 
 
 def follow(request, pk):
-    print("------------------------------------------")
-
     if request.method == 'POST':
-        form = FollowForm(request.POST)
-        if form.is_valid():
-            user = request.user
-            instance = Ebook.objects.get(id=pk)
-            instance.follower = user
-            instance.save()
-            return redirect('index')
+        if 'follow' in request.POST:
+
+            form = FollowForm(request.POST)
+            if form.is_valid():
+                user = request.user
+                instance = Ebook.objects.get(id=pk)
+                instance.follower = user
+                instance.save()
+                return redirect(request.META.get('HTTP_REFERER'))
+        elif 'create_forum' in request.POST:
+
+            forum_form = CreateInForum(request.POST)
+
+            if forum_form.is_valid() and request.user.is_authenticated:
+                forum = Forum.objects.create(
+                    ebook=Ebook.objects.get(id=pk),
+                    name=request.user.username,
+                    email=request.user.email,
+                    topic=forum_form.cleaned_data.get('topic'),
+                    description=forum_form.cleaned_data.get('description'),
+                    link=forum_form.cleaned_data.get('link')
+                )
+                forum.save()
+                return redirect(request.META.get('HTTP_REFERER'))
+
+        elif 'discussion' in request.POST:
+            print("Post value: ", request.POST)
+            discussion_form = CreateInDiscussion(request.POST)
+            print(Forum.objects.get(topic=request.POST.get('forum_name')).id)
+
+            if discussion_form.is_valid() and request.user.is_authenticated:
+                print("****************************************************")
+                discussion = Discussion.objects.create(
+                    user=User.objects.get(id=User.objects.get(username=request.user.username).id),
+
+                    forum=Forum.objects.get(id=Forum.objects.get(topic=request.POST.get('forum_name')).id),
+                    discuss=discussion_form.cleaned_data.get("discuss")
+                )
+
+                discussion.save()
+                return redirect(request.META.get('HTTP_REFERER'))
+
     else:
+        discussion_form = CreateInDiscussion()
+        forum_form = CreateInForum()
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
         forums = ebook.forum_set.all()
@@ -333,13 +351,15 @@ def follow(request, pk):
         for i in forums:
             discussions.append(i.discussion_set.all())
         context = {
+            "discussion_form": discussion_form,
+            "create_forum": forum_form,
             "form": form,
             "ebook": ebook,
             'forums': ebook.forum_set.all(),
             'count': count,
             'discussions': discussions
         }
-    return render(request, 'scribd/ebook_detail.html', context)
+        return render(request, 'scribd/ebook_detail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
@@ -369,6 +389,62 @@ class ticketViewSet(viewsets.ModelViewSet):
         return UserTickets.objects.all().order_by('id')
 
 
+def ticket_page(request):
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket = UserTickets.objects.create(
+                ticket_title=ticket_form.cleaned_data.get('ticket_title'),
+                ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
+                ticket_user=User.objects.get(username=request.user.username),
+
+            )
+            ticket.save()
+
+            return redirect('index')
+    else:
+        ticket_form = TicketForm()
+
+    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+
+
+def ticketForumView(request,pk):
+
+    if request.method == 'POST':
+        discussion_form = CreateInDiscussionTicket(request.POST)
+
+        if discussion_form.is_valid() and request.user.is_authenticated:
+            discussion = DiscussionTickets.objects.create(
+                user=User.objects.get(id=User.objects.get(username=request.user.username).id),
+                userticket=UserTickets.objects.get(id_uTicket=pk),
+                discuss=discussion_form.cleaned_data.get("discuss")
+            )
+
+            discussion.save()
+            return redirect(request.META.get('HTTP_REFERER'))
+
+    else:
+
+        discussion_form = CreateInDiscussionTicket()
+        ticket = UserTickets.objects.get(id_uTicket=pk)
+        discussions = ticket.discussiontickets_set.all()
+        context = {
+            'ticket': ticket,
+            'discussion_form': discussion_form,
+            'discuss': discussions
+        }
+
+        return render(request, 'scribd/ticketdetail.html', context)
+
+
+def support_page(request):
+    tickets = UserTickets.objects.all()
+
+    print(tickets)
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'scribd/support_page.html',context)
 ##################################
 ####### VISTA EBOOK ##############
 ##################################
@@ -457,32 +533,3 @@ class ForumViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return User.objects.all().order_by('date_created')
 
-
-def addInForum(request):
-    form = CreateInForum()
-    if request.method == 'POST':
-        form = CreateInForum(request.POST)
-
-        if form.is_valid() and request.user.is_authenticated:
-            forum = Forum.objects.create(
-                name=request.user.username,
-                email=request.user.email,
-                topic=form.cleaned_data.get('topic'),
-                description=form.cleaned_data.get('description'),
-                link=form.cleaned_data.get('link')
-            )
-            forum.save()
-            return redirect('/ebook_custom_detail/1/')
-    context = {'create_forum': form}
-    return render(request, 'forum/addInForum.html', context)
-
-
-def addInDiscussion(request):
-    form = CreateInDiscussion()
-    if request.method == 'POST':
-        form = CreateInDiscussion(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    context = {'form': form}
-    return render(request, 'forum/addInDiscussion.html', context)

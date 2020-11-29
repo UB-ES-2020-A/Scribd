@@ -28,9 +28,8 @@ urlpatterns = [
     url('provider/', provider_page, name='provider_page'),
     url('contract/', contract_page, name='contract_page'),
     url('ticket/', ticket_page, name='ticket_page'),
-    url('supportPage/', ticketListView.as_view(), name='support_page'),
-    url('addInForum/', addInForum, name='addInForum'),
-    url('addInDiscussion/', addInDiscussion, name='addInDiscussion'),
+    url('ticketdetail/(?P<pk>[0-9]+)/$', ticketForumView, name='ticketdetail'),
+    url('supportPage/', support_page, name='support_page'),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
