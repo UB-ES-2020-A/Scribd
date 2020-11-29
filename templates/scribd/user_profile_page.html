@@ -39,6 +39,19 @@
                 </div>
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h4 style="color:dimgray">Date of Subscription: {{ user.date_joined }}</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h4 style="color:dimgray">Date of Expire: {{ user.user_profile.expires }}</h4>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col">
                 <a href="upgrade/" class="btn" style="background-color: #367C85; margin-top: 20px">
