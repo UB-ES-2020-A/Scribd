@@ -79,8 +79,10 @@
                 <p>
                     To change this you can go and update your bank data right now by clicking the following button
                 </p>
-                <a class="btn" href="{% url 'updatepayment' request.user.username %}" style = "background-color: #367C85; margin-top: 20px">
-                        <h7 style="color: #FFFFFF">Update data bank</h7>
+
+                <a class="btn" href="{% url 'updatepayment' request.user.username %}"
+                   style="background-color: #367C85; margin-top: 20px">
+                    <h7 style="color: #FFFFFF">Update data bank</h7>
                 </a>
                 <hr>
             {% endif %}
