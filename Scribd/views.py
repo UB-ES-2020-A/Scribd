@@ -10,7 +10,7 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm
+    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm, UpdatePayment
 from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
@@ -190,21 +190,6 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
             userprofile = userProfile.objects.create(user=user)
             userprofile.subs_type = "Free trial"
             userprofile.nbooks_by_subs = 10
-            """
-            userprofile.subs_type = credit_form.cleaned_data.get('subs_type'),
-            print(credit_form.cleaned_data.get('subs_type'))
-            if userprofile.subs_type == "Free trial":
-                userprofile.nbooks_by_subs = 10
-            if userprofile.subs_type == "Regular":
-                userprofile.nbooks_by_subs = 100
-            if userprofile.subs_type == "Pro":
-                userprofile.nbooks_by_subs = 1000
-            userprofile.card_titular = credit_form.cleaned_data.get('card_titular'),
-            print(credit_form.cleaned_data.get('card_titular'))
-            userprofile.card_number = credit_form.cleaned_data.get('card_number'),
-            userprofile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
-            userprofile.card_cvv = credit_form.cleaned_data.get('card_cvv')
-            """
             userprofile.save()
 
         login(request, user, backend)
@@ -384,6 +369,33 @@ def downgrade_account_view(request, username):
         return render(request, 'forms/cancel_suscription_confirmation.html', context)
 
 @authentificated_user
+def update_payment_details(request, username):
+    credit_form = Subscription(request.POST or None, request.FILES)
+    if request.method == "POST":
+        form = UpdatePayment(request.POST, instance=request.user.user_profile)
+        if form.is_valid():
+            form.save()
+            user = User.objects.get(username=username)
+            if credit_form.is_valid():
+
+                user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
+                user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
+                user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
+                user.user_profile.card_cvv = credit_form.cleaned_data.get('card_cvv')
+
+                user.user_profile.save()
+                return redirect('userprofilepage', username=username)
+    else:
+        form = UpgradeAccountForm(instance=request.user.user_profile)
+        credit_form = Subscription()
+
+    context = {
+        "form": form,
+        "credit_form": credit_form
+    }
+
+    return render(request, 'forms/update_payment.html', context)
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -410,7 +422,7 @@ def follow(request, pk):
             user.user_profile.save()
 
             instance = Ebook.objects.get(id=pk)
-            instance.follower = user
+            instance.follower.add(user)
             instance.save()
 
         return redirect('index')
