@@ -16,26 +16,33 @@ urlpatterns = [
     url(r'^ebooks/$', views.ebooks, name='ebooks'),
     url(r'^ebooks/(?P<category>.*)/$', views.ebooks, name='ebooks'),
 
-    url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),
-    url('ebookdetail/(?P<pk>[0-9]+)/$', follow, name='ebook_custom_detail'),
-    url('changebook/(?P<pk>[0-9]+)/$', views.change_ebook, name='Ebook_change_details'),
-    url('addbook/', ebook_create_view, name='add_book'),
-    url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'),
-    url('User/$', UserList.as_view()),
-    url(r'^review/(?P<pk>[0-9]+)/$', review, name='review'),
-    url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),
-    url(r'^profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),
-    url(r'^profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'),
-    url(r'^profile/(?P<username>\w+)/upgrade/$', upgrade_account_view, name='upgradeaccount'),
-    url(r'^profile/(?P<username>\w+)/cancelconfirmation/$', downgrade_account_view, name='cancelconfirmation'),
-    url('upload_file/', upload_file, name='upload_file'),
-    url('accounts/login/', login_create_view, name='login'),
-    url('accounts/signup/', signup_create_view, name='signup'),
-    url('provider/', provider_page, name='provider_page'),
-    url('contract/', contract_page, name='contract_page'),
-    url('ticket/', ticket_page, name='ticket_page'),
-    url('supportPage/', ticketListView.as_view(), name='support_page'),
+    url('ebookdetail/(?P<pk>[0-9]+)/$', follow, name='ebook_custom_detail'), #everybody
+    url('changebook/(?P<pk>[0-9]+)/$', views.change_ebook, name='Ebook_change_details'), #only staff (admin and support)
+    
+    url('review/(?P<pk>[0-9]+)/$', review, name='review'), #only logged in
+
+    url('User/$', UserList.as_view()), #remove?
+    url('User/(?P<username>\w+)/$', UserDetail.as_view()), #remove?
+
+    url('upload_file/', upload_file, name='upload_file'), #only logged in
+    
+    url('accounts/login/', login_create_view, name='login'), #everybody
+    url('accounts/signup/', signup_create_view, name='signup'), #everybody
+
+    url('provider/', provider_page, name='provider_page'), #only self provider!!!!!
+    url('contract/', contract_page, name='contract_page'), #only self provider!!!!!
+    url('addbook/', ebook_create_view, name='add_book'), #only provider!!!!
+    url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'), #remove?
+
+    url('ticket/', ticket_page, name='ticket_page'), # only logged in
+    url('supportPage/', ticketListView.as_view(), name='support_page'), # only support
+
+    url('profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'), #only self
+    url('profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'), #only self
+    url('profile/(?P<username>\w+)/upgrade/$', upgrade_account_view, name='upgradeaccount'), #only self
 ]
+
+#url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 # urlpatterns += staticfiles_urlpatterns()

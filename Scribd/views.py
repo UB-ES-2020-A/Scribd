@@ -118,7 +118,7 @@ def ticket_page(request):
 
 def review(request, pk):
     if request.method == "POST":
-        ebook = Ebook.objects.get(ebook_number=128937)
+        ebook = Ebook.objects.get(id=pk)
         lista = [a for a, b in Review.STARS if b == int(request.POST["star"])]
         review = Review()
         review.ebook = ebook
@@ -126,7 +126,7 @@ def review(request, pk):
         review.value_stars = lista[0]
         review.user = request.user
         review.save()
-        return HttpResponseRedirect(reverse('ebookdetail', kwargs={"number": pk}))
+        return HttpResponseRedirect(reverse('ebook_custom_detail', kwargs={"pk": pk}))
     context = {
         'book_number': pk,
         # 'viewedrestaurants': _check_session(request)
@@ -420,19 +420,21 @@ def follow(request, pk):
     else:
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
+        reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
             context = {
                 "form": form,
                 "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
-                "ebook": ebook
+                "ebook": ebook,
+                "reviews": reviews
             }
         else:
             context = {
                 "form": form,
-                "ebook": ebook
+                "ebook": ebook,
+                "reviews": reviews
             }
         return render(request, 'scribd/ebook_detail.html', context)
-
 
 class UploadsViewSet(viewsets.ModelViewSet):
     queryset = UploadedResources.objects.all().order_by('id')
