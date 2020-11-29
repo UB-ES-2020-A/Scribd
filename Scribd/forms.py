@@ -1,8 +1,9 @@
+from Scribd.models import Ebook, UserTickets, UploadedResources, Review
+from .user_models import User, userProfile
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-
-from Scribd.models import Ebook, UserTickets, UploadedResources
-from .user_models import User, userProfile
+from crispy_forms.helper import FormHelper
 
 
 class EbookForm(forms.ModelForm):
@@ -35,6 +36,12 @@ class UpgradeAccountForm(forms.ModelForm):
     class Meta:
         model = userProfile
         fields = ['subs_type']
+
+        widget = {
+            'subs_type': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    helper = FormHelper()
 
 
 class FollowForm(forms.ModelForm):
@@ -83,7 +90,6 @@ class Subscription(forms.ModelForm):
                   "card_number", "card_expiration",
                   "card_cvv", ]
 
-        # TODO Gestionar featured_photo
         widgets = {
             'card_titular': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Full name as displayed on the card'}),
@@ -91,6 +97,12 @@ class Subscription(forms.ModelForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
+
+
+class CancelSubscription(forms.ModelForm):
+    class Meta:
+        model = userProfile
+        fields = ['subs_type']
 
 
 class ProfileFormProvider(forms.ModelForm):
@@ -114,4 +126,16 @@ class TicketForm(forms.ModelForm):
             'ticket_title': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+class reviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["comment", "value_stars"]
+
+        widgets = {
+            'comment_title': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'}),
         }

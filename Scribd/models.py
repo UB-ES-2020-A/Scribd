@@ -1,6 +1,5 @@
-from django.db import models
-
 from .user_models import User, providerProfile
+from django.db import models
 
 
 ##################################
@@ -28,7 +27,7 @@ class Ebook(models.Model):
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf',
+    url = models.URLField(max_length=200, default='static/readable_content/hp3.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
@@ -88,6 +87,7 @@ class Review(models.Model):
     id = models.AutoField(primary_key=True)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     value_stars = models.CharField(max_length=12, choices=STARS)
+    #comment_title = models.CharField(max_length=30, blank=False, default='comment')
     comment = models.TextField()
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 

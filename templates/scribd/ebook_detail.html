@@ -1,6 +1,6 @@
 {% extends 'scribd/base.html' %}
 {% block content %}
-    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
+    <link class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
         <h3>{{ ebook.title }}</h3>
         <small>written by: {{ ebook.autor }}</small>
         <h4> Proveedor: {{ ebook.publisher.publisher }}</h4>
@@ -18,11 +18,40 @@
         <p>Number of pages: {{ ebook.size }}</p>
         <p>Media file type: {{ ebook.media_type }}</p>
         <p>Number of downloads on Scribd: {{ ebook.count_downloads }}</p>
+        <div class="col-sm-6">
+            <h2>Review:</h2>
+            {% for review in reviews %}
+                <h3>
+                    <p>{{ review.user}} : {{ review.comment }} {{ review.value_stars }}</p>
+                </h3>
+            {% endfor %}
+        </div>
+        <a href="/review/{{ ebook.id }}">
+            <button class="btn btn-primary">Review</button>
+        </a>
         <form method="post">
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
-                <h7 style="color: #FFFFFF">Follow</h7>
-            </button>
+            {% if request.user.is_authenticated %}
+                {% if substract > 0 and not ebook.follower == request.user %}
+                    <button type="submit" class="btn" style="background-color: #367C85; margin-bottom: 20px"
+                            onclick="history.pushState(null, null, location.href);
+                        window.onpopstate = function () {
+                            history.go(1);
+                        };">
+                        <h7 style="color: #FFFFFF">Follow</h7>
+                    </button>
+                {% elif ebook.follower == request.user %}
+                    <a href="{% url 'userprofilepage' request.user.username %}" class="btn"
+                       style="background-color: #367C85; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Read it now!</h7>
+                    </a>
+                {% else %}
+                    <a href="{% url 'upgradeaccount' request.user.username %}" class="btn"
+                       style="background-color: #367C85; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                    </a>
+                {% endif %}
+            {% endif %}
         </form>
     </div>
 {% endblock %}

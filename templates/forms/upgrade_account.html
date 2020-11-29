@@ -48,7 +48,48 @@
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px">
+
+            {% if request.user.user_profile.subs_type == "Free trial" and request.user.user_profile.first_upgrade %}
+                <hr>
+                <div class="info-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                    <h4 class="mb-3">Payment info</h4>
+                </div>
+                <hr/>
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ form_subs.card_titular|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ form_subs.card_number|as_crispy_field }}
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group col-md-3 mb-3">
+                        {{ form_subs.card_expiration|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-3 mb-3">
+                        {{ form_subs.card_cvv|as_crispy_field }}
+                    </div>
+                </div>
+                <hr>
+            {% else %}
+                <hr>
+                <h5 style="color: darkred">Attention! The payment will be charged to your linked credit card</h5>
+                <p>
+                    To change this you can go and update your bank data right now by clicking the following button
+                </p>
+                <button type="submit" class="btn btn-primary"
+                        style="background-color: #367C85; margin-bottom: 20px">
+                    <h7 style="color: #FFFFFF">Update data bank</h7>
+                </button>
+                <hr>
+            {% endif %}
+            <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px"
+                    onclick="history.pushState(null, null, location.href);
+                        window.onpopstate = function () {
+                            history.go(1);
+                        };">
                 <h7 style="color: #FFFFFF">Upgrade now!</h7>
             </button>
         </form>
