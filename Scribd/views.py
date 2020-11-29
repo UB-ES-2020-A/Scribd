@@ -10,7 +10,7 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm
+    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm, UpdatePayment
 from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
@@ -384,6 +384,33 @@ def downgrade_account_view(request, username):
             "form": form,
         }
         return render(request, 'forms/cancel_suscription_confirmation.html', context)
+
+def update_payment_details(request, username):
+    credit_form = Subscription(request.POST or None, request.FILES)
+    if request.method == "POST":
+        form = UpdatePayment(request.POST, instance=request.user.user_profile)
+        if form.is_valid():
+            form.save()
+            user = User.objects.get(username=username)
+            if credit_form.is_valid():
+
+                user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
+                user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
+                user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
+                user.user_profile.card_cvv = credit_form.cleaned_data.get('card_cvv')
+
+                user.user_profile.save()
+                return redirect('userprofilepage', username=username)
+    else:
+        form = UpgradeAccountForm(instance=request.user.user_profile)
+        credit_form = Subscription()
+
+    context = {
+        "form": form,
+        "credit_form": credit_form
+    }
+
+    return render(request, 'forms/update_payment.html', context)
 
 
 def upload_file(request):

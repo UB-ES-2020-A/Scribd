@@ -38,11 +38,36 @@
                     <h1 style="font-size: 50px; color: #367C85">{{ user.user_profile.nbooks_by_subs }}</h1>
                 </div>
             </div>
+
+        </div>
+        <br>
+        <div class="row">
+            <div class="col">
+                <h4 style="color:dimgray">Date of Subscription: {{ user.date_joined }}</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <h4 style="color:dimgray">Date of Expire: {{ user.user_profile.expires }}</h4>
+            </div>
+        </div>
+
+        <div class="row">
+
             <div class="col">
                 <div>
                     <h3 style="color:dimgray">Books already followed</h3>
                     <h1 style="font-size: 50px; color: #367C85">{{ user.user_profile.n_books_followed }}</h1>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <a href="updatepayment/" class="btn" style="background-color: #367C85; margin-top: 20px">
+                    <h7 style="color: #FFFFFF">Update payment details</h7>
+                </a>
             </div>
         </div>
 
@@ -102,6 +127,7 @@
                                                     </a>
                                                 </div>
                                             </div>
+
                                         </div>
                                     {% endif %}
                                 {% endfor %}
