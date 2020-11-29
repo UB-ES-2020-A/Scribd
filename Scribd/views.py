@@ -420,11 +420,17 @@ def follow(request, pk):
     else:
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
-        context = {
-            "form": form,
-            "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
-            "ebook": ebook
-        }
+        if request.user.is_authenticated:
+            context = {
+                "form": form,
+                "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
+                "ebook": ebook
+            }
+        else:
+            context = {
+                "form": form,
+                "ebook": ebook
+            }
         return render(request, 'scribd/ebook_detail.html', context)
 
 
