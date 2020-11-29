@@ -32,7 +32,8 @@ class Ebook(models.Model):
     count_downloads = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
                                   blank=True)
-    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True)
+
+    follower = models.ManyToManyField(User, related_name='users_key', null=True, blank=True)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
