@@ -32,7 +32,7 @@
         <form method="post">
             {% csrf_token %}
             {% if request.user.is_authenticated %}
-                {% if substract > 0 and not ebook.follower == request.user %}
+                {% if substract > 0 and not ebook_followed %}
                     <button type="submit" class="btn" style="background-color: #367C85; margin-bottom: 20px"
                             onclick="history.pushState(null, null, location.href);
                         window.onpopstate = function () {
@@ -40,7 +40,7 @@
                         };">
                         <h7 style="color: #FFFFFF">Follow</h7>
                     </button>
-                {% elif ebook.follower == request.user %}
+                {% elif ebook_followed %}
                     <a href="{% url 'userprofilepage' request.user.username %}" class="btn"
                        style="background-color: #367C85; margin-top: 20px">
                         <h7 style="color: #FFFFFF">Read it now!</h7>

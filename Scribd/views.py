@@ -418,6 +418,7 @@ def follow(request, pk):
             user = request.user
 
             # always update the value. Controlled in front-end
+            print(list(user.users_key.values()))
             user.user_profile.n_books_followed += 1
             user.user_profile.save()
 
@@ -432,9 +433,14 @@ def follow(request, pk):
         ebook = Ebook.objects.get(id=pk)
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
+            followed = False
+            for e in list(request.user.users_key.values()):
+                if e['id'] == ebook.id:
+                    followed = True
             context = {
                 "form": form,
                 "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
+                "ebook_followed": followed,
                 "ebook": ebook,
                 "reviews": reviews
             }
