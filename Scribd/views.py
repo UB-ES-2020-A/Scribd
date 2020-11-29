@@ -346,7 +346,7 @@ def upgrade_account_view(request, username):
                 # otherwise, we add 50 new books
                 else:
                     user.user_profile.nbooks_by_subs += 50
-            user.user_profile.expires = datetime.datetime.now() + datetime.timedelta(seconds=30)
+            user.user_profile.expires = datetime.datetime.now() + datetime.timedelta(weeks=4)
             user.user_profile.save()
             return redirect('userprofilepage', username=username)
     else:
