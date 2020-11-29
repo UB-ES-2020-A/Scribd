@@ -15,6 +15,7 @@ from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, R
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
 from .user_models import User, userProfile
+from Scribd.decorators import allowed_users, authentificated_user
 
 
 ##################################
@@ -82,7 +83,7 @@ def ebooks(request, search=""):
     }
     return render(request, 'scribd/mainpage.html', context)
 
-
+@allowed_users(allowed_roles=['provider'])
 def ebook_create_view(request):
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
@@ -100,6 +101,7 @@ def ebook_create_view(request):
 ####### VISTA TICKET #############
 ##################################
 
+@authentificated_user
 def ticket_page(request):
     if request.method == 'POST':
         ticket_form = TicketForm(request.POST, request.FILES)
@@ -116,6 +118,7 @@ def ticket_page(request):
 ####### VISTA REVIEW #############
 ##################################
 
+@authentificated_user
 def review(request, pk):
     if request.method == "POST":
         ebook = Ebook.objects.get(id=pk)
@@ -263,11 +266,6 @@ def provider_page(request):
 def contract_page(request):
     return render(request, 'scribd/contract.html')
 
-
-def support_page(request):
-    return render(request, 'scribd/support_page.html')
-
-
 class AccountsViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -370,6 +368,7 @@ def downgrade_account_view(request, username):
         }
         return render(request, 'forms/cancel_suscription_confirmation.html', context)
 
+@authentificated_user
 def update_payment_details(request, username):
     credit_form = Subscription(request.POST or None, request.FILES)
     if request.method == "POST":
@@ -396,7 +395,6 @@ def update_payment_details(request, username):
     }
 
     return render(request, 'forms/update_payment.html', context)
-
 
 def upload_file(request):
     if request.method == 'POST':
@@ -461,6 +459,14 @@ class UploadsViewSet(viewsets.ModelViewSet):
 ##################################
 ####### VISTA TICKETS ############
 ##################################
+
+@allowed_users(allowed_roles=['support'])
+def support_page(request):
+
+    tickets = UserTickets.objects.all().order_by('id_uTicket')
+    context = {"tickets": tickets}
+    
+    return render(request, 'scribd/support_page.html', context)
 
 class ticketListView(ListView):
     model = UserTickets
@@ -529,7 +535,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data)
 
-
+@allowed_users(allowed_roles=['support'])
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
     form = EbookForm(request.POST or None, instance=instance)
