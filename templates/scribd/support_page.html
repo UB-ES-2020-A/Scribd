@@ -5,7 +5,7 @@
         <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
             <div class="container">
                 <h2 style="color: #323232">Recently <strong>saved</strong></h2>
-                {% for ticket in object_list %}
+                {% for ticket in tickets %}
                     <div class="col-lg-6 col-md-6 mb-3 d-flex">
                         <div class="card" style="width: 500px">
                             {% if not ticket.ticket_solved %}
