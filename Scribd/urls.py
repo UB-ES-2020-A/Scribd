@@ -6,8 +6,7 @@ from Scribd import views
 from Scribd.views import ebookListView, follow, ebook_create_view, edit_profile_page_provider, UserList, UserDetail, \
     user_profile_page, edit_profile_page, upgrade_account_view, upload_file, login_create_view, signup_create_view, \
     provider_page, contract_page, ticket_page, ticketForumView, support_page, review, update_payment_details, \
-    downgrade_account_view
-from Scribd.views import UserList, UserDetail
+    downgrade_account_view,UserList, UserDetail
 from ScribdProject import settings
 
 urlpatterns = [
@@ -22,7 +21,7 @@ urlpatterns = [
 
     url('review/(?P<pk>[0-9]+)/$', review, name='review'),  # only logged in
 
-    url('User/$', UserList.as_view()),  # remove?
+    url('User/$', UserList.as_view(), name='users'),  # remove?
     url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),  # remove?
 
     url('upload_file/', upload_file, name='upload_file'),  # only logged in
@@ -46,6 +45,8 @@ urlpatterns = [
     url(r'^profile/(?P<username>\w+)/cancelconfirmation/$', downgrade_account_view, name='cancelconfirmation'),
 
 ]
+
+# url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 # urlpatterns += staticfiles_urlpatterns()
