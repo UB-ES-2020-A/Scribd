@@ -21,13 +21,15 @@ from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
 
-from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet
+from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet,ForumViewSet
+
 
 router = routers.DefaultRouter()
 router.register(r'ebooks', EbookViewSet)
 router.register(r'accounts', AccountsViewSet)
 router.register(r'uploaded_files', UploadsViewSet)
 router.register(r'tickets', ticketViewSet)
+router.register(r'forums',ForumViewSet)
 
 urlpatterns = [
     url(r'admin/', admin.site.urls, name="admin_page"),

@@ -132,7 +132,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'Scribd.context_processors.inject_login_form'
+                'Scribd.context_processors.inject_login_form',
             ],
         },
     },

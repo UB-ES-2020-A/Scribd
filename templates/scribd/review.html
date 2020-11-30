@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% extends 'scribd/base.html' %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review</title>
+</head>
+{% block content %}
+    <body>
+    <!--h1>{{ name }}</h1-->
+    <h2>Valoración:</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <select style="width:200px" name="star">
+            <option value="1">1.Mal</option>
+            <option value="2">2.Mejorable</option>
+            <option selected value="3">3.Aceptable</option>
+            <option value="4">4.Notable</option>
+            <option value="5">5.Excelente</option>
+        </select>
+        <h2>Reseña:</h2>
+        <textarea name="comment" rows="15" cols="100"
+                  placeholder="Introduce el texto aquí..."></textarea>
+        <br>
+        <button type="submit">Enviar</button>
+    </form>
+    <a href="/ebookdetail/{{ book_number }}">
+        <button>Cancelar</button>
+    </a>
+
+    </body>
+{% endblock %}
+</html>

@@ -1,3 +1,4 @@
+import datetime
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
@@ -9,11 +10,13 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, UpgradeAccountForm
-from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks
+    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm, UpdatePayment, \
+    CreateInForum, CreateInDiscussion, CreateInDiscussionTicket
+from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
-from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
+from Scribd.serializers import *
 from .user_models import User, userProfile
+from Scribd.decorators import allowed_users, authentificated_user
 
 
 ##################################
@@ -22,6 +25,7 @@ from .user_models import User, userProfile
 
 def base(request):
     return render(request, 'scribd/base.html')
+
 
 def index(request):
     ebooks = Ebook.objects.all()
@@ -47,7 +51,8 @@ def _check_session(request):
 class ebookMainView(ListView):
     model = Ebook
     template_name = 'scribd/mainpage.html'
-    
+
+
 def ebooks(request, search=""):
     # Priorizamos busqueda categoria
     if request.method == "GET":
@@ -86,7 +91,6 @@ def ebook_create_view(request):
         if form.is_valid():
             form.save(commit=False)
             instance = form.save(commit=False)
-            print(instance.featured_photo)
             form.save()
             return redirect('index')
     else:
@@ -95,23 +99,31 @@ def ebook_create_view(request):
 
 
 ##################################
-####### VISTA TICKET #############
+####### VISTA REVIEW #############
 ##################################
 
-def ticket_page(request):
-    if request.method == 'POST':
-        ticket_form = TicketForm(request.POST, request.FILES)
-        if ticket_form.is_valid():
-            ticket_form.save()
-            return redirect('index')
-    else:
-        ticket_form = TicketForm()
+@authentificated_user
+def review(request, pk):
+    if request.method == "POST":
+        ebook = Ebook.objects.get(id=pk)
+        lista = [a for a, b in Review.STARS if b == int(request.POST["star"])]
+        review = Review()
+        review.ebook = ebook
+        review.comment = request.POST["comment"]
+        review.value_stars = lista[0]
+        review.user = request.user
+        review.save()
+        return HttpResponseRedirect(reverse('ebook_custom_detail', kwargs={"pk": pk}))
+    context = {
+        'book_number': pk,
+        # 'viewedrestaurants': _check_session(request)
 
-    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+    }
+    return render(request, 'scribd/review.html', context)
 
 
 ##################################
-####### VISTA LOGIN ###########
+####### VISTA LOGIN ##############
 ##################################
 
 def login_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
@@ -148,6 +160,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
         signup_form = RegisterForm(request.POST, request.FILES)
+        user = None
         if signup_form.is_valid():
             user = User.objects.create_user(
                 email=signup_form.cleaned_data.get('email'),
@@ -155,42 +168,32 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'))
-            credit_form = Subscription(request.POST or None, request.FILES)
-            if credit_form.is_valid():
-                userprofile = userProfile.objects.create(user=user)
-                userprofile.subs_type = credit_form.cleaned_data.get('subs_type'),
-                print(credit_form.cleaned_data.get('subs_type'))
-                if userprofile.subs_type == "Free trial":
-                    userprofile.nbooks_by_subs = 10
-                if userprofile.subs_type == "Regular":
-                    userprofile.nbooks_by_subs = 100
-                if userprofile.subs_type == "Pro":
-                    userprofile.nbooks_by_subs = 1000
-                userprofile.card_titular = credit_form.cleaned_data.get('card_titular'),
-                print(credit_form.cleaned_data.get('card_titular'))
-                userprofile.card_number = credit_form.cleaned_data.get('card_number'),
-                userprofile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
-                userprofile.card_cvv = credit_form.cleaned_data.get('card_cvv')
-                userprofile.save()
+            # credit_form = Subscription(request.POST or None, request.FILES)
+            # if credit_form.is_valid():
 
-            login(request, user, backend)
-            if user.is_provider:
-                return redirect('provider_page')
-            elif user.is_support:
-                return redirect('support_page')
-            elif user.is_provider:
-                return HttpResponseRedirect(reverse('admin:index'))
-            return redirect('index')
+            userprofile = userProfile.objects.create(user=user)
+            userprofile.subs_type = "Free trial"
+            userprofile.nbooks_by_subs = 10
+            userprofile.save()
+
+        login(request, user, backend)
+        if user.is_provider:
+            return redirect('provider_page')
+        elif user.is_support:
+            return redirect('support_page')
+        elif user.is_provider:
+            return HttpResponseRedirect(reverse('admin:index'))
+        return redirect('index')
+
     else:
-
         signup_form = RegisterForm()
         credit_form = Subscription()
 
-    context = {
-        "register_form": signup_form,
-        "credit_form": credit_form
-    }
-    return render(request, 'registration/signup.html', context)
+        context = {
+            "register_form": signup_form,
+            "credit_form": credit_form
+        }
+        return render(request, 'registration/signup.html', context)
 
 
 ##################################
@@ -233,6 +236,12 @@ class user_profile_page(DetailView):
         UserName = self.kwargs.get("username")
         return get_object_or_404(User, username=UserName)
 
+    def get_context_data(self, **kwargs):
+        context = super(user_profile_page, self).get_context_data(**kwargs)
+        current_time = datetime.datetime.now()
+        context['current_time'] = current_time
+        return context
+
 
 def provider_page(request):
     return render(request, 'scribd/providers_homepage.html')
@@ -240,10 +249,6 @@ def provider_page(request):
 
 def contract_page(request):
     return render(request, 'scribd/contract.html')
-
-
-def support_page(request):
-    return render(request, 'scribd/support_page.html')
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
@@ -276,26 +281,106 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 def upgrade_account_view(request, username):
     if request.method == "POST":
+
         form = UpgradeAccountForm(request.POST, instance=request.user.user_profile)
-        if form.is_valid():
+        form_subs = Subscription(request.POST, instance=request.user.user_profile)
+        user = User.objects.get(username=username)
+        prev_state = user.user_profile.subs_type
+        if form.is_valid() and form_subs.is_valid():
             form.save()
+            form_subs.save()
             user = User.objects.get(username=username)
+
+            # If user cancel subscription...
             if user.user_profile.subs_type == "Free trial":
+                # If has more than 10 books followed we must display the correct value
+                if user.user_profile.n_books_followed >= 10:
+                    user.user_profile.n_books_followed = 10
                 user.user_profile.nbooks_by_subs = 10
+
+            # if user upgrade to regular but it's the first time then he/she has 50 books to read
             if user.user_profile.subs_type == "Regular":
-                user.user_profile.nbooks_by_subs = 100
+                if user.user_profile.first_upgrade or prev_state == "Free trial":
+                    user.user_profile.first_upgrade = False  # html
+                    user.user_profile.nbooks_by_subs = 50
+                # otherwise, we add 20 new books
+                else:
+                    user.user_profile.nbooks_by_subs += 20
+
+            # if user upgrade to pro but it's the first time then he/she has 100 books to read
             if user.user_profile.subs_type == "Pro":
-                user.user_profile.nbooks_by_subs = 1000
+                if user.user_profile.first_upgrade or prev_state == "Free trial":
+                    user.user_profile.first_upgrade = False  # html
+                    user.user_profile.nbooks_by_subs = 100
+                # otherwise, we add 50 new books
+                else:
+                    user.user_profile.nbooks_by_subs += 50
+            user.user_profile.expires = datetime.datetime.now() + datetime.timedelta(weeks=4)
             user.user_profile.save()
             return redirect('userprofilepage', username=username)
     else:
         form = UpgradeAccountForm(instance=request.user.user_profile)
+        form_subs = Subscription(instance=request.user.user_profile)
+        context = {
+            "form": form,
+            "current_time": datetime.datetime.now(),
+            "form_subs": form_subs
+        }
+
+        return render(request, 'forms/upgrade_account.html', context)
+
+
+def downgrade_account_view(request, username):
+    if request.method == 'POST':
+        user = User.objects.get(username=username)
+        if user.user_profile.subs_type == "Regular" or user.user_profile.subs_type == "Pro":
+            # downgrade to Free trial user
+            user.user_profile.subs_type = "Free trial"
+            user.user_profile.nbooks_by_subs = 10
+            # If has more than 10 books followed we must display the correct value
+            if user.user_profile.n_books_followed >= 10:
+                user.user_profile.n_books_followed = 10
+            # If now change the value displayed
+            else:
+                user.user_profile.n_books_followed = user.user_profile.n_books_followed
+
+        user.user_profile.expires = datetime.datetime.now()
+        user.user_profile.save()
+        return redirect('userprofilepage', username=username)
+    else:
+        form = CancelSubscription(instance=request.user.user_profile)
+        context = {
+            "form": form,
+        }
+        return render(request, 'forms/cancel_suscription_confirmation.html', context)
+
+
+@authentificated_user
+def update_payment_details(request, username):
+    credit_form = Subscription(request.POST or None, request.FILES)
+    if request.method == "POST":
+        form = UpdatePayment(request.POST, instance=request.user.user_profile)
+        if form.is_valid():
+            form.save()
+            user = User.objects.get(username=username)
+            if credit_form.is_valid():
+                user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
+                user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
+                user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
+                user.user_profile.card_cvv = credit_form.cleaned_data.get('card_cvv')
+
+                user.user_profile.save()
+                return redirect('userprofilepage', username=username)
+    else:
+        form = UpgradeAccountForm(instance=request.user.user_profile)
+        credit_form = Subscription()
 
     context = {
-        "form": form
+        "form": form,
+        "credit_form": credit_form
     }
 
-    return render(request, 'forms/upgrade_account.html', context)
+    return render(request, 'forms/update_payment.html', context)
 
 
 def upload_file(request):
@@ -304,7 +389,9 @@ def upload_file(request):
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = request.user
-            print(instance.user.uploadedresources_set.all())
+
+            instance.user.user_profile.n_uploads += 1
+            instance.user.user_profile.save()
             form.save()
             return redirect('index')
     else:
@@ -312,23 +399,100 @@ def upload_file(request):
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
+@authentificated_user
 def follow(request, pk):
     if request.method == 'POST':
-        form = FollowForm(request.POST)
-        if form.is_valid():
-            user = request.user
-            instance = Ebook.objects.get(id=pk)
-            instance.follower = user
-            instance.save()
-            return redirect('index')
+        if 'follow' in request.POST:
+
+            form = FollowForm(request.POST)
+            if form.is_valid():
+                user = request.user
+
+                # always update the value. Controlled in front-end
+                print(list(user.users_key.values()))
+                user.user_profile.n_books_followed += 1
+                user.user_profile.save()
+
+                instance = Ebook.objects.get(id=pk)
+                instance.follower.add(user)
+                instance.save()
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
+        elif 'create_forum' in request.POST:
+
+            forum_form = CreateInForum(request.POST)
+
+            if forum_form.is_valid() and request.user.is_authenticated:
+                forum = Forum.objects.create(
+                    ebook=Ebook.objects.get(id=pk),
+                    name=request.user.username,
+                    email=request.user.email,
+                    topic=forum_form.cleaned_data.get('topic'),
+                    description=forum_form.cleaned_data.get('description'),
+                    link=forum_form.cleaned_data.get('link')
+                )
+                forum.save()
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
+
+        elif 'discussion' in request.POST:
+
+            discussion_form = CreateInDiscussion(request.POST)
+
+            if discussion_form.is_valid() and request.user.is_authenticated:
+                discussion = Discussion.objects.create(
+                    user=User.objects.get(id=User.objects.get(username=request.user.username).id),
+
+                    forum=Forum.objects.get(id=Forum.objects.get(topic=request.POST.get('forum_name')).id),
+                    discuss=discussion_form.cleaned_data.get("discuss")
+                )
+
+                discussion.save()
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
+
     else:
+        discussion_form = CreateInDiscussion()
+        forum_form = CreateInForum()
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
-        context = {
-            "form": form,
-            "ebook": ebook
-        }
-    return render(request, 'scribd/ebook_detail.html', context)
+        forums = ebook.forum_set.all()
+        count = forums.count()
+        discussions = []
+        for i in forums:
+            discussions.append(i.discussion_set.all())
+
+        reviews = Review.objects.filter(ebook=ebook)
+        if request.user.is_authenticated:
+            followed = False
+            for e in list(request.user.users_key.values()):
+                if e['id'] == ebook.id:
+                    followed = True
+
+            context = {
+                "form": form,
+                "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
+                "ebook_followed": followed,
+                "ebook": ebook,
+                "reviews": reviews,
+                "discussion_form": discussion_form,
+                "create_forum": forum_form,
+                'forums': ebook.forum_set.all(),
+                'count': count,
+                'discussions': discussions
+            }
+        else:
+            context = {
+                "reviews": reviews,
+                "discussion_form": discussion_form,
+                "create_forum": forum_form,
+                "form": form,
+                "ebook": ebook,
+                'forums': ebook.forum_set.all(),
+                'count': count,
+                'discussions': discussions
+            }
+        return render(request, 'scribd/ebook_detail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
@@ -358,6 +522,66 @@ class ticketViewSet(viewsets.ModelViewSet):
         return UserTickets.objects.all().order_by('id')
 
 
+def ticket_page(request):
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket = UserTickets.objects.create(
+                ticket_title=ticket_form.cleaned_data.get('ticket_title'),
+                ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
+                ticket_user=User.objects.get(username=request.user.username),
+
+            )
+            ticket.save()
+
+            return redirect('index')
+    else:
+        ticket_form = TicketForm()
+
+    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+
+
+def ticketForumView(request, pk):
+    if request.method == 'POST':
+        discussion_form = CreateInDiscussionTicket(request.POST)
+
+        if discussion_form.is_valid() and request.user.is_authenticated:
+            discussion = DiscussionTickets.objects.create(
+                user=User.objects.get(id=User.objects.get(username=request.user.username).id),
+                userticket=UserTickets.objects.get(id_uTicket=pk),
+                discuss=discussion_form.cleaned_data.get("discuss")
+            )
+
+            discussion.save()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+    else:
+
+        discussion_form = CreateInDiscussionTicket()
+        ticket = UserTickets.objects.get(id_uTicket=pk)
+        discussions = ticket.discussiontickets_set.all()
+        context = {
+            'ticket': ticket,
+            'discussion_form': discussion_form,
+            'discuss': discussions
+        }
+
+        return render(request, 'scribd/ticketdetail.html', context)
+
+
+@authentificated_user
+def support_page(request):
+    print(request.user.is_support)
+    tickets = UserTickets.objects.all()
+
+    print(tickets)
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'scribd/support_page.html', context)
+
+
 ##################################
 ####### VISTA EBOOK ##############
 ##################################
@@ -371,9 +595,20 @@ class ebookListView(ListView):
     template_name = 'scribd/ebooks_list.html'
 
 
-class ebookDetailView(DetailView):
-    model = Ebook
-    template_name = 'scribd/ebook_detail.html'
+def ebookDetailView(request):
+    forums = Ebook.objects.Forum.objects.all()
+    print("********************************************************")
+    count = forums.count()
+    discussions = []
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context = {
+        'forums': forums,
+        'count': count,
+        'discussions': discussions}
+
+    return render(request, 'scribd/ebook_detail.html', context)
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -413,6 +648,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         return Response(serializer.data)
 
 
+@allowed_users(allowed_roles=['support'])
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
     form = EbookForm(request.POST or None, instance=instance)
@@ -420,3 +656,17 @@ def change_ebook(request, pk):
         form.save()
         return redirect('index')
     return render(request, 'scribd/ebook_change.html', {'form': form})
+
+
+##################################
+####### VISTA FORUM ##############
+##################################
+
+class ForumViewSet(viewsets.ModelViewSet):
+    queryset = Forum.objects.all().order_by('date_created')
+    serializer_class = ForumSerializer
+
+    # permission_classes = permissions.IsAuthenticatedOrReadOnly
+
+    def get_queryset(self):
+        return User.objects.all().order_by('date_created')

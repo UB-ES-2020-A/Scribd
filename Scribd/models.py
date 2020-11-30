@@ -1,6 +1,5 @@
-from django.db import models
-
 from .user_models import User, providerProfile
+from django.db import models
 
 
 ##################################
@@ -28,12 +27,13 @@ class Ebook(models.Model):
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='https://es-scribd-staging.herokuapp.com/media/ebooks/unknown.pdf',
+    url = models.URLField(max_length=200, default='static/readable_content/hp3.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
                                   blank=True)
-    follower = models.ForeignKey(User, related_name='users_key', on_delete=models.CASCADE, null=True, blank=True)
+
+    follower = models.ManyToManyField(User, related_name='users_key', null=True, blank=True)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -88,6 +88,7 @@ class Review(models.Model):
     id = models.AutoField(primary_key=True)
     ebook = models.ForeignKey(Ebook, on_delete=models.CASCADE)
     value_stars = models.CharField(max_length=12, choices=STARS)
+    #comment_title = models.CharField(max_length=30, blank=False, default='comment')
     comment = models.TextField()
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
 
@@ -106,6 +107,7 @@ class Review(models.Model):
 
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
+    ticket_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
@@ -114,6 +116,15 @@ class UserTickets(models.Model):
     class Meta:
         verbose_name = 'UserTickets'
         verbose_name_plural = 'UserTickets'
+
+
+class DiscussionTickets(models.Model):
+    userticket = models.ForeignKey(UserTickets,null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, default=None)
+    discuss = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return str(self.userticket)
 
 
 ##################################
@@ -141,3 +152,29 @@ class Payments(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     ammount = models.FloatField(default=0.0)
     date = models.DateTimeField(auto_now_add=True)
+
+
+##################################
+####### MODELOS FORUM ############
+##################################
+
+class Forum(models.Model):
+    ebook = models.ForeignKey(Ebook,null=True, blank=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, default="anonymous")
+    email = models.CharField(max_length=200, null=True)
+    topic = models.CharField(unique=True, max_length=300)
+    description = models.CharField(max_length=1000, blank=True)
+    link = models.CharField(max_length=100, null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return str(self.topic)
+
+
+class Discussion(models.Model):
+    forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    discuss = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return str(self.forum)

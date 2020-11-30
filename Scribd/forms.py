@@ -1,7 +1,11 @@
+from Scribd.models import Ebook, UserTickets, UploadedResources, Review
+from .user_models import User, userProfile
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from crispy_forms.helper import FormHelper
 
-from Scribd.models import Ebook, UserTickets, UploadedResources
+from Scribd.models import *
 from .user_models import User, userProfile
 
 
@@ -36,6 +40,12 @@ class UpgradeAccountForm(forms.ModelForm):
         model = userProfile
         fields = ['subs_type']
 
+        widget = {
+            'subs_type': forms.Select(attrs={'class': 'form-control'})
+        }
+
+    helper = FormHelper()
+
 
 class FollowForm(forms.ModelForm):
     class Meta:
@@ -52,6 +62,13 @@ class UploadFileForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
+
+class UpdatePayment(forms.ModelForm):
+    class Meta:
+        model = userProfile
+        fields = ["card_titular",
+                  "card_number", "card_expiration",
+                  "card_cvv"]
 
 
 class RegisterForm(UserCreationForm):
@@ -76,7 +93,6 @@ class Subscription(forms.ModelForm):
                   "card_number", "card_expiration",
                   "card_cvv", ]
 
-        # TODO Gestionar featured_photo
         widgets = {
             'card_titular': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Full name as displayed on the card'}),
@@ -84,6 +100,12 @@ class Subscription(forms.ModelForm):
             'card_cvv': forms.PasswordInput(attrs={'class': 'form-control'}),
             'card_expiration': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'mm/yy'}),
         }
+
+
+class CancelSubscription(forms.ModelForm):
+    class Meta:
+        model = userProfile
+        fields = ['subs_type']
 
 
 class ProfileFormProvider(forms.ModelForm):
@@ -107,4 +129,57 @@ class TicketForm(forms.ModelForm):
             'ticket_title': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+class reviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ["comment", "value_stars"]
+
+        widgets = {
+            'comment_title': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+##################################
+####### FORMS FORUM ##############
+##################################
+
+class CreateInForum(forms.ModelForm):
+    class Meta:
+        print("Still creating the form-------------------------------------------")
+        model = Forum
+        fields = ["topic","description"]
+
+        widgets = {
+            'topic': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Forum title (cannot be left blank)'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+
+class CreateInDiscussion(forms.ModelForm):
+    class Meta:
+        model = Discussion
+        fields = "__all__"
+
+        widgets = {
+            'discuss': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+class CreateInDiscussionTicket(forms.ModelForm):
+    class Meta:
+        model = DiscussionTickets
+        fields = "__all__"
+
+        widgets = {
+            'discuss': forms.Textarea(attrs={'class': 'form-control'}),
         }

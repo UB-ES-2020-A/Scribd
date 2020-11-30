@@ -5,17 +5,25 @@
         <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
             <div class="container">
                 <h2 style="color: #323232">Recently <strong>saved</strong></h2>
-                {% for ticket in object_list %}
+
+                {% for ticket in tickets %}
                     <div class="col-lg-6 col-md-6 mb-3 d-flex">
                         <div class="card" style="width: 500px">
-                            {% if not ticket.ticket_solved %}
+                            {% if not ticket.ticket_solved  %}
+                                {% if ticket.ticket_user.username == request.user.username or request.user.is_support %}
                                 <div class="card-body" style="text-align: center;">
                                     <h5 class="card-title pt-5"><strong>{{ ticket.ticket_title }}</strong></h5>
                                     <br>
                                     <p> {{ ticket.ticket_summary }} </p>
+
+
                                     <br>
+                                <a href="{% url 'ticketdetail' ticket.id_uTicket %}" class="btn" style="background-color: #367C85">
+                                        <h7 style="color: #FFFFFF">More info</h7>
+                                    </a>
                                 </div>
                             {% endif %}
+                        {% endif %}
                         </div>
                     </div>
                 {% endfor %}
