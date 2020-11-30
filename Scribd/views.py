@@ -342,7 +342,7 @@ def downgrade_account_view(request, username):
                 user.user_profile.n_books_followed = 10
             # If now change the value displayed
             else:
-                user.user_profile.n_books_followed = 10 - user.user_profile.n_books_followed
+                user.user_profile.n_books_followed = user.user_profile.n_books_followed
 
         user.user_profile.expires = datetime.datetime.now()
         user.user_profile.save()
