@@ -5,6 +5,9 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from crispy_forms.helper import FormHelper
 
+from Scribd.models import *
+from .user_models import User, userProfile
+
 
 class EbookForm(forms.ModelForm):
     class Meta:
@@ -138,4 +141,45 @@ class reviewForm(forms.ModelForm):
             'comment_title': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
             'comment': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+##################################
+####### FORMS FORUM ##############
+##################################
+
+class CreateInForum(forms.ModelForm):
+    class Meta:
+        print("Still creating the form-------------------------------------------")
+        model = Forum
+        fields = ["topic","description"]
+
+        widgets = {
+            'topic': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Forum title (cannot be left blank)'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+
+class CreateInDiscussion(forms.ModelForm):
+    class Meta:
+        model = Discussion
+        fields = "__all__"
+
+        widgets = {
+            'discuss': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+
+
+
+
+class CreateInDiscussionTicket(forms.ModelForm):
+    class Meta:
+        model = DiscussionTickets
+        fields = "__all__"
+
+        widgets = {
+            'discuss': forms.Textarea(attrs={'class': 'form-control'}),
         }

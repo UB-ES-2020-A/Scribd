@@ -10,10 +10,11 @@ from requests import Response
 from rest_framework import generics, viewsets, permissions
 
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
-    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm, UpdatePayment
+    FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm, UpdatePayment, \
+    CreateInForum, CreateInDiscussion, CreateInDiscussionTicket
 from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review
 from Scribd.permissions import EditBookPermissions
-from Scribd.serializers import UserSerializer, EbookSerializer, ticketSerializer, UploadResourcesSerializer
+from Scribd.serializers import *
 from .user_models import User, userProfile
 from Scribd.decorators import allowed_users, authentificated_user
 
@@ -50,8 +51,7 @@ def _check_session(request):
 class ebookMainView(ListView):
     model = Ebook
     template_name = 'scribd/mainpage.html'
-
-
+    
 def ebooks(request, search=""):
     # Priorizamos busqueda categoria
     if request.method == "GET":
@@ -83,7 +83,7 @@ def ebooks(request, search=""):
     }
     return render(request, 'scribd/mainpage.html', context)
 
-@allowed_users(allowed_roles=['provider'])
+
 def ebook_create_view(request):
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
@@ -95,23 +95,6 @@ def ebook_create_view(request):
     else:
         form = EbookForm()
     return render(request, 'forms/add_book.html', {'book_form': form})
-
-
-##################################
-####### VISTA TICKET #############
-##################################
-
-@authentificated_user
-def ticket_page(request):
-    if request.method == 'POST':
-        ticket_form = TicketForm(request.POST, request.FILES)
-        if ticket_form.is_valid():
-            ticket_form.save()
-            return redirect('index')
-    else:
-        ticket_form = TicketForm()
-
-    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
 
 ##################################
@@ -266,6 +249,10 @@ def provider_page(request):
 def contract_page(request):
     return render(request, 'scribd/contract.html')
 
+
+
+
+
 class AccountsViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -410,47 +397,103 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
-
+@authentificated_user
 def follow(request, pk):
     if request.method == 'POST':
-        form = FollowForm(request.POST)
-        if form.is_valid():
-            user = request.user
+        if 'follow' in request.POST:
 
-            # always update the value. Controlled in front-end
-            print(list(user.users_key.values()))
-            user.user_profile.n_books_followed += 1
-            user.user_profile.save()
+            form = FollowForm(request.POST)
+            if form.is_valid():
+                user = request.user
 
-            instance = Ebook.objects.get(id=pk)
-            instance.follower.add(user)
-            instance.save()
+                # always update the value. Controlled in front-end
+                print(list(user.users_key.values()))
+                user.user_profile.n_books_followed += 1
+                user.user_profile.save()
 
-        return redirect('index')
+                instance = Ebook.objects.get(id=pk)
+                instance.follower.add(user)
+                instance.save()
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
+        elif 'create_forum' in request.POST:
+
+            forum_form = CreateInForum(request.POST)
+
+            if forum_form.is_valid() and request.user.is_authenticated:
+                forum = Forum.objects.create(
+                    ebook=Ebook.objects.get(id=pk),
+                    name=request.user.username,
+                    email=request.user.email,
+                    topic=forum_form.cleaned_data.get('topic'),
+                    description=forum_form.cleaned_data.get('description'),
+                    link=forum_form.cleaned_data.get('link')
+                )
+                forum.save()
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
+
+        elif 'discussion' in request.POST:
+
+            discussion_form = CreateInDiscussion(request.POST)
+
+
+            if discussion_form.is_valid() and request.user.is_authenticated:
+
+                discussion = Discussion.objects.create(
+                    user=User.objects.get(id=User.objects.get(username=request.user.username).id),
+
+                    forum=Forum.objects.get(id=Forum.objects.get(topic=request.POST.get('forum_name')).id),
+                    discuss=discussion_form.cleaned_data.get("discuss")
+                )
+
+                discussion.save()
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
 
     else:
+        discussion_form = CreateInDiscussion()
+        forum_form = CreateInForum()
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
+        forums = ebook.forum_set.all()
+        count = forums.count()
+        discussions = []
+        for i in forums:
+            discussions.append(i.discussion_set.all())
+
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
             followed = False
             for e in list(request.user.users_key.values()):
                 if e['id'] == ebook.id:
                     followed = True
+
             context = {
                 "form": form,
                 "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
                 "ebook_followed": followed,
                 "ebook": ebook,
-                "reviews": reviews
+                "reviews": reviews,
+                "discussion_form": discussion_form,
+                "create_forum": forum_form,
+                'forums': ebook.forum_set.all(),
+                'count': count,
+                'discussions': discussions
             }
         else:
             context = {
+                "reviews": reviews,
+                "discussion_form": discussion_form,
+                "create_forum": forum_form,
                 "form": form,
                 "ebook": ebook,
-                "reviews": reviews
+                'forums': ebook.forum_set.all(),
+                'count': count,
+                'discussions': discussions
             }
         return render(request, 'scribd/ebook_detail.html', context)
+
 
 class UploadsViewSet(viewsets.ModelViewSet):
     queryset = UploadedResources.objects.all().order_by('id')
@@ -466,14 +509,6 @@ class UploadsViewSet(viewsets.ModelViewSet):
 ####### VISTA TICKETS ############
 ##################################
 
-@allowed_users(allowed_roles=['support'])
-def support_page(request):
-
-    tickets = UserTickets.objects.all().order_by('id_uTicket')
-    context = {"tickets": tickets}
-    
-    return render(request, 'scribd/support_page.html', context)
-
 class ticketListView(ListView):
     model = UserTickets
     template_name = 'scribd/support_page.html'
@@ -487,6 +522,63 @@ class ticketViewSet(viewsets.ModelViewSet):
         return UserTickets.objects.all().order_by('id')
 
 
+def ticket_page(request):
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket = UserTickets.objects.create(
+                ticket_title=ticket_form.cleaned_data.get('ticket_title'),
+                ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
+                ticket_user=User.objects.get(username=request.user.username),
+
+            )
+            ticket.save()
+
+            return redirect('index')
+    else:
+        ticket_form = TicketForm()
+
+    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+
+
+def ticketForumView(request,pk):
+
+    if request.method == 'POST':
+        discussion_form = CreateInDiscussionTicket(request.POST)
+
+        if discussion_form.is_valid() and request.user.is_authenticated:
+            discussion = DiscussionTickets.objects.create(
+                user=User.objects.get(id=User.objects.get(username=request.user.username).id),
+                userticket=UserTickets.objects.get(id_uTicket=pk),
+                discuss=discussion_form.cleaned_data.get("discuss")
+            )
+
+            discussion.save()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+    else:
+
+        discussion_form = CreateInDiscussionTicket()
+        ticket = UserTickets.objects.get(id_uTicket=pk)
+        discussions = ticket.discussiontickets_set.all()
+        context = {
+            'ticket': ticket,
+            'discussion_form': discussion_form,
+            'discuss': discussions
+        }
+
+        return render(request, 'scribd/ticketdetail.html', context)
+
+@authentificated_user
+def support_page(request):
+    tickets = UserTickets.objects.all()
+
+    print(tickets)
+    context = {
+        'tickets': tickets,
+    }
+    return render(request, 'scribd/support_page.html',context)
 ##################################
 ####### VISTA EBOOK ##############
 ##################################
@@ -500,9 +592,20 @@ class ebookListView(ListView):
     template_name = 'scribd/ebooks_list.html'
 
 
-class ebookDetailView(DetailView):
-    model = Ebook
-    template_name = 'scribd/ebook_detail.html'
+def ebookDetailView(request):
+    forums = Ebook.objects.Forum.objects.all()
+    print("********************************************************")
+    count = forums.count()
+    discussions = []
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+
+    context = {
+        'forums': forums,
+        'count': count,
+        'discussions': discussions}
+
+    return render(request, 'scribd/ebook_detail.html', context)
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -549,3 +652,18 @@ def change_ebook(request, pk):
         form.save()
         return redirect('index')
     return render(request, 'scribd/ebook_change.html', {'form': form})
+
+
+##################################
+####### VISTA FORUM ##############
+##################################
+
+class ForumViewSet(viewsets.ModelViewSet):
+    queryset = Forum.objects.all().order_by('date_created')
+    serializer_class = ForumSerializer
+
+    # permission_classes = permissions.IsAuthenticatedOrReadOnly
+
+    def get_queryset(self):
+        return User.objects.all().order_by('date_created')
+

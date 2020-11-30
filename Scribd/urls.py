@@ -3,11 +3,11 @@ from django.conf.urls.static import static
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from Scribd import views
+from Scribd.views import ebookListView, follow, ebook_create_view, edit_profile_page_provider, UserList, UserDetail, \
+    user_profile_page, edit_profile_page, upgrade_account_view, upload_file, login_create_view, signup_create_view, \
+    provider_page, contract_page, ticket_page, ticketForumView, support_page, review, update_payment_details, \
+    downgrade_account_view
 from Scribd.views import UserList, UserDetail
-from Scribd.views import ebook_create_view, ebookListView, signup_create_view, login_create_view, \
-    provider_page, edit_profile_page_provider, contract_page, review, \
-    ticket_page, user_profile_page, edit_profile_page, upgrade_account_view, upload_file, ticketListView, follow, \
-    update_payment_details, downgrade_account_view
 from ScribdProject import settings
 
 urlpatterns = [
@@ -35,8 +35,9 @@ urlpatterns = [
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
     url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'),  # remove?
 
-    url('ticket/', ticket_page, name='ticket_page'),  # only logged in
-    url('supportPage/', ticketListView.as_view(), name='support_page'),  # only support
+    url('ticket/', ticket_page, name='ticket_page'),
+    url('ticketdetail/(?P<pk>[0-9]+)/$', ticketForumView, name='ticketdetail'),
+    url('supportPage/', support_page, name='support_page'),
 
     url(r'^profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),  # only self
     url(r'^profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'),  # only self
@@ -45,8 +46,6 @@ urlpatterns = [
     url(r'^profile/(?P<username>\w+)/cancelconfirmation/$', downgrade_account_view, name='cancelconfirmation'),
 
 ]
-
-# url('ebooklist/', ebookListView.as_view(), name='ebook_custom_list'),
 
 urlpatterns = format_suffix_patterns(urlpatterns)
 # urlpatterns += staticfiles_urlpatterns()

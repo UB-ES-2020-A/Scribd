@@ -107,6 +107,7 @@ class Review(models.Model):
 
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
+    ticket_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
@@ -115,6 +116,15 @@ class UserTickets(models.Model):
     class Meta:
         verbose_name = 'UserTickets'
         verbose_name_plural = 'UserTickets'
+
+
+class DiscussionTickets(models.Model):
+    userticket = models.ForeignKey(UserTickets,null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, default=None)
+    discuss = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return str(self.userticket)
 
 
 ##################################
@@ -142,3 +152,29 @@ class Payments(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
     ammount = models.FloatField(default=0.0)
     date = models.DateTimeField(auto_now_add=True)
+
+
+##################################
+####### MODELOS FORUM ############
+##################################
+
+class Forum(models.Model):
+    ebook = models.ForeignKey(Ebook,null=True, blank=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, default="anonymous")
+    email = models.CharField(max_length=200, null=True)
+    topic = models.CharField(unique=True, max_length=300)
+    description = models.CharField(max_length=1000, blank=True)
+    link = models.CharField(max_length=100, null=True)
+    date_created = models.DateTimeField(auto_now_add=True, null=True)
+
+    def __str__(self):
+        return str(self.topic)
+
+
+class Discussion(models.Model):
+    forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    discuss = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return str(self.forum)
