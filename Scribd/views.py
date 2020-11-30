@@ -12,7 +12,7 @@ from rest_framework import generics, viewsets, permissions
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, reviewForm, UpdatePayment, \
     CreateInForum, CreateInDiscussion, CreateInDiscussionTicket
-from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review
+from Scribd.models import Ebook, UserTickets, UploadedResources, ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
 from .user_models import User, userProfile
@@ -51,7 +51,8 @@ def _check_session(request):
 class ebookMainView(ListView):
     model = Ebook
     template_name = 'scribd/mainpage.html'
-    
+
+
 def ebooks(request, search=""):
     # Priorizamos busqueda categoria
     if request.method == "GET":
@@ -250,9 +251,6 @@ def contract_page(request):
     return render(request, 'scribd/contract.html')
 
 
-
-
-
 class AccountsViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
@@ -283,6 +281,7 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 def upgrade_account_view(request, username):
     if request.method == "POST":
+
         form = UpgradeAccountForm(request.POST, instance=request.user.user_profile)
         form_subs = Subscription(request.POST, instance=request.user.user_profile)
         user = User.objects.get(username=username)
@@ -355,6 +354,7 @@ def downgrade_account_view(request, username):
         }
         return render(request, 'forms/cancel_suscription_confirmation.html', context)
 
+
 @authentificated_user
 def update_payment_details(request, username):
     credit_form = Subscription(request.POST or None, request.FILES)
@@ -364,7 +364,6 @@ def update_payment_details(request, username):
             form.save()
             user = User.objects.get(username=username)
             if credit_form.is_valid():
-
                 user.user_profile.card_titular = credit_form.cleaned_data.get('card_titular'),
                 user.user_profile.card_number = credit_form.cleaned_data.get('card_number'),
                 user.user_profile.card_expiration = credit_form.cleaned_data.get('card_expiration'),
@@ -383,12 +382,14 @@ def update_payment_details(request, username):
 
     return render(request, 'forms/update_payment.html', context)
 
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             instance = form.save(commit=False)
             instance.user = request.user
+
             instance.user.user_profile.n_uploads += 1
             instance.user.user_profile.save()
             form.save()
@@ -396,6 +397,7 @@ def upload_file(request):
     else:
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
+
 
 @authentificated_user
 def follow(request, pk):
@@ -437,9 +439,7 @@ def follow(request, pk):
 
             discussion_form = CreateInDiscussion(request.POST)
 
-
             if discussion_form.is_valid() and request.user.is_authenticated:
-
                 discussion = Discussion.objects.create(
                     user=User.objects.get(id=User.objects.get(username=request.user.username).id),
 
@@ -541,8 +541,7 @@ def ticket_page(request):
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
 
-def ticketForumView(request,pk):
-
+def ticketForumView(request, pk):
     if request.method == 'POST':
         discussion_form = CreateInDiscussionTicket(request.POST)
 
@@ -570,15 +569,19 @@ def ticketForumView(request,pk):
 
         return render(request, 'scribd/ticketdetail.html', context)
 
+
 @authentificated_user
 def support_page(request):
+    print(request.user.is_support)
     tickets = UserTickets.objects.all()
 
     print(tickets)
     context = {
         'tickets': tickets,
     }
-    return render(request, 'scribd/support_page.html',context)
+    return render(request, 'scribd/support_page.html', context)
+
+
 ##################################
 ####### VISTA EBOOK ##############
 ##################################
@@ -644,6 +647,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
 
         return Response(serializer.data)
 
+
 @allowed_users(allowed_roles=['support'])
 def change_ebook(request, pk):
     instance = Ebook.objects.get(pk=pk)
@@ -666,4 +670,3 @@ class ForumViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return User.objects.all().order_by('date_created')
-

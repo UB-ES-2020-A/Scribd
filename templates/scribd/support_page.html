@@ -9,7 +9,8 @@
                 {% for ticket in tickets %}
                     <div class="col-lg-6 col-md-6 mb-3 d-flex">
                         <div class="card" style="width: 500px">
-                            {% if not ticket.ticket_solved and ticket.ticket_user.username == request.user.username %}
+                            {% if not ticket.ticket_solved  %}
+                                {% if ticket.ticket_user.username == request.user.username or request.user.is_support %}
                                 <div class="card-body" style="text-align: center;">
                                     <h5 class="card-title pt-5"><strong>{{ ticket.ticket_title }}</strong></h5>
                                     <br>
@@ -22,6 +23,7 @@
                                     </a>
                                 </div>
                             {% endif %}
+                        {% endif %}
                         </div>
                     </div>
                 {% endfor %}
