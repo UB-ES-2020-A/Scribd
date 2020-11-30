@@ -37,6 +37,7 @@
             <a class="btn btn-primary" data-toggle="collapse" href="#{{ ticket.id_uTicket }}" role="button"
                aria-expanded="false" aria-controls="multiCollapseExample1">Give your view!</a>
             <form method="POST">
+                <input type="hidden" name="next" value="{{ request.path }}">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col">

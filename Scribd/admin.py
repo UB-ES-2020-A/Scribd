@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import *
+from .models import Ebook,Review,ViewedEbooks,EbookInsertDate,UserTickets,Forum,Discussion
 # Register your models here
 from .user_models import User, providerProfile, supportProfile, userProfile
 

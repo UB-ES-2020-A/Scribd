@@ -20,6 +20,7 @@
         <p>Media file type: {{ ebook.media_type }}</p>
         <p>Number of downloads on Scribd: {{ ebook.count_downloads }}</p>
         <form method="post">
+            <input type="hidden" name="next" value="{{ request.path }}">
             {% csrf_token %}
             <button name="follow" type="submit" class="btn btn-primary"
                     style="background-color: #367C85; margin-bottom: 20px">
@@ -44,6 +45,7 @@
                     </div>
                     <div class="modal-body">
                         <form method="POST">
+                            <input type="hidden" name="next" value="{{ request.path }}">
                             {% csrf_token %}
                             {{ create_forum.topic|as_crispy_field }}
                             {{ create_forum.description|as_crispy_field }}
@@ -102,6 +104,7 @@
                     <a class="btn btn-primary" data-toggle="collapse" href="#{{ forum.topic }}" role="button"
                        aria-expanded="false" aria-controls="multiCollapseExample1">Give your view!</a>
                     <form method="POST">
+                        <input type="hidden" name="next" value="{{ request.path }}">
                         <input type="hidden" name="forum_name" value="{{ forum.topic }}"/>
                         {% csrf_token %}
                         <div class="row">

@@ -118,8 +118,8 @@ class UserTickets(models.Model):
 
 
 class DiscussionTickets(models.Model):
-    userticket = models.ForeignKey(UserTickets, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    userticket = models.ForeignKey(UserTickets,null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, blank=True, null=True,on_delete=models.CASCADE, default=None)
     discuss = models.CharField(max_length=1000)
 
     def __str__(self):
@@ -158,7 +158,7 @@ class Payments(models.Model):
 ##################################
 
 class Forum(models.Model):
-    ebook = models.ForeignKey(Ebook, blank=True, on_delete=models.CASCADE)
+    ebook = models.ForeignKey(Ebook,null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, default="anonymous")
     email = models.CharField(max_length=200, null=True)
     topic = models.CharField(unique=True, max_length=300)

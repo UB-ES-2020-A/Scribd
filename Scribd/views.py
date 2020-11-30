@@ -306,7 +306,8 @@ def follow(request, pk):
                 instance = Ebook.objects.get(id=pk)
                 instance.follower = user
                 instance.save()
-                return redirect(request.META.get('HTTP_REFERER'))
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
         elif 'create_forum' in request.POST:
 
             forum_form = CreateInForum(request.POST)
@@ -321,15 +322,16 @@ def follow(request, pk):
                     link=forum_form.cleaned_data.get('link')
                 )
                 forum.save()
-                return redirect(request.META.get('HTTP_REFERER'))
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
 
         elif 'discussion' in request.POST:
-            print("Post value: ", request.POST)
+
             discussion_form = CreateInDiscussion(request.POST)
-            print(Forum.objects.get(topic=request.POST.get('forum_name')).id)
+
 
             if discussion_form.is_valid() and request.user.is_authenticated:
-                print("****************************************************")
+
                 discussion = Discussion.objects.create(
                     user=User.objects.get(id=User.objects.get(username=request.user.username).id),
 
@@ -338,7 +340,8 @@ def follow(request, pk):
                 )
 
                 discussion.save()
-                return redirect(request.META.get('HTTP_REFERER'))
+                next = request.POST.get('next', '/')
+                return HttpResponseRedirect(next)
 
     else:
         discussion_form = CreateInDiscussion()
@@ -421,7 +424,8 @@ def ticketForumView(request,pk):
             )
 
             discussion.save()
-            return redirect(request.META.get('HTTP_REFERER'))
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
 
     else:
 

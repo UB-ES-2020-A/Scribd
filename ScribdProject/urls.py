@@ -22,7 +22,6 @@ from django.urls import include
 from rest_framework import routers
 
 from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet,ForumViewSet
-from Scribd.models import Forum, Discussion
 
 
 router = routers.DefaultRouter()

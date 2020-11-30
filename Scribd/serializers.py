@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from Scribd.models import *
+from Scribd.models import User,Ebook,UploadedResources,UserTickets,Forum
 from .user_models import User
 
 
