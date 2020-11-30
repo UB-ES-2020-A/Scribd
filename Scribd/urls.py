@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from Scribd import views
 from Scribd.views import UserList, UserDetail
-from Scribd.views import ebook_create_view, ebookListView, signup_create_view, login_create_view, \
+from Scribd.views import ebook_create_view, signup_create_view, login_create_view, \
     provider_page, edit_profile_page_provider, contract_page, review, \
     ticket_page, user_profile_page, edit_profile_page, upgrade_account_view, upload_file, ticketListView, follow, \
     update_payment_details, downgrade_account_view
@@ -22,7 +22,7 @@ urlpatterns = [
 
     url('review/(?P<pk>[0-9]+)/$', review, name='review'),  # only logged in
 
-    url('User/$', UserList.as_view()),  # remove?
+    url('User/$', UserList.as_view(), name='users'),  # remove?
     url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),  # remove?
 
     url('upload_file/', upload_file, name='upload_file'),  # only logged in
