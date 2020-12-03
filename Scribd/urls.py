@@ -21,22 +21,21 @@ urlpatterns = [
 
     url('review/(?P<pk>[0-9]+)/$', review, name='review'),  # only logged in
 
-    url('User/$', UserList.as_view(), name='users'),  # remove?
-    url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),  # remove?
+    url('User/$', UserList.as_view(), name='users'),  # remove
+    url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),  # remove
 
-    url('upload_file/', upload_file, name='upload_file'),  # only logged in
+    url('uploadFile/', upload_file, name='upload_file'),  # only logged in
 
-    url('accounts/login/', login_create_view, name='login'),  # everybody
-    url('accounts/signup/', signup_create_view, name='signup'),  # everybody
+    url('login/', login_create_view, name='login'),  # everybody
+    url('signup/', signup_create_view, name='signup'),  # everybody
 
     url('provider/', provider_page, name='provider_page'),  # only self provider!!!!!
     url('contract/', contract_page, name='contract_page'),  # only self provider!!!!!
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
-    url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'),  # remove?
 
-    url('ticket/', ticket_page, name='ticket_page'),
-    url('ticketdetail/(?P<pk>[0-9]+)/$', ticketForumView, name='ticketdetail'),
-    url('supportPage/', support_page, name='support_page'),
+    url('sendTicket/', ticket_page, name='ticket_page'),
+    url('ticket/(?P<pk>[0-9]+)/$', ticketForumView, name='ticket_detail'),
+    url('tickets/', support_page, name='support_page'),
 
     url(r'^profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),  # only self
     url(r'^profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'),  # only self
