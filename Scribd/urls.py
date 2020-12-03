@@ -34,7 +34,7 @@ urlpatterns = [
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
 
     url('sendTicket/', ticket_page, name='ticket_page'),
-    url('ticket/(?P<pk>[0-9]+)/$', ticketForumView, name='ticketdetail'),
+    url('ticket/(?P<pk>[0-9]+)/$', ticketForumView, name='ticket_detail'),
     url('tickets/', support_page, name='support_page'),
 
     url(r'^profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),  # only self
