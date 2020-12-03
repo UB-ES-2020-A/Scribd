@@ -1,0 +1,143 @@
+{% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Profile page{% endblock %}
+{% block content %}
+    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px; margin-left: 50px">
+        <div class="row">
+            <div class="col">
+                <h1 style="color: #367C85; font-size: 70px">{{ user.username }}</h1>
+                <h3 style="color: dimgray"><small>{{ user.first_name }} {{ user.last_name }}</small></h3>
+                <br>
+                <br>
+                <h3 style="color: dimgray">About Me</h3>
+                <p>{{ user.user_profile.bio }}</p>
+            </div>
+            <div class="col" style="text-align: center">
+                <img src="{{ user.profile_image.url }}" height="100%" width="50%" alt=""
+                     style="border-radius: 5%; margin-left: -300px">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href="edit/" class="btn" style="background-color: #367C85; margin-top: 20px">
+                    <h7 style="color: #FFFFFF">Edit profile</h7>
+                </a>
+            </div>
+        </div>
+        <hr style="margin-right: 50px; margin-top: 50px">
+        <div class="row">
+            <div class="col">
+                <h3 style="color:dimgray">Type of subscription</h3>
+                <h1 style="color: dimgray"><small
+                        style="font-size: 50px; color: #367C85">{{ user.user_profile.subs_type }}</small>
+                </h1>
+            </div>
+            <div class="col">
+                <div>
+                    <h3 style="color:dimgray">Limited books by subscription</h3>
+                    <h1 style="font-size: 50px; color: #367C85">{{ user.user_profile.nbooks_by_subs }}</h1>
+                </div>
+            </div>
+            <div class="col">
+                <div>
+                    <h3 style="color:dimgray">Books already followed</h3>
+                    <h1 style="font-size: 50px; color: #367C85">{{ user.user_profile.n_books_followed }}</h1>
+                </div>
+            </div>
+        </div>
+
+        {% if user.user_profile.expires < current_time or user.user_profile.subs_type == "Free trial" %}
+            <div class="row">
+                <div class="col">
+                    <a href="upgrade/" class="btn" style="background-color: #367C85; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                    </a>
+                </div>
+            </div>
+        {% elif user.user_profile.expires > current_time %}
+            <div class="row">
+                <div class="col">
+                    <h6 style="color:darkred;">Your subscription will expire in {{ user.user_profile.expires }}</h6>
+                    <a href="cancelconfirmation/" class="btn" style="background-color: darkred; margin-top: 20px">
+                        <h7 style="color: #FFFFFF">Cancel my subscription</h7>
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+        <br>
+
+        {% if user.user_profile.n_books_followed > 0 %}
+            <hr style="margin-right: 50px; margin-top: 50px">
+            <div class="row">
+                <div class="col">
+                    <h3 style="color:dimgray">Followed resources</h3>
+                    <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
+                        <div class="container">
+                            <div class="row">
+                                {% for ebook in user.users_key.values %}
+                                    {% if user.user_profile.nbooks_by_subs >= forloop.counter %}
+                                        <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
+                                            <div class="card" style="width: 500px">
+                                                <div class="card-body" style="text-align: center;">
+                                                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                                        {% load static %}
+                                                        <img src="{% static 'images/unknown.png' %}" height="400px"
+                                                             width="280px" alt=""
+                                                             style="border-radius: 2%">
+                                                    {% else %}
+                                                        {% load static %}
+                                                        <img src="{{ ebook.featured_photo.url }}" height="400px"
+                                                             width="280px"
+                                                             alt=""
+                                                             style="border-radius: 2%">
+                                                    {% endif %}
+                                                    <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
+                                                    <br>
+                                                    <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
+                                                    <br>
+                                                    <a href="http://es-scribd.herokuapp.com/{{ ebook.url }}" class="btn"
+                                                       style="background-color: #367C85">
+                                                        <h7 style="color: #FFFFFF">Read book</h7>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin-right: 50px; margin-top: 50px">
+        {% endif %}
+
+        {% if user.user_profile.n_uploads > 0 %}
+            <div class="row">
+                <div class="col">
+                    <h3 style="color:dimgray">Uploads</h3>
+                    <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
+                        <div class="container">
+                            <div class="row">
+                                {% for res in user.uploadedresources_set.values %}
+                                    <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
+                                        <div class="card" style="width: 500px">
+                                            <div class="card-body" style="text-align: center;">
+                                                <h5 class="card-title pt-5"><strong>{{ res.title }}</strong></h5>
+                                                <br>
+                                                Access link:
+                                                <a href="/media/{{ res.file }}">{{ res.file }}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
