@@ -13,7 +13,7 @@ class MyTest(TestCase):
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'scribd/base.html')
+        self.assertTemplateUsed(response, 'scribd-deprecated/base.html')
 
     @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
     def test_get_ebooks(self):
@@ -21,7 +21,7 @@ class MyTest(TestCase):
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'scribd/mainpage.html')
+        self.assertTemplateUsed(response, 'scribd-deprecated/mainpage.html')
 
     @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
     def test_get_users(self):
@@ -37,4 +37,4 @@ class MyTest(TestCase):
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'scribd/mainpage.html')
+        self.assertTemplateUsed(response, 'scribd-deprecated/mainpage.html')

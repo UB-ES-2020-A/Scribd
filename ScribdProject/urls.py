@@ -21,8 +21,7 @@ from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
 
-from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet,ForumViewSet
-
+from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet, ForumViewSet
 
 router = routers.DefaultRouter()
 router.register(r'ebooks', EbookViewSet)
@@ -34,7 +33,7 @@ router.register(r'forums',ForumViewSet)
 urlpatterns = [
     url(r'admin/', admin.site.urls, name="admin_page"),
     url(r'', include('Scribd.urls')),
-    url(r'scribd/', include('Scribd.urls')),
+    url(r'scribd-deprecated/', include('Scribd.urls')),
     url(r'api/', include(router.urls)),
     url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^oauth/', include('social_django.urls', namespace='social')),
