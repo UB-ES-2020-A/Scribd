@@ -1,4 +1,4 @@
-{% extends 'scribd/base.html' %}
+{% extends 'scribd-deprecated/base.html' %}
 {% load crispy_forms_tags %}
 {% load widget_tweaks %}
 {% block content %}
@@ -15,16 +15,17 @@
         <p>Card CVV: {{ user.user_profile.card_cvv }}</p>
         <br>
         <p>
-          <a class="btn btn-primary" data-toggle="collapse" href="#collapse-card" role="button" aria-expanded="false" aria-controls="collapse-card">
-            Click here to change the information
-          </a>
+            <a class="btn btn-primary" data-toggle="collapse" href="#collapse-card" role="button" aria-expanded="false"
+               aria-controls="collapse-card">
+                Click here to change the information
+            </a>
         </p>
         <div class="collapse" id="collapse-card">
-          <div class="card card-body">
-             <form method="post" style="margin-top: 60px">
-                {% csrf_token %}
-                <div class="container">
-                    <div class="card-deck mb-3 text-center">
+            <div class="card card-body">
+                <form method="post" style="margin-top: 60px">
+                    {% csrf_token %}
+                    <div class="container">
+                        <div class="card-deck mb-3 text-center">
 
 
                             <div class="form-group col-md-6 mb-0">
@@ -36,7 +37,7 @@
                                 {{ credit_form.card_number|as_crispy_field }}
                             </div>
 
-                        <br>
+                            <br>
 
                             <div class="form-group col-md-3 mb-3">
                                 {{ credit_form.card_expiration|as_crispy_field }}
@@ -46,33 +47,35 @@
                             </div>
 
 
+                        </div>
                     </div>
-                </div>
 
-                 <div class="panel-footer row"><!-- panel-footer -->
-                    <div class="form-group col-md-3 mb-3">
-                        <button type="submit" class="btn btn-primary" style="background-color: #367C85">
-                            <h7 style="color: #FFFFFF">Upgrade now!</h7>
-                        </button>
+                    <div class="panel-footer row"><!-- panel-footer -->
+                        <div class="form-group col-md-3 mb-3">
+                            <button type="submit" class="btn btn-primary" style="background-color: #367C85">
+                                <h7 style="color: #FFFFFF">Upgrade now!</h7>
+                            </button>
+                        </div>
+                        <div class="form-group col-md-3 mb-3">
+                            <a href={% url 'userprofilepage' request.user.username %} class="btn"
+                               style="background-color: #ED2929">
+                                <h7 style="color: #FFFFFF">Cancel</h7>
+                            </a>
+                        </div>
                     </div>
-                    <div class="form-group col-md-3 mb-3">
-                        <a href={% url 'userprofilepage' request.user.username %} class="btn" style="background-color: #ED2929">
-                            <h7 style="color: #FFFFFF">Cancel</h7>
-                        </a>
-                    </div>
-                </div>
 
 
-            </form>
-          </div>
+                </form>
+            </div>
         </div>
         <div class="row">
             <div class="col">
-                <a href={% url 'userprofilepage' request.user.username %} class="btn" style="background-color: #367C85 ; margin-top: 20px">
+                <a href={% url 'userprofilepage' request.user.username %} class="btn"
+                   style="background-color: #367C85 ; margin-top: 20px">
                     <h7 style="color: #FFFFFF">Go back to your profile</h7>
                 </a>
             </div>
         </div>
-    <br>
+        <br>
     </div>
 {% endblock %}

@@ -3,10 +3,10 @@ from django.conf.urls.static import static
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from Scribd import views
-from Scribd.views import ebookListView, follow, ebook_create_view, edit_profile_page_provider, UserList, UserDetail, \
-    user_profile_page, edit_profile_page, upgrade_account_view, upload_file, login_create_view, signup_create_view, \
+from Scribd.views import follow, ebook_create_view, user_profile_page, edit_profile_page, upgrade_account_view, \
+    upload_file, login_create_view, signup_create_view, \
     provider_page, contract_page, ticket_page, ticketForumView, support_page, review, update_payment_details, \
-    downgrade_account_view,UserList, UserDetail
+    downgrade_account_view, UserList, UserDetail
 from ScribdProject import settings
 
 urlpatterns = [
@@ -21,22 +21,21 @@ urlpatterns = [
 
     url('review/(?P<pk>[0-9]+)/$', review, name='review'),  # only logged in
 
-    url('User/$', UserList.as_view(), name='users'),  # remove?
-    url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),  # remove?
+    url('User/$', UserList.as_view(), name='users'),  # remove
+    url(r'^User/(?P<username>\w+)/$', UserDetail.as_view()),  # remove
 
-    url('upload_file/', upload_file, name='upload_file'),  # only logged in
+    url('uploadFile/', upload_file, name='upload_file'),  # only logged in
 
-    url('accounts/login/', login_create_view, name='login'),  # everybody
-    url('accounts/signup/', signup_create_view, name='signup'),  # everybody
+    url('login/', login_create_view, name='login'),  # everybody
+    url('signup/', signup_create_view, name='signup'),  # everybody
 
     url('provider/', provider_page, name='provider_page'),  # only self provider!!!!!
     url('contract/', contract_page, name='contract_page'),  # only self provider!!!!!
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
-    url('provider/edit/$', edit_profile_page_provider, name='edituserprofileprovider'),  # remove?
 
-    url('ticket/', ticket_page, name='ticket_page'),
-    url('ticketdetail/(?P<pk>[0-9]+)/$', ticketForumView, name='ticketdetail'),
-    url('supportPage/', support_page, name='support_page'),
+    url('sendTicket/', ticket_page, name='ticket_page'),
+    url('ticket/(?P<pk>[0-9]+)/$', ticketForumView, name='ticket_detail'),
+    url('tickets/', support_page, name='support_page'),
 
     url(r'^profile/(?P<username>\w+)/$', user_profile_page.as_view(), name='userprofilepage'),  # only self
     url(r'^profile/(?P<username>\w+)/edit/$', edit_profile_page, name='edituserprofile'),  # only self
