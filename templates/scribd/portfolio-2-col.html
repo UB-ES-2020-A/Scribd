@@ -11,7 +11,7 @@
   <title>Modern Business - Start Bootstrap Template</title>
 
   <!-- Bootstrap core CSS -->
-  <link href="../../Scribd/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
   <!-- Custom styles for this template -->
   <link href="../../Scribd/static/css/modern-business.css" rel="stylesheet">
@@ -91,6 +91,40 @@
       </li>
       <li class="breadcrumb-item active">Portfolio 2</li>
     </ol>
+
+    <div id='cards'>
+      <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
+          <div class="container">
+              <h2 style="color: #323232"><strong>Recently added</strong></h2>
+              <div class="row">
+                  {% for ebook in ebooks %}
+                      <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
+                          <div class="card" style="width: 500px">
+                              <div class="card-body" style="text-align: center;">
+                                  <!-- Modify dimensions later-->
+                                  {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                      {% load static %}
+                                      <img src="{% static 'images/unknown.png' %}" height="400px" width="280px" alt=""
+                                           style="border-radius: 2%">
+                                  {% else %}
+                                      <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px" alt=""
+                                           style="border-radius: 2%">
+                                  {% endif %}
+                                  <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
+                                  <br>
+                                  <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
+                                  <br>
+                                  <a href="ebookdetail/{{ ebook.id }}" class="btn" style="background-color: #367C85">
+                                      <h7 style="color: #FFFFFF">More info</h7>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  {% endfor %}
+              </div>
+          </div>
+      </div>
+  </div>
 
     <div class="row">
       <div class="col-lg-6 portfolio-item">

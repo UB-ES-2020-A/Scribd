@@ -25,7 +25,7 @@ from .user_models import User, userProfile
 ##################################
 
 def base(request):
-    return render(request, 'scribd-deprecated/base.html')
+    return render(request, 'scribd/base.html')
 
 
 def index(request):
@@ -36,7 +36,7 @@ def index(request):
         'promoted': promoted,
         'viewedebooks': _check_session(request)
     }
-    return render(request, 'scribd-deprecated/mainpage.html', context)
+    return render(request, 'scribd/portfolio-3-col.html', context)
 
 
 def _check_session(request):
