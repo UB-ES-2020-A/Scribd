@@ -1,7 +1,8 @@
 {% load static %}
 {% load crispy_forms_tags %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
 
@@ -27,7 +28,6 @@
 </head>
 
 <body>
-
 <!-- Navigation -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
@@ -43,6 +43,7 @@
                    style="background-color: #F3F6FD; height: 33px; width: 350px; border-color: slategrey">
             <button class="btn my-2 my-sm-0" type="submit"
                     style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
+                {% load static %}
                 <img src="{% static 'images/lupa.png' %}" width="18px" height="18px" style="margin-top: -10px">
             </button>
         </form>
