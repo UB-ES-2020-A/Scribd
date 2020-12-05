@@ -1,9 +1,6 @@
-from Scribd.models import Ebook, UserTickets, UploadedResources, Review
-from .user_models import User, userProfile
-
+from crispy_forms.helper import FormHelper
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from crispy_forms.helper import FormHelper
 
 from Scribd.models import *
 from .user_models import User, userProfile
@@ -62,6 +59,7 @@ class UploadFileForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
+
 
 class UpdatePayment(forms.ModelForm):
     class Meta:
@@ -152,14 +150,13 @@ class CreateInForum(forms.ModelForm):
     class Meta:
         print("Still creating the form-------------------------------------------")
         model = Forum
-        fields = ["topic","description"]
+        fields = ["topic", "description"]
 
         widgets = {
             'topic': forms.TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Forum title (cannot be left blank)'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
-
 
 
 class CreateInDiscussion(forms.ModelForm):
@@ -170,9 +167,6 @@ class CreateInDiscussion(forms.ModelForm):
         widgets = {
             'discuss': forms.Textarea(attrs={'class': 'form-control'}),
         }
-
-
-
 
 
 class CreateInDiscussionTicket(forms.ModelForm):

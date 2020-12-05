@@ -8,44 +8,44 @@ const merge = require("merge-stream");
 
 // BrowserSync
 function browserSync(done) {
-  browsersync.init({
-    server: {
-      baseDir: "./"
-    },
-    port: 3000
-  });
-  done();
+    browsersync.init({
+        server: {
+            baseDir: "./"
+        },
+        port: 3000
+    });
+    done();
 }
 
 // BrowserSync reload
 function browserSyncReload(done) {
-  browsersync.reload();
-  done();
+    browsersync.reload();
+    done();
 }
 
 // Clean vendor
 function clean() {
-  return del(["./vendor/"]);
+    return del(["./vendor/"]);
 }
 
 // Bring third party dependencies from node_modules into vendor directory
 function modules() {
-  // Bootstrap
-  var bootstrap = gulp.src('./node_modules/bootstrap/dist/**/*')
-    .pipe(gulp.dest('./vendor/bootstrap'));
-  // jQuery
-  var jquery = gulp.src([
-      './node_modules/jquery/dist/*',
-      '!./node_modules/jquery/dist/core.js'
+    // Bootstrap
+    var bootstrap = gulp.src('./node_modules/bootstrap/dist/**/*')
+        .pipe(gulp.dest('./vendor/bootstrap'));
+    // jQuery
+    var jquery = gulp.src([
+        './node_modules/jquery/dist/*',
+        '!./node_modules/jquery/dist/core.js'
     ])
-    .pipe(gulp.dest('./vendor/jquery'));
-  return merge(bootstrap, jquery);
+        .pipe(gulp.dest('./vendor/jquery'));
+    return merge(bootstrap, jquery);
 }
 
 // Watch files
 function watchFiles() {
-  gulp.watch("./**/*.css", browserSyncReload);
-  gulp.watch("./**/*.html", browserSyncReload);
+    gulp.watch("./**/*.css", browserSyncReload);
+    gulp.watch("./**/*.html", browserSyncReload);
 }
 
 // Define complex tasks

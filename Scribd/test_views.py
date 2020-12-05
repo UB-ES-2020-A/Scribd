@@ -30,7 +30,6 @@ class MyTest(TestCase):
         # 200, OK
         self.assertEquals(response.status_code, 200)
 
-
     @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
     def test_get_ebooks(self):
         response = self.client.get(reverse('ebooks'))

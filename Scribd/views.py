@@ -243,6 +243,7 @@ class user_profile_page(DetailView):
         context['current_time'] = current_time
         return context
 
+
 @allowed_users(allowed_roles=['provider'])
 def provider_page(request):
     return render(request, 'scribd-deprecated/providers_homepage.html')
