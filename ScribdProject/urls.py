@@ -28,7 +28,7 @@ router.register(r'ebooks', EbookViewSet)
 router.register(r'accounts', AccountsViewSet)
 router.register(r'uploaded_files', UploadsViewSet)
 router.register(r'tickets', ticketViewSet)
-router.register(r'forums',ForumViewSet)
+router.register(r'forums', ForumViewSet)
 
 urlpatterns = [
     url(r'admin/', admin.site.urls, name="admin_page"),

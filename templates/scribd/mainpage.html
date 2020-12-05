@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -11,62 +10,16 @@
     <title>MainPage</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../Scribd/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="../../Scribd/static/css/modern-business.css" rel="stylesheet">
+    <link href="static/css/modern-business.css" rel="stylesheet">
+
 
 </head>
+{% extends 'scribd/base.html' %}
 
-<body>
-
-<!-- Navigation -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="index.html">Scribd</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <form action="{% url 'ebooks' %}" method="GET" class="form-inline ml-2 my-2 my-lg-0" style="padding-left: 20px">
-            <input class="form-control mr-sm-2" type="text" name="search" value="" placeholder="Search"
-                   aria-label="Search"
-                   style="background-color: #F3F6FD; height: 33px; width: 350px; border-color: slategrey">
-            <button class="btn my-2 my-sm-0" type="submit"
-                    style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
-                <img src="{% static 'images/lupa.png' %}" width="18px" height="18px" style="margin-top: -10px">
-            </button>
-        </form>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">Uploads</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="services.html">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Log In</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Profile
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-                        <a class="dropdown-item" href="blog-home-1.html">My Account</a>
-                        <a class="dropdown-item" href="blog-home-2.html">My Post</a>
-                        <a class="dropdown-item" href="blog-post.html">Blog Post</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+{% block content %}
 
 <header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -113,15 +66,15 @@
 <div class="container">
 
     <h1 class="my-4">Welcome to Scribd</h1>
-    <h2 class="my-4">Best Sellers</h2>
 
     <!-- Marketing Icons Section -->
     <div class="row">
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
-                <h4 class="card-header">Harry Potter</h4>
+                <h4 class="card-header">Card Title</h4>
                 <div class="card-body">
-                    <p class="card-text">Aqui iria la card</p>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse
+                        necessitatibus neque.</p>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-primary">Learn More</a>
@@ -157,7 +110,7 @@
     <!-- /.row -->
 
     <!-- Portfolio Section -->
-    <h2>Ebooks</h2>
+    <h2>Best Sellers</h2>
 
     <div class="row">
         <div class="col-lg-4 col-sm-6 portfolio-item">
@@ -241,13 +194,20 @@
     <!-- Features Section -->
     <div class="row">
         <div class="col-lg-6">
-            <h2>Subscribe</h2>
-            <p>Subscribete campeon:</p>
+            <h2>redvfdc</h2>
+            <p>The Modern Business template by Start Bootstrap includes:</p>
             <ul>
-                <li>Rico</li>
-                <li>Bonito</li>
-                <li>Barato</li>
+                <li>
+                    <strong>Bootstrap v4</strong>
+                </li>
+                <li>jQuery</li>
+                <li>Font Awesome</li>
+                <li>Working contact form with validation</li>
+                <li>Unstyled page elements for easy customization</li>
             </ul>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id
+                reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia
+                dolorum ducimus unde.</p>
         </div>
         <div class="col-lg-6">
             <img class="img-fluid rounded" src="http://placehold.it/700x450" alt="">
@@ -269,20 +229,11 @@
     </div>
 
 </div>
-<!-- /.container -->
-
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Scribd</p>
-    </div>
-    <!-- /.container -->
-</footer>
 
 <!-- Bootstrap core JavaScript -->
-<script src="../../Scribd/static/vendor/jquery/jquery.min.js"></script>
-<script src="../../Scribd/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/vendor/jquery/jquery.min.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-</body>
+{% endblock %}
 
 </html>

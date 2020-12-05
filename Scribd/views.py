@@ -25,7 +25,7 @@ from .user_models import User, userProfile
 ##################################
 
 def base(request):
-    return render(request, 'scribd-deprecated/base.html')
+    return render(request, 'scribd/base.html')
 
 
 def index(request):
@@ -36,7 +36,7 @@ def index(request):
         'promoted': promoted,
         'viewedebooks': _check_session(request)
     }
-    return render(request, 'scribd-deprecated/mainpage.html', context)
+    return render(request, 'scribd/mainpage.html', context)
 
 
 def _check_session(request):
@@ -51,7 +51,7 @@ def _check_session(request):
 
 class ebookMainView(ListView):
     model = Ebook
-    template_name = 'scribd-deprecated/mainpage.html'
+    template_name = 'scribd/mainpage.html'
 
 
 def ebooks(request, search=""):
@@ -83,7 +83,7 @@ def ebooks(request, search=""):
         'ebooks': ebooks,
         'viewedebooks': _check_session(request)
     }
-    return render(request, 'scribd-deprecated/mainpage.html', context)
+    return render(request, 'scribd/mainpage.html', context)
 
 
 def ebook_create_view(request):
@@ -242,6 +242,7 @@ class user_profile_page(DetailView):
         current_time = datetime.datetime.now()
         context['current_time'] = current_time
         return context
+
 
 @allowed_users(allowed_roles=['provider'])
 def provider_page(request):
