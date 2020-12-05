@@ -73,8 +73,8 @@ jobs:
         api_key:
           secure: "rcVngq6e7btJeyJyBRTaY4fJ+BbVr5Vf4HibXNBSssYDqjhZV+qb0K4Ms61DuErUUBlMpVv7VsQ8gIKvFHLQQ8Lm9l/weJ0P33E4LQTlIIDGMJ0ELyfag+mWl0Ke9M2+NWwkZVBgmx4S7jDrnOfZzAYVv/gpQqlax3+SckYSApBG+5IBaUXJRMFYg0JJ3le0P2V+bTEewY4eP9PumBwEdX24pCXzm69+7gIci/zthTDJk1QRNbnFcKYcp0x6JTj0UnIbtExvub4m3w6rH8m6aceGaRBrqej9DcbOibuVw6EWmZJG42OJapOh64LgIuMrGCYoQmXfvf1BcYDc8aygEIPaeg78waj1Yd+KvFZgIR2BNk3xPKrzDn4CdcQOBDpb/VgWAul2j4w3uqaXTj2V6vTO7WKcnwF2lktp/fHt5goAE8ZaIVNODVmexNhCOfN+y0OITVPzO0OBVBIHn1NRsszJeOj2jPor+s/vs5rAJkDGm1HNC0m0amDfgXcfAiS4DRzta4ZsPqqRVCI/u6kLJtojJ64SMQzJk7jsZr39uDH95m5Ts6eowwT9GmWA4NmYzQuSJ8YXDp7uJS3KltkWQ01DV9GLgTLEoBP4smKbUrhrocQmNDsdcadkObnY1Vgf+sLTwjotmuckBedRzVCLybfSrD9MObwtoFWkRQS5hRA="
         app:
-          master: es-scribd-deprecated
-          develop: es-scribd-deprecated-staging
+          master: es-scribd
+          develop: es-scribd-staging
 
     - stage: deploy
       name: "deploy"
@@ -93,7 +93,7 @@ jobs:
           skip_cleanup: true
           api_key:
             secure: "rcVngq6e7btJeyJyBRTaY4fJ+BbVr5Vf4HibXNBSssYDqjhZV+qb0K4Ms61DuErUUBlMpVv7VsQ8gIKvFHLQQ8Lm9l/weJ0P33E4LQTlIIDGMJ0ELyfag+mWl0Ke9M2+NWwkZVBgmx4S7jDrnOfZzAYVv/gpQqlax3+SckYSApBG+5IBaUXJRMFYg0JJ3le0P2V+bTEewY4eP9PumBwEdX24pCXzm69+7gIci/zthTDJk1QRNbnFcKYcp0x6JTj0UnIbtExvub4m3w6rH8m6aceGaRBrqej9DcbOibuVw6EWmZJG42OJapOh64LgIuMrGCYoQmXfvf1BcYDc8aygEIPaeg78waj1Yd+KvFZgIR2BNk3xPKrzDn4CdcQOBDpb/VgWAul2j4w3uqaXTj2V6vTO7WKcnwF2lktp/fHt5goAE8ZaIVNODVmexNhCOfN+y0OITVPzO0OBVBIHn1NRsszJeOj2jPor+s/vs5rAJkDGm1HNC0m0amDfgXcfAiS4DRzta4ZsPqqRVCI/u6kLJtojJ64SMQzJk7jsZr39uDH95m5Ts6eowwT9GmWA4NmYzQuSJ8YXDp7uJS3KltkWQ01DV9GLgTLEoBP4smKbUrhrocQmNDsdcadkObnY1Vgf+sLTwjotmuckBedRzVCLybfSrD9MObwtoFWkRQS5hRA="
-          app: es-scribd-deprecated
+          app: es-scribd
           on:
             repo: UB-ES-2020-A/Scribd
             branch: main
