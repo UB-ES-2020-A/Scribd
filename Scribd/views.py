@@ -120,7 +120,7 @@ def review(request, pk):
         # 'viewedrestaurants': _check_session(request)
 
     }
-    return render(request, 'scribd-deprecated/review.html', context)
+    return render(request, 'scribd/review.html', context)
 
 
 ##################################
@@ -149,7 +149,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 
         login_form = AuthenticationForm()
 
-    return render(request, 'scribd-deprecated/base.html', {'login_form': login_form})
+    return render(request, 'scribd/base.html', {'login_form': login_form})
 
 
 ##################################
@@ -230,7 +230,7 @@ def edit_profile_page(request, username):
 
 
 class user_profile_page(DetailView):
-    template_name = 'scribd-deprecated/user_profile_page.html'
+    template_name = 'scribd/user_profile_page.html'
     model = userProfile
 
     def get_object(self):
@@ -246,11 +246,11 @@ class user_profile_page(DetailView):
 
 @allowed_users(allowed_roles=['provider'])
 def provider_page(request):
-    return render(request, 'scribd-deprecated/providers_homepage.html')
+    return render(request, 'scribd/providers_homepage.html')
 
 
 def contract_page(request):
-    return render(request, 'scribd-deprecated/contract.html')
+    return render(request, 'scribd/contract.html')
 
 
 class AccountsViewSet(viewsets.ModelViewSet):
@@ -494,7 +494,7 @@ def follow(request, pk):
                 'count': count,
                 'discussions': discussions
             }
-        return render(request, 'scribd-deprecated/ebook_detail.html', context)
+        return render(request, 'scribd/ebook_detail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
@@ -513,7 +513,7 @@ class UploadsViewSet(viewsets.ModelViewSet):
 
 class ticketListView(ListView):
     model = UserTickets
-    template_name = 'scribd-deprecated/support_page.html'
+    template_name = 'scribd/support_page.html'
 
 
 class ticketViewSet(viewsets.ModelViewSet):
@@ -540,7 +540,7 @@ def ticket_page(request):
     else:
         ticket_form = TicketForm()
 
-    return render(request, 'scribd-deprecated/tickets.html', {'ticket_form': ticket_form})
+    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
 
 def ticketForumView(request, pk):
@@ -569,7 +569,7 @@ def ticketForumView(request, pk):
             'discuss': discussions
         }
 
-        return render(request, 'scribd-deprecated/ticketdetail.html', context)
+        return render(request, 'scribd/ticketdetail.html', context)
 
 
 @authentificated_user
@@ -581,7 +581,7 @@ def support_page(request):
     context = {
         'tickets': tickets,
     }
-    return render(request, 'scribd-deprecated/support_page.html', context)
+    return render(request, 'scribd/support_page.html', context)
 
 
 ##################################
@@ -594,7 +594,7 @@ def add_books_form(request):
 
 class ebookListView(ListView):
     model = Ebook
-    template_name = 'scribd-deprecated/ebooks_list.html'
+    template_name = 'scribd/ebooks_list.html'
 
 
 def ebookDetailView(request):
@@ -610,7 +610,7 @@ def ebookDetailView(request):
         'count': count,
         'discussions': discussions}
 
-    return render(request, 'scribd-deprecated/ebook_detail.html', context)
+    return render(request, 'scribd/ebook_detail.html', context)
 
 
 class EbookViewSet(viewsets.ModelViewSet):
@@ -627,7 +627,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, EditBookPermissions)  # NOT WORKING
     queryset = Ebook.objects.all()
     serializer_class = EbookSerializer
-    template_name = 'scribd-deprecated/ebook_change.html'
+    template_name = 'scribd/ebook_change.html'
     form_class = EbookForm
 
     def patch(self, request, *args, **kwargs):
@@ -657,7 +657,7 @@ def change_ebook(request, pk):
     if form.is_valid():
         form.save()
         return redirect('index')
-    return render(request, 'scribd-deprecated/ebook_change.html', {'form': form})
+    return render(request, 'scribd/ebook_change.html', {'form': form})
 
 
 ##################################
