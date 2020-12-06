@@ -483,7 +483,7 @@ def follow(request, pk):
                 'count': count,
                 'discussions': discussions
             }
-        return render(request, 'scribd-deprecated/ebook_details.html', context)
+        return render(request, 'scribd/ebook_details.html', context)
 
 
 def ebook_forum(request, book_k, forum_k):
@@ -514,7 +514,7 @@ def ebook_forum(request, book_k, forum_k):
             'discuss': discussions
         }
 
-        return render(request, 'scribd-deprecated/forumdetail.html', context)
+        return render(request, 'scribd/forumdetail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
@@ -612,22 +612,6 @@ def add_books_form(request):
 class ebookListView(ListView):
     model = Ebook
     template_name = 'scribd/ebooks_list.html'
-
-
-def ebookDetailView(request):
-    forums = Ebook.objects.Forum.objects.all()
-
-    count = forums.count()
-    discussions = []
-    for i in forums:
-        discussions.append(i.discussion_set.all())
-
-    context = {
-        'forums': forums,
-        'count': count,
-        'discussions': discussions}
-
-    return render(request, 'scribd/ebook_detail.html', context)
 
 
 class EbookViewSet(viewsets.ModelViewSet):
