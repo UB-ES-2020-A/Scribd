@@ -6,7 +6,7 @@ from Scribd import views
 from Scribd.views import ebookListView, follow, ebook_create_view, edit_profile_page_provider, UserList, UserDetail, \
     user_profile_page, edit_profile_page, upgrade_account_view, upload_file, login_create_view, signup_create_view, \
     provider_page, contract_page, ticket_page, ticketForumView, support_page, review, update_payment_details, \
-    downgrade_account_view,UserList, UserDetail
+    downgrade_account_view,UserList, UserDetail,ebook_forum
 from ScribdProject import settings
 
 urlpatterns = [
@@ -15,7 +15,8 @@ urlpatterns = [
     url(r'^ebooks/$', views.ebooks, name='ebooks'),
     url(r'^ebooks/(?P<category>.*)/$', views.ebooks, name='ebooks'),
 
-    url('ebookdetail/(?P<pk>[0-9]+)/$', follow, name='ebook_custom_detail'),  # everybody
+    url(r'ebookdetail/(?P<pk>[0-9]+)/$', follow, name='ebook_custom_detail'),  # everybody
+    url(r'ebookdetail/(?P<book_k>[0-9]+)/forum/(?P<forum_k>[0-9]+)/$', ebook_forum, name='forumdetail'),
     url('changebook/(?P<pk>[0-9]+)/$', views.change_ebook, name='Ebook_change_details'),
     # only staff (admin and support)
 
@@ -50,3 +51,12 @@ urlpatterns = [
 urlpatterns = format_suffix_patterns(urlpatterns)
 # urlpatterns += staticfiles_urlpatterns()
 urlpatterns += [] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+'''
+                                        <a href="{% url 'forumdetail' forum.id %}" class="btn"
+                                           style="background-color: #367C85">
+                                            <h7 style="color: #FFFFFF">More info</h7>
+                                        </a>
+
+'''

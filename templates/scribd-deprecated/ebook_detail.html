@@ -61,37 +61,6 @@
             <h7 style="color: #FFFFFF">Create Forum</h7>
         </button>
 
-        <div class="modal fade" id="createforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Open discussion</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form method="POST">
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            {% csrf_token %}
-                            {{ create_forum.topic|as_crispy_field }}
-                            {{ create_forum.description|as_crispy_field }}
-
-                            <button name="create_forum" type="submit" class="btn btn-success btn-lg btn-block"
-                                    style="background-color: #367C85; margin-bottom: 20px">
-                                <h7 style="color: #FFFFFF">Create</h7>
-                            </button>
-                        </form>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         {% for forum in forums %}
 
