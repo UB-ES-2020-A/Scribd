@@ -13,7 +13,7 @@ from rest_framework import generics, viewsets, permissions
 from Scribd.decorators import allowed_users, authentificated_user
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, UpdatePayment, \
-    CreateInForum, CreateInDiscussion, CreateInDiscussionTicket
+    CreateInForum, CreateInDiscussion, CreateInDiscussionTicket, ReviewForm
 from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
@@ -102,25 +102,6 @@ def ebook_create_view(request):
 ##################################
 ####### VISTA REVIEW #############
 ##################################
-
-@authentificated_user
-def review(request, pk):
-    if request.method == "POST":
-        ebook = Ebook.objects.get(id=pk)
-        lista = [a for a, b in Review.STARS if b == int(request.POST["star"])]
-        review = Review()
-        review.ebook = ebook
-        review.comment = request.POST["comment"]
-        review.value_stars = lista[0]
-        review.user = request.user
-        review.save()
-        return HttpResponseRedirect(reverse('ebook_custom_detail', kwargs={"pk": pk}))
-    context = {
-        'book_number': pk,
-        # 'viewedrestaurants': _check_session(request)
-
-    }
-    return render(request, 'scribd/review.html', context)
 
 
 ##################################
@@ -401,6 +382,7 @@ def upload_file(request):
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
+
 @authentificated_user
 def follow(request, pk):
     if request.method == 'POST':
@@ -437,24 +419,30 @@ def follow(request, pk):
                 next = request.POST.get('next', '/')
                 return HttpResponseRedirect(next)
 
-        elif 'discussion' in request.POST:
+        elif 'review' in request.POST:
+            print(request.POST)
+            review_form = ReviewForm(request.POST)
 
-            discussion_form = CreateInDiscussion(request.POST)
-
-            if discussion_form.is_valid() and request.user.is_authenticated:
-                discussion = Discussion.objects.create(
-                    user=User.objects.get(id=User.objects.get(username=request.user.username).id),
-
-                    forum=Forum.objects.get(id=Forum.objects.get(topic=request.POST.get('forum_name')).id),
-                    discuss=discussion_form.cleaned_data.get("discuss")
+            if review_form.is_valid() and request.user.is_authenticated:
+                review = Review.objects.create(
+                    ebook=Ebook.objects.get(id=pk),
+                    comment=review_form.cleaned_data.get("comment"),
+                    value_stars=review_form.cleaned_data.get("value_stars"),
+                    user=request.user
                 )
+                review.save()
 
-                discussion.save()
-                next = request.POST.get('next', '/')
-                return HttpResponseRedirect(next)
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+        else:
+            print(request.POST)
+            print("There was a problem with this post bro")
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
 
     else:
         discussion_form = CreateInDiscussion()
+        review_form = ReviewForm
         forum_form = CreateInForum()
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
@@ -476,6 +464,7 @@ def follow(request, pk):
                 "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
                 "ebook_followed": followed,
                 "ebook": ebook,
+                "review_form": review_form,
                 "reviews": reviews,
                 "discussion_form": discussion_form,
                 "create_forum": forum_form,
@@ -494,7 +483,38 @@ def follow(request, pk):
                 'count': count,
                 'discussions': discussions
             }
-        return render(request, 'scribd/ebook_detail.html', context)
+        return render(request, 'scribd-deprecated/ebook_details.html', context)
+
+
+def ebook_forum(request, book_k, forum_k):
+
+    if request.method == 'POST':
+        discussion_form = CreateInDiscussion(request.POST)
+
+        if discussion_form.is_valid() and request.user.is_authenticated:
+            print("********************************************")
+            discussion = Discussion.objects.create(
+                user=request.user,
+                forum=Forum.objects.get(id=forum_k),
+                discuss=discussion_form.cleaned_data.get("discuss")
+            )
+
+            discussion.save()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+    else:
+
+        discussion_form = CreateInDiscussion()
+        forum = Forum.objects.get(id=forum_k)
+        discussions = forum.discussion_set.all()
+        context = {
+            'forum': forum,
+            'discussion_form': discussion_form,
+            'discuss': discussions
+        }
+
+        return render(request, 'scribd-deprecated/forumdetail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
@@ -574,10 +594,7 @@ def ticketForumView(request, pk):
 
 @authentificated_user
 def support_page(request):
-    print(request.user.is_support)
     tickets = UserTickets.objects.all()
-
-    print(tickets)
     context = {
         'tickets': tickets,
     }
@@ -599,7 +616,7 @@ class ebookListView(ListView):
 
 def ebookDetailView(request):
     forums = Ebook.objects.Forum.objects.all()
-    print("********************************************************")
+
     count = forums.count()
     discussions = []
     for i in forums:
