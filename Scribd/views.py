@@ -492,7 +492,7 @@ def ebook_forum(request, book_k, forum_k):
         discussion_form = CreateInDiscussion(request.POST)
 
         if discussion_form.is_valid() and request.user.is_authenticated:
-            print("********************************************")
+
             discussion = Discussion.objects.create(
                 user=request.user,
                 forum=Forum.objects.get(id=forum_k),
@@ -533,7 +533,7 @@ class UploadsViewSet(viewsets.ModelViewSet):
 
 class ticketListView(ListView):
     model = UserTickets
-    template_name = 'scribd/support_page.html'
+    template_name = 'scribd-deprecated/support_page.html'
 
 
 class ticketViewSet(viewsets.ModelViewSet):
@@ -560,7 +560,7 @@ def ticket_page(request):
     else:
         ticket_form = TicketForm()
 
-    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+    return render(request, 'scribd-deprecated/tickets.html', {'ticket_form': ticket_form})
 
 
 def ticketForumView(request, pk):
@@ -589,16 +589,31 @@ def ticketForumView(request, pk):
             'discuss': discussions
         }
 
-        return render(request, 'scribd/ticketdetail.html', context)
+        return render(request, 'scribd-deprecated/ticketdetail.html', context)
 
 
 @authentificated_user
 def support_page(request):
-    tickets = UserTickets.objects.all()
-    context = {
-        'tickets': tickets,
-    }
-    return render(request, 'scribd/support_page.html', context)
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket = UserTickets.objects.create(
+                ticket_title=ticket_form.cleaned_data.get('ticket_title'),
+                ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
+                ticket_user=User.objects.get(username=request.user.username),
+
+            )
+            ticket.save()
+
+            return redirect('support_page')
+    else:
+        ticket_form = TicketForm()
+        tickets = UserTickets.objects.all()
+        context = {
+            'tickets': tickets,
+            'ticket_form': ticket_form
+        }
+        return render(request, 'scribd-deprecated/support_page.html', context)
 
 
 ##################################

@@ -109,7 +109,7 @@ class Review(models.Model):
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
     ticket_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
+    ticket_title = models.CharField(max_length=30, blank=False, default=' ')
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
     ticket_solved = models.BooleanField(default=False)

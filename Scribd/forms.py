@@ -125,7 +125,7 @@ class TicketForm(forms.ModelForm):
 
         widgets = {
             'ticket_title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+                attrs={'class': 'form-control'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
