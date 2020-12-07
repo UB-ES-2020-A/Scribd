@@ -240,7 +240,10 @@ class user_profile_page(DetailView):
     def get_context_data(self, **kwargs):
         context = super(user_profile_page, self).get_context_data(**kwargs)
         current_time = datetime.datetime.now()
+        user = self.get_object()
+        substract = user.user_profile.nbooks_by_subs - user.user_profile.n_books_followed
         context['current_time'] = current_time
+        context['substract'] = substract
         return context
 
 

@@ -1,0 +1,129 @@
+{% extends 'scribd/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="profile-banner" style="background:url({% static 'images/portadascribd.png' %});">
+        <div class="col-sm-3 avatar-container">
+            <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-circle profile-avatar"
+                 alt="User avatar">
+        </div>
+        <div class="col-sm-12 profile-actions text-right">
+            <button type="button" class="btn btn-sm" href="#"
+                    style="background-color: #367C85; color: #FFFFFF; box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);"><i
+                    class="fa fa-edit" style="color: #FFFFFF"></i> Edit
+            </button>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- Begin user profile -->
+                <div class="text-center user-profile-2" style="margin-top:120px">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h4><b>{{ request.user.username }}</b></h4>
+                            <h6>{{ request.user.email }}</h6>
+                            <br>
+                            <h5>Subscription plan</h5>
+                            <strong>{{ request.user.user_profile.subs_type }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">{{ request.user.user_profile.n_books_followed }}</span>
+                            Followed books
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">{{ request.user.user_profile.n_uploads }}</span>
+                            Uploaded resources
+                        </li>
+                    </ul>
+
+                    <!-- User button -->
+                    <div class="user-button">
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6">
+                                <a class="btn btn-sm btn-block" style="background-color: #367C85; color: #FFFFFF;"
+                                   href="edit/"><i
+                                        class="fa fa-user"></i> Edit profile
+                                </a>
+                            </div>
+                        </div>
+                    </div><!-- End div .user-button -->
+                </div><!-- End div .box-info -->
+                <!-- Begin user profile -->
+            </div>
+            <div class="col-sm-9">
+                <div class="custombase">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
+                            <a class="nav-item nav-link active" style="color: #367C85" id="nav-home-tab"
+                               data-toggle="tab" href="#nav-home"
+                               role="tab"
+                               aria-controls="nav-home" aria-selected="true"><i
+                                        class="fa fa-user"></i> Profile</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-profile-tab" data-toggle="tab"
+                               href="#nav-profile"
+                               role="tab"
+                               aria-controls="nav-profile" aria-selected="false"><i
+                                        class="fa fa-book"></i> Followed</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
+                               href="#nav-contact"
+                               role="tab"
+                               aria-controls="nav-contact" aria-selected="false"><i
+                                        class="fa fa-upload"></i> Uploaded</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                             aria-labelledby="nav-home-tab">
+                            <div class="container">
+                                <h5>About me</h5>
+                                <p style="margin-left: 10px; color: #1d2124;">{{ request.user.user_profile.bio }}</p>
+                                <hr>
+                                <h5>Contracted plan: <strong>{{ request.user.user_profile.subs_type }}</strong><small
+                                        style="color: #4e555b"> (The plan expires in 4 weeks since the payment is
+                                    done)</small></h5>
+                                {% if user.user_profile.expires < current_time or user.user_profile.subs_type == "Free trial" %}
+                                    <a href="upgrade/">
+                                        <h7 style="margin-left: 10px">Upgrade subscription now!</h7>
+                                    </a>
+                                {% elif user.user_profile.expires > current_time %}
+                                    <p style="color: #1d2124; margin-left: 10px">Your subscription will expire
+                                        in {{ user.user_profile.expires }}, but you can cancel anytime by <strong><a
+                                                href="cancelconfirmation/" style="color: darkred">
+                                            clicking here!
+                                        </a></strong></p>
+                                {% endif %}
+                                <br>
+                                <p style="margin-left: 10px">You have read
+                                    <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
+                                    <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
+                                <p style="margin-left: 10px">You're part from this community since
+                                    <strong>{{ request.user.date_joined }}</strong></p>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                             aria-labelledby="nav-profile-tab">
+                            <div class="container">
+                                <h5>Books followed</h5>
+                                <p style="margin-left: 10px">You have read
+                                    <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
+                                    <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
+
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                             aria-labelledby="nav-contact-tab">
+                            <div class="container">
+                                <h5>Files uploaded</h5>
+                                <p style="margin-left: 10px">
+                                    The number of files uploaded by now is <strong>{{ request.user.user_profile.n_uploads }}</strong>
+                                .</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

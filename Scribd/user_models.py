@@ -10,7 +10,6 @@ class User(AbstractUser):
     is_provider = models.BooleanField(default=False)
     is_support = models.BooleanField(default=False)
     is_suscribed = models.BooleanField(default=False)
-    profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
 
     def get_user_profile(self):
         user_profile = None
@@ -46,6 +45,8 @@ class userProfile(models.Model):
     )
     _subs_type = dict(SUBS_TYPE)
 
+    portrait = models.ImageField(upload_to="images", default='images/clouds.jpg')
+    profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user_profile", on_delete=models.CASCADE)
     bio = models.CharField(max_length=500, blank=True, default='')
 
