@@ -54,7 +54,7 @@ class ebookMainView(ListView):
     template_name = 'scribd/mainpage.html'
 
 
-def ebooks(request, search=""):
+def ebooks(request, search="el señor"):
     # Priorizamos busqueda categoria
     if request.method == "GET":
         dictionary = request.GET.dict()

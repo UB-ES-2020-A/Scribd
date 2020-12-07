@@ -7,8 +7,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>MainPage</title>
-
     <!-- Bootstrap core CSS -->
     <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -18,6 +16,9 @@
 
 </head>
 {% extends 'scribd/base.html' %}
+{% load static %}
+
+{% block title %} Scribd {% endblock %}
 
 {% block content %}
 
@@ -32,22 +33,22 @@
             <!-- Slide One - Set the background image for this slide in the line below -->
             <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <h3>First Slide</h3>
-                    <p>This is a description for the first slide.</p>
+                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>La comunidad del anillo</h3></a>
+                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
             <!-- Slide Two - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <h3>Second Slide</h3>
-                    <p>This is a description for the second slide.</p>
+                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>Las dos torres</h3></a>
+                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
             <!-- Slide Three - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <h3>Third Slide</h3>
-                    <p>This is a description for the third slide.</p>
+                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>El retorno del rey</h3></a>
+                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
         </div>
@@ -64,10 +65,11 @@
 
 <!-- Page Content -->
 <div class="container">
-
+    
+    <!--
     <h1 class="my-4">Welcome to Scribd</h1>
 
-    <!-- Marketing Icons Section -->
+    Marketing Icons Section
     <div class="row">
         <div class="col-lg-4 mb-4">
             <div class="card h-100">
@@ -107,125 +109,33 @@
             </div>
         </div>
     </div>
-    <!-- /.row -->
+    /.row -->
 
     <!-- Portfolio Section -->
-    <h2>Best Sellers</h2>
+    <h1>Our books</h1>
 
     <div class="row">
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project One</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam
-                        aspernatur eum quasi sapiente nesciunt? Voluptatibus sit, repellat sequi itaque deserunt,
-                        dolores in, nesciunt, illum tempora ex quae? Nihil, dolorem!</p>
+        {% for ebook in ebooks %}
+            <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-100">
+                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                        {% load static %}
+                        <a href="ebookdetail/{{ ebook.id }}"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                    {% else %}
+                    <a href="ebookdetail/{{ ebook.id }}"><img src="{{ ebook.featured_photo.url }}" width="350" height="300" alt=""></a>
+                    {% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">
+                            <a href="ebookdetail/{{ ebook.id }}">{{ ebook.title }}</h5></a>
+                        </h4>
+                        <h5>
+                            {{ ebook.autor }}
+                        </h5>
+                        <p class="card-text">{{ ebook.description }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Two</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                        odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Three</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos quisquam, error
-                        quod sed cumque, odio distinctio velit nostrum temporibus necessitatibus et facere atque iure
-                        perspiciatis mollitia recusandae vero vel quam!</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Four</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                        odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Five</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod
-                        odio, gravida pellentesque urna varius vitae.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-sm-6 portfolio-item">
-            <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <a href="#">Project Six</a>
-                    </h4>
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque earum nostrum
-                        suscipit ducimus nihil provident, perferendis rem illo, voluptate atque, sit eius in voluptates,
-                        nemo repellat fugiat excepturi! Nemo, esse.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.row -->
-
-    <!-- Features Section -->
-    <div class="row">
-        <div class="col-lg-6">
-            <h2>redvfdc</h2>
-            <p>The Modern Business template by Start Bootstrap includes:</p>
-            <ul>
-                <li>
-                    <strong>Bootstrap v4</strong>
-                </li>
-                <li>jQuery</li>
-                <li>Font Awesome</li>
-                <li>Working contact form with validation</li>
-                <li>Unstyled page elements for easy customization</li>
-            </ul>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id
-                reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia
-                dolorum ducimus unde.</p>
-        </div>
-        <div class="col-lg-6">
-            <img class="img-fluid rounded" src="http://placehold.it/700x450" alt="">
-        </div>
-    </div>
-    <!-- /.row -->
-
-    <hr>
-
-    <!-- Call to Action Section -->
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Molestias, expedita, saepe, vero rerum deleniti
-                beatae veniam harum neque nemo praesentium cum alias asperiores commodi.</p>
-        </div>
-        <div class="col-md-4">
-            <a class="btn btn-lg btn-secondary btn-block" href="#">Call to Action</a>
-        </div>
+        {% endfor %}
     </div>
 
 </div>
