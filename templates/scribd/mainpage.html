@@ -1,3 +1,5 @@
+{% extends 'scribd/base.html' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,20 +10,18 @@
     <meta name="author" content="">
 
     <!-- Bootstrap core CSS -->
-    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="static/css/modern-business.css" rel="stylesheet">
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
 
 
 </head>
-{% extends 'scribd/base.html' %}
-{% load static %}
 
 {% block title %} Scribd {% endblock %}
 
 {% block content %}
-
+<div>
 <header>
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">
@@ -62,79 +62,31 @@
         </a>
     </div>
 </header>
+</div>
 
 <!-- Page Content -->
 <div class="container">
     
-    <!--
-    <h1 class="my-4">Welcome to Scribd</h1>
-
-    Marketing Icons Section
-    <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse
-                        necessitatibus neque.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis ipsam eos,
-                        nam perspiciatis natus commodi similique totam consectetur praesentium molestiae atque
-                        exercitationem ut consequuntur, sed eveniet, magni nostrum sint fuga.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse
-                        necessitatibus neque.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    /.row -->
-
     <!-- Portfolio Section -->
     <h1>Our books</h1>
 
     <div class="row">
         {% for ebook in ebooks %}
-            <div class="col-lg-4 col-sm-6 portfolio-item">
-                <div class="card h-100">
-                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                        {% load static %}
-                        <a href="ebookdetail/{{ ebook.id }}"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                    {% else %}
-                    <a href="ebookdetail/{{ ebook.id }}"><img src="{{ ebook.featured_photo.url }}" width="350" height="300" alt=""></a>
-                    {% endif %}
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="ebookdetail/{{ ebook.id }}">{{ ebook.title }}</h5></a>
-                        </h4>
-                        <h5>
-                            {{ ebook.autor }}
-                        </h5>
-                        <p class="card-text">{{ ebook.description }}</p>
-                    </div>
+        <div class="card flex-lg-row box-shadow h-md-250 mt-5">
+            <img class="card-img-left flex-auto d-none d-md-block"
+                 src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
+            <div class="card text-center w-100">
+
+                <div class="card-body">
+                    <h3 class="card-title">{{ ebook.title }}</h3>
+                    <h6> by {{ ebook.autor }}</h6>
+                    <p class="card-text">{{ ebook.description }}</p>
+
                 </div>
+
             </div>
+
+        </div>
         {% endfor %}
     </div>
 
