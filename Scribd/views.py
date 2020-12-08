@@ -36,7 +36,7 @@ def index(request):
         'promoted': promoted,
         'viewedebooks': _check_session(request)
     }
-    return render(request, 'scribd/mainpage.html', context)
+    return render(request, 'scribd-deprecated/mainpage.html', context)
 
 
 def _check_session(request):
@@ -497,7 +497,7 @@ def follow(request, pk):
                 'count': count,
                 'discussions': discussions
             }
-        return render(request, 'scribd/ebook_detail.html', context)
+        return render(request, 'scribd-deprecated/ebook_detail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
