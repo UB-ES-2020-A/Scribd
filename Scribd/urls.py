@@ -32,7 +32,6 @@ urlpatterns = [
     url('contract/', contract_page, name='contract_page'),  # only self provider!!!!!
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
 
-    url('sendTicket/', ticket_page, name='ticket_page'),
     url('ticket/(?P<pk>[0-9]+)/$', ticketForumView, name='ticket_detail'),
     url('tickets/', support_page, name='support_page'),
 
