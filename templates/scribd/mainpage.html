@@ -23,7 +23,7 @@
 {% block content %}
 <div>
 <header>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide pb-2" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -33,22 +33,16 @@
             <!-- Slide One - Set the background image for this slide in the line below -->
             <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>La comunidad del anillo</h3></a>
-                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
             <!-- Slide Two - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>Las dos torres</h3></a>
-                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
             <!-- Slide Three - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>El retorno del rey</h3></a>
-                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
         </div>
@@ -65,22 +59,29 @@
 </div>
 
 <!-- Page Content -->
-<div class="container">
+<div class="container pb-3">
     
     <!-- Portfolio Section -->
     <h1>Our books</h1>
 
     <div class="row">
-        {% for ebook in ebooks %}
-        <div class="card flex-lg-row box-shadow h-md-250 mt-5">
+        {% for ebook in ebooks.object_list %}
+        <div class="card flex-lg-row box-shadow h-md-250 mt-3 w-100">
             <img class="card-img-left flex-auto d-none d-md-block"
                  src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
             <div class="card text-center w-100">
 
                 <div class="card-body">
                     <h3 class="card-title">{{ ebook.title }}</h3>
+                    <br>
                     <h6> by {{ ebook.autor }}</h6>
+                    <br>
                     <p class="card-text">{{ ebook.description }}</p>
+                    <br>
+                    <a href="ebookdetail/{{ ebook.id }}"><button class="btn my-2 my-sm-0" type="submit"
+                        style="background-color: #367C85">
+                    <h7 style="color: #FFFFFF">More info</h7>
+            </button></a>
 
                 </div>
 
@@ -88,13 +89,36 @@
 
         </div>
         {% endfor %}
+        <div style="position:relative; left: 40%; padding-top: 10px;">
+          <ul class="pagination">
+                {% if ebooks.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ ebooks.previous_page_number }}" tabindex="-1">Previous</a>
+                    </li>
+                {% endif %}
+                {% for pg in page_range %}
+                    {% if ebooks.number == pg %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{ pg }}">{{ pg }}<span class="sr-only">(current)</span></a>
+                        </li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ pg }}">{{ pg }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if ebooks.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ ebooks.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
 </div>
 
 <!-- Bootstrap core JavaScript -->
-<script src="static/vendor/jquery/jquery.min.js"></script>
-<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
 
