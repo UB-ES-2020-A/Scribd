@@ -558,7 +558,7 @@ class UploadsViewSet(viewsets.ModelViewSet):
 
 class ticketListView(ListView):
     model = UserTickets
-    template_name = 'scribd-deprecated/support_page.html'
+    template_name = 'scribd/support_page.html'
 
 
 class ticketViewSet(viewsets.ModelViewSet):
@@ -585,7 +585,7 @@ def ticket_page(request):
     else:
         ticket_form = TicketForm()
 
-    return render(request, 'scribd-deprecated/tickets.html', {'ticket_form': ticket_form})
+    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
 
 def ticketForumView(request, pk):
@@ -614,7 +614,7 @@ def ticketForumView(request, pk):
             'discuss': discussions
         }
 
-        return render(request, 'scribd-deprecated/ticketdetail.html', context)
+        return render(request, 'scribd/ticketdetail.html', context)
 
 
 @authentificated_user
@@ -638,7 +638,7 @@ def support_page(request):
             'tickets': tickets,
             'ticket_form': ticket_form
         }
-        return render(request, 'scribd-deprecated/support_page.html', context)
+        return render(request, 'scribd/support_page.html', context)
 
 
 ##################################
