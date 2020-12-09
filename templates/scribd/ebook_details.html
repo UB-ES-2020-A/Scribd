@@ -1,0 +1,226 @@
+{% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <body>
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+
+            <!-- /.col-lg-3 -->
+
+            <div class="col-lg">
+                <div class="card flex-lg-row box-shadow h-md-250 mt-5">
+                    <img class="card-img-left flex-auto d-none d-md-block"
+                         src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
+                    <div class="card text-center w-100">
+
+                        <div class="card-body">
+                            <h3 class="card-title">{{ ebook.title }}</h3>
+                            <h6> by {{ ebook.autor }}</h6>
+                            <p class="card-text">{{ ebook.description }}</p>
+
+                        </div>
+                        <div class="card-footer text-muted text-center">
+                            <form method="post">
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                {% csrf_token %}
+                                {% if request.user.is_authenticated %}
+                                    {% if substract > 0 and not ebook_followed %}
+                                        <button name="follow" type="submit" class="btn"
+                                                style="background-color: #367C85;"
+                                                onclick="history.pushState(null, null, location.href);
+                        window.onpopstate = function () {
+                            history.go(1);
+                        };">
+                                            <h7 style="color: #FFFFFF">Follow</h7>
+                                        </button>
+                                    {% elif ebook_followed %}
+                                        <a href="{% url 'userprofilepage' request.user.username %}" class="btn"
+                                           style="background-color: #367C85;">
+                                            <h7 style="color: #FFFFFF">Read it now!</h7>
+                                        </a>
+                                    {% else %}
+                                        <a href="{% url 'upgradeaccount' request.user.username %}" class="btn"
+                                           style="background-color: #367C85;">
+                                            <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                                        </a>
+                                    {% endif %}
+                                {% endif %}
+                            </form>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- /.col-lg-9 -->
+
+
+                <div class="card card-outline-secondary my-4">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#reviews">Reviews</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#forums">Forums</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#info">More information</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content card-body">
+                        <div id="reviews" class="tab-pane active">
+                            {% for review in reviews %}
+                                <p>{{ review.comment }}</p>
+                                <small class="text-muted">Posted by {{ review.user }} with <span style="color:#d39e00">{{ review.value_stars }}</span>
+                                </small>
+                                <hr>
+
+
+                            {% endfor %}
+
+                            <div class="card-footer text-muted text-center my-lg-auto">
+                                <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createreview"
+                                        type="submit"
+                                        style="background-color: #367C85">
+                                    <h7 style="color: #FFFFFF">Write a review</h7>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="forums" class="tab-pane">
+                            {% for forum in forums %}
+
+                                <div id="{{ forum.name }}" class="card box container my-4">
+                                    <br>
+                                    <div class="card-title">
+                                        <h4>{{ forum.topic }}</h4></a>
+                                        <div class="card-body container">
+                                            <p>{{ forum.description }}</p>
+                                            <small class="text-muted">Posted by {{ forum.name }} </small>
+                                        </div>
+                                        <hr>
+
+                                        <a href="{% url 'forumdetail' ebook.id forum.id %}" class="btn"
+                                           style="background-color: #367C85">
+                                            <h7 style="color: #FFFFFF">Discuss!</h7>
+                                        </a>
+
+
+                                    </div>
+
+                                </div>
+                            {% endfor %}
+                            <div class="card-footer text-muted text-center my-lg-auto">
+                                <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum"
+                                        type="submit"
+                                        style="background-color: #367C85">
+                                    <h7 style="color: #FFFFFF">Create Forum</h7>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="info" class="tab-pane">
+                            <h6> Book IBAN: {{ ebook.ebook_number }}</h6>
+                            <hr>
+                            <h6> Editorial: {{ ebook.publisher }}</h6>
+                            <hr>
+                            <h6> Size: {{ ebook.size }} Mbs</h6>
+                            <hr>
+                            <h6> Downloads: {{ ebook.count_downloads }}</h6>
+                            <hr>
+                            <h6> Category: {{ ebook.category }}</h6>
+                            <hr>
+                            <h6> Media type: {{ ebook.media_type }}</h6>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="modal fade" id="createforum" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create a discussion forum</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        {% csrf_token %}
+                        {{ create_forum.topic|as_crispy_field }}
+                        {{ create_forum.description|as_crispy_field }}
+
+                        <button name="create_forum" type="submit" class="btn btn-success btn-lg btn-block"
+                                style="background-color: #367C85; margin-bottom: 20px">
+                            <h7 style="color: #FFFFFF">Create</h7>
+                        </button>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createreview" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Write a review</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        {% csrf_token %}
+                        {{ review_form.value_stars|as_crispy_field }}
+                        {{ review_form.comment|as_crispy_field }}
+
+
+                        <button name="review" type="submit" class="btn btn-success btn-lg btn-block"
+                                style="background-color: #367C85; margin-bottom: 20px">
+                            <h7 style="color: #FFFFFF">Create</h7>
+                        </button>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    </body>
+
+{% endblock %}
+

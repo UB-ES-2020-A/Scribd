@@ -124,21 +124,22 @@ class TicketForm(forms.ModelForm):
 
         widgets = {
             'ticket_title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+                attrs={'class': 'form-control'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
 
-class reviewForm(forms.ModelForm):
+class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ["comment", "value_stars"]
 
+
         widgets = {
-            'comment_title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'})
+
         }
+
 
 
 ##################################
@@ -147,7 +148,7 @@ class reviewForm(forms.ModelForm):
 
 class CreateInForum(forms.ModelForm):
     class Meta:
-        print("Still creating the form-------------------------------------------")
+
         model = Forum
         fields = ["topic", "description"]
 
