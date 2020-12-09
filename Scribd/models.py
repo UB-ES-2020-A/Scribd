@@ -28,7 +28,7 @@ class Ebook(models.Model):
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='static/readable_content/hp3.pdf',
+    url = models.URLField(max_length=200, default='readable_content/hp3.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
@@ -109,7 +109,7 @@ class Review(models.Model):
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
     ticket_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
+    ticket_title = models.CharField(max_length=30, blank=False, default=' ')
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
     ticket_solved = models.BooleanField(default=False)

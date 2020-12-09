@@ -57,7 +57,7 @@ def index(request):
         'page_range': page_range,
         'viewedebooks': _check_session(request)
     }
-    return render(request, 'scribd/mainpage.html', context)
+    return render(request, 'scribd-deprecated/mainpage.html', context)
 
 
 def _check_session(request):
@@ -75,7 +75,7 @@ class ebookMainView(ListView):
     template_name = 'scribd/mainpage.html'
 
 
-def ebooks(request, search="el señor"):
+def ebooks(request, search=""):
     # Priorizamos busqueda categoria
     if request.method == "GET":
         dictionary = request.GET.dict()
@@ -242,7 +242,10 @@ class user_profile_page(DetailView):
     def get_context_data(self, **kwargs):
         context = super(user_profile_page, self).get_context_data(**kwargs)
         current_time = datetime.datetime.now()
+        user = self.get_object()
+        substract = user.user_profile.nbooks_by_subs - user.user_profile.n_books_followed
         context['current_time'] = current_time
+        context['substract'] = substract
         return context
 
 
@@ -504,6 +507,7 @@ def follow(request, pk):
                 'count': count,
                 'discussions': discussions
             }
+            
         return render(request, 'scribd/ebook_details.html', context)
 
 
@@ -513,7 +517,7 @@ def ebook_forum(request, book_k, forum_k):
         discussion_form = CreateInDiscussion(request.POST)
 
         if discussion_form.is_valid() and request.user.is_authenticated:
-            print("********************************************")
+
             discussion = Discussion.objects.create(
                 user=request.user,
                 forum=Forum.objects.get(id=forum_k),
@@ -554,7 +558,7 @@ class UploadsViewSet(viewsets.ModelViewSet):
 
 class ticketListView(ListView):
     model = UserTickets
-    template_name = 'scribd/support_page.html'
+    template_name = 'scribd-deprecated/support_page.html'
 
 
 class ticketViewSet(viewsets.ModelViewSet):
@@ -581,7 +585,7 @@ def ticket_page(request):
     else:
         ticket_form = TicketForm()
 
-    return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
+    return render(request, 'scribd-deprecated/tickets.html', {'ticket_form': ticket_form})
 
 
 def ticketForumView(request, pk):
@@ -610,16 +614,31 @@ def ticketForumView(request, pk):
             'discuss': discussions
         }
 
-        return render(request, 'scribd/ticketdetail.html', context)
+        return render(request, 'scribd-deprecated/ticketdetail.html', context)
 
 
 @authentificated_user
 def support_page(request):
-    tickets = UserTickets.objects.all()
-    context = {
-        'tickets': tickets,
-    }
-    return render(request, 'scribd/support_page.html', context)
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket = UserTickets.objects.create(
+                ticket_title=ticket_form.cleaned_data.get('ticket_title'),
+                ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
+                ticket_user=User.objects.get(username=request.user.username),
+
+            )
+            ticket.save()
+
+            return redirect('support_page')
+    else:
+        ticket_form = TicketForm()
+        tickets = UserTickets.objects.all()
+        context = {
+            'tickets': tickets,
+            'ticket_form': ticket_form
+        }
+        return render(request, 'scribd-deprecated/support_page.html', context)
 
 
 ##################################
