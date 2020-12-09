@@ -57,7 +57,7 @@ def index(request):
         'page_range': page_range,
         'viewedebooks': _check_session(request)
     }
-    return render(request, 'scribd-deprecated/mainpage.html', context)
+    return render(request, 'scribd/mainpage.html', context)
 
 
 def _check_session(request):
