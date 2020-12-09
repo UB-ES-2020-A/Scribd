@@ -5,10 +5,10 @@
         <div class="col-sm-3 avatar-container">
             {% if user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
                 <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-circle profile-avatar"
-                     alt="User avatar">
+                     alt="User avatar" style="border-radius: 2%; width: 75%; height: auto">
             {% else %}
                 <img src="{{ user.user_profile.profile_image.url }}" class="img-fluid profile-avatar"
-                     style="border-radius: 2%; width: 75%; height: 75%" alt="User avatar">
+                     style="border-radius: 2%; width: 75%; height: auto" alt="User avatar">
             {% endif %}
         </div>
     </div>
@@ -16,7 +16,8 @@
         <div class="row">
             <div class="col-sm-3">
                 <!-- Begin user profile -->
-                <div class="text-center user-profile-2" style="margin-top:120px">
+                <div class="text-center user-profile-2"
+                     style="margin-top:120px; box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5); border-radius: 2%">
                     <ul class="list-group">
                         <li class="list-group-item">
                             <h4><b>{{ request.user.username }}</b></h4>
@@ -32,28 +33,26 @@
                         <li class="list-group-item">
                             <span class="badge">{{ request.user.user_profile.n_uploads }}</span>
                             Uploaded resources
-                            <p>{{ user.user_profile.profile_image.url }}</p>
-                            <p>/media/{{ user.users_key.values.1.featured_photo }}</p>
                         </li>
                     </ul>
-
-                    <!-- User button -->
-                    <div class="user-button">
-                        <div class="row">
-                            <div class="col-lg-3"></div>
-                            <div class="col-lg-6">
-                                <a class="btn btn-sm btn-block" style="background-color: #367C85; color: #FFFFFF;"
-                                   href="edit/"><i
-                                        class="fa fa-user"></i> Edit profile
-                                </a>
-                            </div>
-                        </div>
-                    </div><!-- End div .user-button -->
                 </div><!-- End div .box-info -->
                 <!-- Begin user profile -->
+                <!-- User button -->
+                <div class="user-button" style="margin-left: 50px">
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                            <a class="btn btn-sm btn-block" style="background-color: #367C85; color: #FFFFFF;"
+                               href="edit/"><i
+                                    class="fa fa-edit"></i> Edit profile
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- End div .user-button -->
             </div>
+
             <div class="col-sm-9">
-                <div class="custombase">
+                <div class="custombase" style="background-color: #FFFFFF">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
                             <a class="nav-item nav-link active" style="color: #367C85" id="nav-home-tab"

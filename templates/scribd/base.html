@@ -44,37 +44,43 @@
                         <img src="{% static 'images/lupa.png' %}" width="18px" height="18px" style="margin-top: -10px">
                     </button>
                 </form>
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ml-auto" style="margin-top: 20px">
                     {% if request.user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'upload_file' %}">
-                                Upload files
+                                <p style="font-size: large; color: #FFFFFF"><i
+                                    class="fa fa-upload"></i> Upload files</p>
                             </a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link"
                                href="{% url 'userprofilepage' request.user.username %}"><strong
-                                    style="color:#367C85;">{{ request.user.username }}</strong></a>
+                                    style="color:#367C85;font-size: large"><i
+                                    class="fa fa-user"></i> {{ request.user.username }}</strong></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/accounts/logout">
-                                Log Out
+                                <p style="font-size: large; color: #FFFFFF">Log Out <i
+                                        class="fa fa-sign-out"></i></p>
                             </a>
                         </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link" href="/accounts/signup/">
-                                Register
+                                <p style="font-size: large; color: #FFFFFF"><i
+                                    class="fa fa-plus-circle"></i> Register</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="modal" data-target="#login">
-                                Log In
+                                <p style="font-size: large; color: #FFFFFF"><i
+                                    class="fa fa-sign-in"></i> Log In</p>
                             </a>
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
+                        <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md"><p style="font-size: large"><i
+                                    class="fa fa-github"></i> About</p></a>
                     </li>
                 </ul>
             </div>

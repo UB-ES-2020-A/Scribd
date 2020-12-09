@@ -24,14 +24,14 @@ body {
     margin: 10px 10px 10px 10px;
 }
 
+
 .avatar-container {
     height: 300px;
     text-align: center;
 }
 
 .profile-avatar {
-    width: 350px;
-    height: 350px;
+    width: 200px;
     position: relative;
     margin: 0px auto;
     margin-top: 196px;
