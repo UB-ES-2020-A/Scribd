@@ -1,18 +1,16 @@
 {% load static %}
 {% load crispy_forms_tags %}
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>
-        {% block title %} {% endblock %}
+        {% block title %}{% endblock %}
     </title>
 
     <link rel="icon"
@@ -21,67 +19,108 @@
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
+    <link href="{% static 'css/user_profile_stylesheet.css' %}" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
-
 </head>
 
 <body>
 <!-- Navigation -->
-<nav class="navbar fixed-top navbar-expand-lg navba©r-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand pr-4" href="/">
-        <img src="{% static 'images/scribdLogo.png' %}" width="120" height="60" alt="" style="margin-left: 5%">
-        </a>
-        <a class="navbar-brand" href="{% url 'ebooks' %}">Scribd</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <form action="{% url 'ebooks' %}" method="GET" class="form-inline ml-2 my-2 my-lg-0" style="padding-left: 20px">
-            <input class="form-control mr-sm-2" type="text" name="search" value="" placeholder="Search"
-                   aria-label="Search"
-                   style="background-color: #F3F6FD; height: 33px; width: 350px; border-color: slategrey">
-            <button class="btn my-2 my-sm-0" type="submit"
-                    style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
-                <img src="{% static 'images/lupa.png' %}" width="18px" height="18px" style="margin-top: -10px">
-            </button>
-        </form>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">Uploads</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="services.html">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Log In</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Profile
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-                        <a class="dropdown-item" href="blog-home-1.html">My Account</a>
-                        <a class="dropdown-item" href="blog-home-2.html">My Post</a>
-                        <a class="dropdown-item" href="blog-post.html">Blog Post</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-            </ul>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+        <div class="col-2">
+            <a class="navbar-brand" href="/"><img src="{% static 'images/scribdLogoinverted.png' %}"
+                                                  style="width: 85%; height: 60%"></a>
+        </div>
+        <div class="col-10">
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <form action="{% url 'ebooks' %}" method="GET" class="form-inline ml-2 my-2 my-lg-0"
+                      style="padding-left: 20px">
+                    <input class="form-control mr-sm-2" type="text" name="search" value="" placeholder="Search"
+                           aria-label="Search"
+                           style="background-color: #F3F6FD; height: 33px; width: 350px; border-color: slategrey">
+                    <button class="btn my-2 my-sm-0" type="submit"
+                            style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
+                        <img src="{% static 'images/lupa.png' %}" width="18px" height="18px" style="margin-top: -10px">
+                    </button>
+                </form>
+                <ul class="navbar-nav ml-auto" style="margin-top: 20px">
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'upload_file' %}">
+                                <p style="font-size: large; color: #FFFFFF"><i
+                                    class="fa fa-upload"></i> Upload files</p>
+                            </a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link"
+                               href="{% url 'userprofilepage' request.user.username %}"><strong
+                                    style="color:#367C85;font-size: large"><i
+                                    class="fa fa-user"></i> {{ request.user.username }}</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/logout">
+                                <p style="font-size: large; color: #FFFFFF">Log Out <i
+                                        class="fa fa-sign-out"></i></p>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/accounts/signup/">
+                                <p style="font-size: large; color: #FFFFFF"><i
+                                    class="fa fa-plus-circle"></i> Register</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="modal" data-target="#login">
+                                <p style="font-size: large; color: #FFFFFF"><i
+                                    class="fa fa-sign-in"></i> Log In</p>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md"><p style="font-size: large"><i
+                                    class="fa fa-github"></i> About</p></a>
+                    </li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </nav>
+{% block content %}{% endblock %}
 
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Log in</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
 
-{% block content %} {% endblock %}
+                    {{ login_form.username|as_crispy_field }}
+                    {{ login_form.password|as_crispy_field }}
 
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Log In</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <footer class="py-5 bg-dark">
     <div class="container">
@@ -89,6 +128,9 @@
     </div>
     <!-- /.container -->
 </footer>
+
+<div class="container-fluid" style="background-color: #343a40; height: 45px; position: absolute">
+</div>
 
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
