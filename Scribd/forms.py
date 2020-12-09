@@ -24,13 +24,12 @@ class EbookForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = userProfile
-        fields = ['bio']
+        fields = ['profile_image', 'portrait', 'bio']
 
         widgets = {
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
             'bio': forms.Textarea(attrs={'class': 'form-control'})
         }
-
 
 class UpgradeAccountForm(forms.ModelForm):
     class Meta:

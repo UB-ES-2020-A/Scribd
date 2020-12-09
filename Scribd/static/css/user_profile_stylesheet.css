@@ -24,17 +24,14 @@ body {
     margin: 10px 10px 10px 10px;
 }
 
-.customcontent{
-
-}
-
 .avatar-container {
     height: 300px;
     text-align: center;
 }
 
 .profile-avatar {
-    width: 200px;
+    width: 350px;
+    height: 350px;
     position: relative;
     margin: 0px auto;
     margin-top: 196px;

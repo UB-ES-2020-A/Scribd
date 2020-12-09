@@ -45,7 +45,7 @@ class userProfile(models.Model):
     )
     _subs_type = dict(SUBS_TYPE)
 
-    portrait = models.ImageField(upload_to="images", default='images/clouds.jpg')
+    portrait = models.ImageField(upload_to="images", default='images/portadascribd.png')
     profile_image = models.ImageField(upload_to="images", default='images/unknown.png')
     user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name="user_profile", on_delete=models.CASCADE)
     bio = models.CharField(max_length=500, blank=True, default='')
