@@ -1,18 +1,16 @@
 {% load static %}
 {% load crispy_forms_tags %}
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>
-        {% block title %} {% endblock %}
+        {% block title %}{% endblock %}
     </title>
 
     <link rel="icon"
@@ -22,19 +20,23 @@
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
+    <link href="{% static 'css/user_profile_stylesheet.css' %}" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
-
 </head>
 
 <body>
 <!-- Navigation -->
-<nav class="navbar fixed-top navbar-expand-lg navba©r-dark bg-dark fixed-top">
+<div>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+
     <div class="container">
         <a class="navbar-brand pr-4" href="/">
-        <img src="{% static 'images/scribdLogo.png' %}" width="120" height="60" alt="" style="margin-left: 5%">
+            <img src="{% static 'images/scribdLogo.png' %}" width="100" height="50" alt="" style="margin-left: 20px">
         </a>
-        <a class="navbar-brand" href="{% url 'ebooks' %}">Scribd</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -51,47 +53,162 @@
         </form>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+                {% if request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="about.html">Uploads</a>
+                    <a class="navbar-brand pr-2 mr-2" href="{% url 'upload_file' %}">
+                        <l>Upload files</l>
+                    </a>
+                </li>
+                <li class="nav-item active">
+                    <a class="navbar-brand pr-2 mr-2" href="{% url 'userprofilepage' request.user.username %}">
+                        <b>{{ request.user.username }}</b>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link pr-2 mr-2" href="/accounts/logout">Log Out</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="signup/">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="services.html">Register</a>
+                    <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#login" type="submit"
+                                style="background-color: #367C85">
+                            <h7 style="color: #FFFFFF">Log In</h7>
+                    </button>
                 </li>
+                {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Log In</a>
+                    <a class="nav-link pr-2 mr-2" href="/">About</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">
-                        Profile
+                        Other Pages
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-                        <a class="dropdown-item" href="blog-home-1.html">My Account</a>
-                        <a class="dropdown-item" href="blog-home-2.html">My Post</a>
-                        <a class="dropdown-item" href="blog-post.html">Blog Post</a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPages">
+                        <a class="dropdown-item" href="full-width.html">Full Width Page</a>
+                        <a class="dropdown-item" href="sidebar.html">Sidebar Page</a>
+                        <a class="dropdown-item" href="faq.html">FAQ</a>
+                        <a class="dropdown-item" href="404.html">404</a>
+                        <a class="dropdown-item" href="pricing.html">Pricing Table</a>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
+</div>
 
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
 
-{% block content %} {% endblock %}
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Log in</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
 
+                    {{ login_form.username|as_crispy_field }}
+                    {{ login_form.password|as_crispy_field }}
 
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Scribd</p>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Log In</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
     </div>
-    <!-- /.container -->
+</div>
+
+    {% block content %} {% endblock %}
+
+<!-- Footer -->
+<footer class="page-footer font-small"
+        style="background-color: #343a40;">
+
+    <!-- Footer Links -->
+    <div class="container-fluid text-center text-md-left">
+
+        <!-- Grid row -->
+        <div class="row">
+
+            <!-- Grid column -->
+            <div class="col-md-6 mt-md-0 mt-3">
+
+                <!-- Content -->
+                <h5 class="text-uppercase">Scribd</h5>
+                <p>About us</p>
+
+            </div>
+            <!-- Grid column -->
+
+            <hr class="clearfix w-100 d-md-none pb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase">Links</h5>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="link" href="signup/">Register</a>
+                    </li>
+                    <li>
+                        <a href="#">About us</a>
+                    </li>
+                    <li>
+                        <a href="#">Forum</a>
+                    </li>
+                    <li>
+                        <a href="sendTicket/">send a Ticket</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+
 </footer>
+<!-- Footer -->
+
+<div class="container-fluid" style="background-color: #343a40; height: 45px; position: absolute">
+</div>
 
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
 </body>
 </html>

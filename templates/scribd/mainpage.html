@@ -1,3 +1,5 @@
+{% extends 'scribd/base.html' %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,22 +10,20 @@
     <meta name="author" content="">
 
     <!-- Bootstrap core CSS -->
-    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="static/css/modern-business.css" rel="stylesheet">
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
 
 
 </head>
-{% extends 'scribd/base.html' %}
-{% load static %}
 
 {% block title %} Scribd {% endblock %}
 
 {% block content %}
-
+<div>
 <header>
-    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleIndicators" class="carousel slide pb-2" data-ride="carousel">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -33,22 +33,16 @@
             <!-- Slide One - Set the background image for this slide in the line below -->
             <div class="carousel-item active" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>La comunidad del anillo</h3></a>
-                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
             <!-- Slide Two - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>Las dos torres</h3></a>
-                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
             <!-- Slide Three - Set the background image for this slide in the line below -->
             <div class="carousel-item" style="background-image: url('http://placehold.it/1900x1080')">
                 <div class="carousel-caption d-none d-md-block">
-                    <a href="ebookdetail/2" style="color:inherit;text-decoration:inherit"><h3>El retorno del rey</h3></a>
-                    <p>J. R. R. Tolkien</p>
                 </div>
             </div>
         </div>
@@ -62,87 +56,69 @@
         </a>
     </div>
 </header>
+</div>
 
 <!-- Page Content -->
-<div class="container">
+<div class="container pb-3">
     
-    <!--
-    <h1 class="my-4">Welcome to Scribd</h1>
-
-    Marketing Icons Section
-    <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse
-                        necessitatibus neque.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis ipsam eos,
-                        nam perspiciatis natus commodi similique totam consectetur praesentium molestiae atque
-                        exercitationem ut consequuntur, sed eveniet, magni nostrum sint fuga.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 mb-4">
-            <div class="card h-100">
-                <h4 class="card-header">Card Title</h4>
-                <div class="card-body">
-                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sapiente esse
-                        necessitatibus neque.</p>
-                </div>
-                <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Learn More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    /.row -->
-
     <!-- Portfolio Section -->
     <h1>Our books</h1>
 
     <div class="row">
-        {% for ebook in ebooks %}
-            <div class="col-lg-4 col-sm-6 portfolio-item">
-                <div class="card h-100">
-                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                        {% load static %}
-                        <a href="ebookdetail/{{ ebook.id }}"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
-                    {% else %}
-                    <a href="ebookdetail/{{ ebook.id }}"><img src="{{ ebook.featured_photo.url }}" width="350" height="300" alt=""></a>
-                    {% endif %}
-                    <div class="card-body">
-                        <h4 class="card-title">
-                            <a href="ebookdetail/{{ ebook.id }}">{{ ebook.title }}</h5></a>
-                        </h4>
-                        <h5>
-                            {{ ebook.autor }}
-                        </h5>
-                        <p class="card-text">{{ ebook.description }}</p>
-                    </div>
+        {% for ebook in ebooks.object_list %}
+        <div class="card flex-lg-row box-shadow h-md-250 mt-3 w-100">
+            <img class="card-img-left flex-auto d-none d-md-block"
+                 src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
+            <div class="card text-center w-100">
+
+                <div class="card-body">
+                    <h3 class="card-title">{{ ebook.title }}</h3>
+                    <br>
+                    <h6> by {{ ebook.autor }}</h6>
+                    <br>
+                    <p class="card-text">{{ ebook.description }}</p>
+                    <br>
+                    <a href="ebookdetail/{{ ebook.id }}"><button class="btn my-2 my-sm-0" type="submit"
+                        style="background-color: #367C85">
+                    <h7 style="color: #FFFFFF">More info</h7>
+            </button></a>
+
                 </div>
+
             </div>
+
+        </div>
         {% endfor %}
+        <div style="position:relative; left: 40%; padding-top: 10px;">
+          <ul class="pagination">
+                {% if ebooks.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ ebooks.previous_page_number }}" tabindex="-1">Previous</a>
+                    </li>
+                {% endif %}
+                {% for pg in page_range %}
+                    {% if ebooks.number == pg %}
+                        <li class="page-item active">
+                            <a class="page-link" href="?page={{ pg }}">{{ pg }}<span class="sr-only">(current)</span></a>
+                        </li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ pg }}">{{ pg }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if ebooks.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ ebooks.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 
 </div>
 
 <!-- Bootstrap core JavaScript -->
-<script src="static/vendor/jquery/jquery.min.js"></script>
-<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 {% endblock %}
 
