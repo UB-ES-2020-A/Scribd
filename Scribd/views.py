@@ -338,7 +338,7 @@ def downgrade_account_view(request, username):
         context = {
             "form": form,
         }
-        return render(request, 'forms/cancel_suscription_confirmation.html', context)
+        return render(request, 'forms/cancel_subscription_confirmation_v2.html', context)
 
 
 @authentificated_user
