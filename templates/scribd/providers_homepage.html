@@ -1,4 +1,5 @@
 {% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="content" style="margin-bottom: 20px; margin-top: 20px">
         <div class="row">
@@ -42,12 +43,12 @@
                                href="#nav-profile"
                                role="tab"
                                aria-controls="nav-profile" aria-selected="false"><i
-                                    class="fa fa-book"></i> Followed</a>
+                                    class="fa fa-book"></i> Uploaded books</a>
                             <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
                                href="#nav-contact"
                                role="tab"
                                aria-controls="nav-contact" aria-selected="false"><i
-                                    class="fa fa-upload"></i> Uploaded</a>
+                                    class="fa fa-upload"></i> Upload books</a>
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
@@ -58,8 +59,9 @@
 
                                 <hr> but you can read, you're running out of time hurry up!</p>
                                 <p style="margin-left: 10px">You're part from this community since
-                                    <strong>{{ request.user.date_joined }}</strong></p>
+                                    <strong>{{ provider_instance.publisher }}</strong></p>
                             </div>
+                            <a href="/media/contracts/ejemplo_contrato.pdf">ejemplo_contrato.pdf</a>
                             <br>
                             <br>
                             <br>
@@ -68,16 +70,70 @@
                             <br>
                         </div>
                         <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                             aria-labelledby="nav-profile-tab">
+                             aria-labelledby="nav-home-tab">
                             <div class="container">
-                                <h5>Books followed</h5>
-                                <p style="margin-left: 10px">You have read but you can read, you're running out of time hurry up!</p>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
-                                <br>
+                                <h5>me</h5>
+
+                                <hr> but you can read, you're running out of time hurry up!</p>
+                                <p style="margin-left: 10px">You're part from this community since
+                                    <strong>{{ request.user.publisher }}</strong></p>
+                            </div>
+                            <a href="/media/contracts/ejemplo_contrato.pdf">ejemplo_contrato.pdf</a>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                             aria-labelledby="nav-profile-tab">
+                            <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+                                <h1 class="display-4">Create Resource</h1>
+                            </div>
+                            <div class="pl-2 pr-2 pb-2">
+                                <form method="POST">
+                                    {% csrf_token %}
+                    
+                                    {% if book_form.non_field_errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {% for error in book_form.non_field_errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.ebook_number|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.featured_photo|as_crispy_field }}
+                                        </div>
+                                    </div>
+                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.title|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.autor|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    {{ book_form.description|as_crispy_field }}
+                    
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                            {{ book_form.size|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                            {{ book_form.media_type|as_crispy_field }}
+                                        </div>
+                                    </div>
+                    
+                    
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Add resource</button>
+                                </form>
                             </div>
                         </div>
                     </div>

@@ -17,7 +17,7 @@ from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, Uploa
 from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
-from .user_models import User, userProfile
+from .user_models import User, userProfile, providerProfile
 from django.core.paginator import Paginator
 
 
@@ -117,7 +117,8 @@ def ebook_create_view(request):
             return redirect('index')
     else:
         form = EbookForm()
-    return render(request, 'forms/add_book.html', {'book_form': form})
+    instance = providerProfile.objects.get(user=request.user)  
+    return render(request, 'scribd/providers_homepage.html', {'book_form': form, 'provider_instance': instance})
 
 
 ##################################

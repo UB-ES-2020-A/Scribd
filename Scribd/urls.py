@@ -28,7 +28,7 @@ urlpatterns = [
     url('login/', login_create_view, name='login'),  # everybody
     url('signup/', signup_create_view, name='signup'),  # everybody
 
-    url('provider/', provider_page, name='provider_page'),  # only self provider!!!!!
+    url('provider/', ebook_create_view, name='provider_page'),  # only self provider!!!!!
     url('contract/', contract_page, name='contract_page'),  # only self provider!!!!!
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
 
