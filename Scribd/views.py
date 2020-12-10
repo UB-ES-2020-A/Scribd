@@ -228,7 +228,7 @@ def edit_profile_page(request, username):
     context = {
         "form": form
     }
-    return render(request, 'forms/edit_user_profile.html', context)
+    return render(request, 'forms/edit_user_profile_v2.html', context)
 
 
 class user_profile_page(DetailView):
