@@ -1,4 +1,6 @@
 from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, ButtonHolder, Button, Submit, Row, Column
+from crispy_forms.bootstrap import FormActions
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
@@ -27,9 +29,25 @@ class ProfileForm(forms.ModelForm):
         fields = ['profile_image', 'portrait', 'bio']
 
         widgets = {
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control'})
+            'bio': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_show_labels = False
+        self.helper.layout = (Layout(
+            Row(
+                Column('profile_image', css_class='form-group col')
+            ),
+            Row(
+                Column('portrait', css_class='form-group col')
+            ),
+            Row(
+                Column('bio'),
+            )))
+
 
 class UpgradeAccountForm(forms.ModelForm):
     class Meta:
@@ -134,21 +152,19 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ["comment", "value_stars"]
 
-
         widgets = {
             'comment': forms.Textarea(attrs={'class': 'form-control'})
 
         }
 
 
-
 ##################################
 ####### FORMS FORUM ##############
 ##################################
 
+
 class CreateInForum(forms.ModelForm):
     class Meta:
-
         model = Forum
         fields = ["topic", "description"]
 
