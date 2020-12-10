@@ -72,12 +72,12 @@
 
     <div class="row">
         {% for ebook in ebooks.object_list %}
-        <div class="card flex-lg-row box-shadow h-md-250 mt-3 w-100">
+        <div class="card flex-lg-row h-md-250 mt-3 w-100" style="box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5)">
             <img class="card-img-left flex-auto d-none d-md-block"
                  src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
             <div class="card text-center w-100">
 
-                <div class="card-body">
+                <div class="card-body" style="border-radius: 20%">
                     <h3 class="card-title">{{ ebook.title }}</h3>
                     <br>
                     <h6> by {{ ebook.autor }}</h6>
