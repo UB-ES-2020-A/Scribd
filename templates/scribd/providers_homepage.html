@@ -1,27 +1,88 @@
-{% extends 'scribd-deprecated/base.html' %}
+{% extends 'scribd/base.html' %}
 {% block content %}
-    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px;">
-        <h3>Welcome to your provider profile <strong>{{ user.username }}</strong></h3>
-        <hr>
-        <div>
-            <h4>Information</h4>
-            <p>Email: {{ user.email }}</p>
-            <p>Date of registration: {{ user.date_registration }}</p>
-            <br>
-            <div class="btn"><h4 onclick="window.location.href='/scribd/provider/edit/'">Modify your information</h4>
+    <div class="content" style="margin-bottom: 20px; margin-top: 20px">
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- Begin user profile -->
+                <div class="text-center user-profile-2"
+                     style="margin-top: 100px; box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5); border-radius: 2%">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h4><b>{{ request.user.username }}</b></h4>
+                            <h6>{{ request.user.email }}</h6>
+                            <br>
+                        </li>
+                    </ul>
+                </div><!-- End div .box-info -->
+                <!-- Begin user profile -->
+                <!-- User button -->
+                <div class="user-button" style="margin-left: 50px">
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                            <a class="btn btn-sm btn-block" style="background-color: #367C85; color: #FFFFFF;"
+                               href="edit/"><i
+                                    class="fa fa-edit"></i> Edit profile
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- End div .user-button -->
             </div>
-            <br>
-            <br>
-            <div class="btn"><h4 onclick="window.location.href='/scribd/addbook/'">Add a book</h4></div>
-            <br>
-            <br>
-            <!--fix this please-->
-            <div class="btn"><h4 onclick="window.location.href='/scribd/ebooklist/'">Review your history</h4></div>
-            <br>
-            <br>
-            <div class="btn"><h4 onclick="window.location.href='/scribd/contract/'">View Contract</h4></div>
-            <br>
-            <br>
+
+            <div class="col-sm-9">
+                <div class="custombase" style="background-color: #FFFFFF">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
+                            <a class="nav-item nav-link active" style="color: #367C85" id="nav-home-tab"
+                               data-toggle="tab" href="#nav-home"
+                               role="tab"
+                               aria-controls="nav-home" aria-selected="true"><i
+                                    class="fa fa-user"></i> Profile</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-profile-tab" data-toggle="tab"
+                               href="#nav-profile"
+                               role="tab"
+                               aria-controls="nav-profile" aria-selected="false"><i
+                                    class="fa fa-book"></i> Followed</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
+                               href="#nav-contact"
+                               role="tab"
+                               aria-controls="nav-contact" aria-selected="false"><i
+                                    class="fa fa-upload"></i> Uploaded</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                             aria-labelledby="nav-home-tab">
+                            <div class="container">
+                                <h5>About me</h5>
+
+                                <hr> but you can read, you're running out of time hurry up!</p>
+                                <p style="margin-left: 10px">You're part from this community since
+                                    <strong>{{ request.user.date_joined }}</strong></p>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                             aria-labelledby="nav-profile-tab">
+                            <div class="container">
+                                <h5>Books followed</h5>
+                                <p style="margin-left: 10px">You have read but you can read, you're running out of time hurry up!</p>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
