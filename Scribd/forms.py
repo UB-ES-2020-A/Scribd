@@ -39,11 +39,10 @@ class ProfileForm(forms.ModelForm):
         self.helper.form_show_labels = False
         self.helper.layout = (Layout(
             Row(
-                Column('profile_image', css_class='form-group col'),
+                Column('profile_image', css_class='form-group col')
             ),
             Row(
-                Column('portrait', css_class='form-group col'),
-                css_class='form-row'
+                Column('portrait', css_class='form-group col')
             ),
             Row(
                 Column('bio'),
