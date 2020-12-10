@@ -16,14 +16,13 @@ body {
 .custombase{
     border-radius: 1%;
     width: 90%;
-    height: 500px;
+    height: auto;
     background-position: center center;
     background-size: cover;
     position: relative;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
     margin: 10px;
 }
-
 
 .avatar-container {
     height: 300px;
