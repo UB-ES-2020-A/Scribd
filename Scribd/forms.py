@@ -20,6 +20,7 @@ class EbookForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
+            #'featured_photo': forms.ImageField()
         }
 
 

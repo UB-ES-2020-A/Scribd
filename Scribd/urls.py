@@ -4,7 +4,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 
 from Scribd import views
 from Scribd.views import follow, ebook_create_view, user_profile_page, edit_profile_page, upgrade_account_view, \
-    upload_file, login_create_view, signup_create_view, \
+    upload_file, login_create_view, signup_create_view, \ # file deepcode ignore W0611: <comment the reason here>
     provider_page, contract_page, ticket_page, ticketForumView, support_page, update_payment_details, \
     downgrade_account_view, UserList, UserDetail,ebook_forum
 from ScribdProject import settings
@@ -28,7 +28,7 @@ urlpatterns = [
     url('login/', login_create_view, name='login'),  # everybody
     url('signup/', signup_create_view, name='signup'),  # everybody
 
-    url('provider/', provider_page, name='provider_page'),  # only self provider!!!!!
+    url('provider/', ebook_create_view, name='provider_page'),  # only self provider!!!!!
     url('contract/', contract_page, name='contract_page'),  # only self provider!!!!!
     url('addbook/', ebook_create_view, name='add_book'),  # only provider!!!!
 
