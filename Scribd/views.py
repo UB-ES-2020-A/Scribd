@@ -14,7 +14,7 @@ from Scribd.decorators import allowed_users, authentificated_user
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, UpdatePayment, \
     CreateInForum, CreateInDiscussion, CreateInDiscussionTicket, ReviewForm
-from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
+from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets, Ebook
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
 from .user_models import User, userProfile, providerProfile
