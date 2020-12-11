@@ -14,11 +14,11 @@ body {
   width: 100%;
   margin: 0;
   color: #fff;
-  background: #1FB264;
+  background: #367C85;
   border: none;
   padding: 10px;
   border-radius: 4px;
-  border-bottom: 4px solid #15824B;
+  border-bottom: 4px solid #367C85;
   transition: all .2s ease;
   outline: none;
   text-transform: uppercase;
@@ -26,7 +26,7 @@ body {
 }
 
 .file-upload-btn:hover {
-  background: #1AA059;
+  background: #49b6c3;
   color: #ffffff;
   transition: all .2s ease;
   cursor: pointer;
@@ -55,13 +55,13 @@ body {
 
 .image-upload-wrap {
   margin-top: 20px;
-  border: 4px dashed #1FB264;
+  border: 4px dashed #367C85;
   position: relative;
 }
 
 .image-dropping,
 .image-upload-wrap:hover {
-  background-color: #1FB264;
+  background-color: #367C85;
   border: 4px dashed #ffffff;
 }
 
@@ -77,7 +77,7 @@ body {
 .drag-text h3 {
   font-weight: 100;
   text-transform: uppercase;
-  color: #15824B;
+  color: #000000;
   padding: 60px 0;
 }
 
