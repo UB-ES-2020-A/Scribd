@@ -117,8 +117,12 @@ def ebook_create_view(request):
             return redirect('index')
     else:
         form = EbookForm()
-    instance = providerProfile.objects.get(user=request.user)  
-    return render(request, 'scribd/providers_homepage.html', {'book_form': form, 'provider_instance': instance})
+    instance2 = providerProfile.objects.get(user=request.user)
+    books = []
+    for book in Ebook.objects.all():
+        if str(book.publisher)[21:] == 'Anaconda':
+            books.append(book)
+    return render(request, 'scribd/providers_homepage.html', {'book_form': form, 'provider_instance': instance2, 'books': books})
 
 
 ##################################
