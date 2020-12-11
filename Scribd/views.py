@@ -108,19 +108,27 @@ def ebooks(request, search=""):
 
 
 def ebook_create_view(request):
+    instance2 = providerProfile.objects.get(user=request.user)
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save(commit=False)
-            instance = form.save(commit=False)
-            form.save()
+            ebook = Ebook.objects.create(
+                ebook_number=form.cleaned_data.get('ebook_number'),
+                title=form.cleaned_data.get('title'),
+                autor=form.cleaned_data.get('autor'),
+                description=form.cleaned_data.get('description'),
+                size=form.cleaned_data.get('size'),
+                media_type=form.cleaned_data.get('media_type'),
+                #featured_photo=form.cleaned_data.get('featured_photo'),
+                publisher=instance2,
+                )
+            ebook.save()
             return redirect('index')
     else:
         form = EbookForm()
-    instance2 = providerProfile.objects.get(user=request.user)
     books = []
     for book in Ebook.objects.all():
-        if str(book.publisher)[21:] == 'Anaconda':
+        if str(book.publisher)[21:] == instance2.publisher:
             books.append(book)
     return render(request, 'scribd/providers_homepage.html', {'book_form': form, 'provider_instance': instance2, 'books': books})
 

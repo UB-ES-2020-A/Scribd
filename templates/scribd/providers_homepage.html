@@ -10,11 +10,10 @@
                     <ul class="list-group">
                         <li class="list-group-item">
                             <h4><b>Username: {{ request.user.username }}</b></h4>
-                            <br>
+                            <hr>
                             <h4><b>Publisher: {{ provider_instance.publisher }}</b></h4>
-                            <br>
+                            <hr>
                             <h6>{{ request.user.email }}</h6>
-                            <br>
                         </li>
                     </ul>
                 </div><!-- End div .box-info -->
@@ -145,8 +144,7 @@
                                         <div class="form-group col-md-4 mb-0">
                                             {{ book_form.media_type|as_crispy_field }}
                                         </div>
-                                    </div>
-                    
+                                    </div>                    
                     
                                     <button class="btn btn-primary btn-lg btn-block" type="submit">Add resource</button>
                                 </form>
