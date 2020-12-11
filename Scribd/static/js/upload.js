@@ -4,12 +4,12 @@ function readURL(input) {
     var reader = new FileReader();
 
     reader.onload = function(e) {
-      $('.image-upload-wrap').hide();
+      $('.file-upload-wrap').hide();
 
-      $('.file-upload-image').attr('src', e.target.result);
+      $('.file-upload-file').attr('src', e.target.result);
       $('.file-upload-content').show();
 
-      $('.image-title').html(input.files[0].name);
+      $('.file-title').html(input.files[0].name);
     };
 
     reader.readAsDataURL(input.files[0]);
@@ -22,11 +22,11 @@ function readURL(input) {
 function removeUpload() {
   $('.file-upload-input').replaceWith($('.file-upload-input').clone());
   $('.file-upload-content').hide();
-  $('.image-upload-wrap').show();
+  $('.file-upload-wrap').show();
 }
-$('.image-upload-wrap').bind('dragover', function () {
-		$('.image-upload-wrap').addClass('image-dropping');
+$('.file-upload-wrap').bind('dragover', function () {
+		$('.file-upload-wrap').addClass('file-dropping');
 	});
-	$('.image-upload-wrap').bind('dragleave', function () {
-		$('.image-upload-wrap').removeClass('image-dropping');
+	$('.file-upload-wrap').bind('dragleave', function () {
+		$('.file-upload-wrap').removeClass('file-dropping');
 });
