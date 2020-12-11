@@ -1,5 +1,4 @@
 import datetime
-# file deepcode ignore E0602: <comment the reason here>
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
