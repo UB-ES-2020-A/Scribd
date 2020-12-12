@@ -13,7 +13,7 @@ body {
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
 }
 
-.custombase{
+.custombase {
     border-radius: 1%;
     width: 90%;
     height: auto;
@@ -30,6 +30,8 @@ body {
 }
 
 .profile-avatar {
+    width: 210px;
+    height: 210px;
     position: relative;
     margin: 0 auto;
     margin-top: 196px;
