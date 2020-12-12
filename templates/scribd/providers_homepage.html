@@ -54,10 +54,7 @@
                             {% if books %}
                                 {% for ebook in books %}
                                     <div class="card flex-lg-row h-md-250 mt-1 mb-4 w-100">
-                                        <img class="card-img-left flex-auto d-none d-md-block" style="display: block;
-                                 max-width:20%;
-                                 width: auto;
-                                 height: auto;"
+                                        <img class="card-img-left flex-auto d-none d-md-block" width="300" height="400" style="display: block;"
                                              src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
                                         <div class="card text-left w-100">
 
@@ -142,7 +139,6 @@
                                             <button class="file-upload-btn" type="button"
                                                     onclick="$('.file-upload-input').trigger( 'click' )">Add File
                                             </button>
-                    
                                             <div class="file-upload-wrap">
                                                 {{ book_form.featured_photo }}
                                                 <div class="drag-text">
