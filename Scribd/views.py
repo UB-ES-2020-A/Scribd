@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
@@ -20,7 +21,6 @@ from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
 from .user_models import User, userProfile, providerProfile
-from django.contrib import messages
 
 
 ##################################
@@ -176,8 +176,6 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 ####### VISTA REGISTRO ###########
 ##################################
 
-# TODO HAY UN BUG EN EL SEGUNDO FORMULARIO
-
 def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
         signup_form = RegisterForm(request.POST, request.FILES)
@@ -189,8 +187,6 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'))
-            # credit_form = Subscription(request.POST or None, request.FILES)
-            # if credit_form.is_valid():
 
             userprofile = userProfile.objects.create(user=user)
             userprofile.subs_type = "Free trial"
@@ -211,22 +207,17 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
             messages.error(request, "Error")
             return redirect('index')
 
-
-
-
     else:
         signup_form = RegisterForm()
-        credit_form = Subscription()
-
         context = {
             "register_form": signup_form,
-            "credit_form": credit_form
         }
         return render(request, 'registration/signup.html', context)
 
+
 @csrf_exempt
 def update_session(request):
-    if not request.is_ajax() or not request.method=='POST':
+    if not request.is_ajax() or not request.method == 'POST':
         return HttpResponseNotAllowed(['POST'])
 
     request.session['login'] = None
@@ -442,7 +433,6 @@ def upload_file(request):
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
-
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:
@@ -550,7 +540,7 @@ def follow(request, pk):
                 "reviews": reviews,
                 "discussion_form": discussion_form,
                 "create_forum": forum_form,
-                "review_form":review_form,
+                "review_form": review_form,
                 "form": form,
                 "ebook": ebook,
                 'forums': ebook.forum_set.all(),
