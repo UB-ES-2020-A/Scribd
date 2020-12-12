@@ -25,21 +25,21 @@
 
 
 
-                            {% for objs in discuss %}
-                                {% if objs.forum == forum %}
+                        {% for objs in discuss %}
+                            {% if objs.forum == forum %}
 
-                                    <div class="card text-lg-left">
-                                        <div class="card-body">
-                                            <p class="card-text"> {{ objs.discuss }}
-                                            </p>
+                                <div class="card text-lg-left">
+                                    <div class="card-body">
+                                        <p class="card-text"> {{ objs.discuss }}
+                                        </p>
 
-                                            <footer class="blockquote-footer">{{ objs.user.username }} </footer>
+                                        <footer class="blockquote-footer">{{ objs.user.username }} </footer>
 
-                                        </div>
                                     </div>
-                                    <br>
-                                {% endif %}
-                            {% endfor %}
+                                </div>
+                                <br>
+                            {% endif %}
+                        {% endfor %}
 
 
                     </div>
@@ -67,12 +67,11 @@
                                                 style="background-color: #367C85; margin-bottom: 20px">
                                             <h7 style="color: #FFFFFF">Post</h7>
                                         </button>
+
                                     </div>
                                 </div>
 
                             </div>
-                        </div>
-
 
                     </form>
                         {% endif %}

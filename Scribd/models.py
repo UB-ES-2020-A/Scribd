@@ -1,8 +1,7 @@
 from django.db import models
-
-from .user_models import User, providerProfile
 from django_resized import ResizedImageField
 
+from .user_models import User, providerProfile
 
 
 ##################################

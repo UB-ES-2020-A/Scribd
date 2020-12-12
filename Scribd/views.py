@@ -1,6 +1,8 @@
 import datetime
+
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -14,11 +16,10 @@ from Scribd.decorators import allowed_users, authentificated_user
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, UpdatePayment, \
     CreateInForum, CreateInDiscussion, CreateInDiscussionTicket, ReviewForm
-from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets, Ebook
+from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
 from .user_models import User, userProfile, providerProfile
-from django.core.paginator import Paginator
 
 
 ##################################
@@ -119,9 +120,9 @@ def ebook_create_view(request):
                 description=form.cleaned_data.get('description'),
                 size=form.cleaned_data.get('size'),
                 media_type=form.cleaned_data.get('media_type'),
-                #featured_photo=form.cleaned_data.get('featured_photo'),
+                # featured_photo=form.cleaned_data.get('featured_photo'),
                 publisher=instance2,
-                )
+            )
             ebook.save()
             return redirect('index')
     else:
@@ -130,7 +131,8 @@ def ebook_create_view(request):
     for book in Ebook.objects.all():
         if str(book.publisher)[21:] == instance2.publisher:
             books.append(book)
-    return render(request, 'scribd/providers_homepage.html', {'book_form': form, 'provider_instance': instance2, 'books': books})
+    return render(request, 'scribd/providers_homepage.html',
+                  {'book_form': form, 'provider_instance': instance2, 'books': books})
 
 
 ##################################
@@ -416,20 +418,22 @@ def update_payment_details(request, username):
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+        print("estoy aqui PAYASO")
         if form.is_valid():
+            print("EL FORM ES VALIDO")
             instance = form.save(commit=False)
             instance.user = request.user
-
             instance.user.user_profile.n_uploads += 1
             instance.user.user_profile.save()
             form.save()
             return redirect('index')
     else:
+        print("EL FORM NO ES VALIDO")
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
-
+@authentificated_use
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:
@@ -543,17 +547,15 @@ def follow(request, pk):
                 'count': count,
                 'discussions': discussions
             }
-            
+
         return render(request, 'scribd/ebook_details.html', context)
 
 
 def ebook_forum(request, book_k, forum_k):
-
     if request.method == 'POST':
         discussion_form = CreateInDiscussion(request.POST)
 
         if discussion_form.is_valid() and request.user.is_authenticated:
-
             discussion = Discussion.objects.create(
                 user=request.user,
                 forum=Forum.objects.get(id=forum_k),
