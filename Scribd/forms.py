@@ -14,12 +14,25 @@ class EbookForm(forms.ModelForm):
 
         widgets = {
             'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
+            'featured_photo': forms.FileInput(),
+            #attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
-            'media_type': forms.Select(attrs={'class': 'form-control'}),
-            # 'featured_photo': forms.ImageField()
+            'media_type': forms.Select(attrs={'class': 'form-control'})
+            
+        }
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadedResources
+        fields = ['title', 'visibility', 'file', 'featured_photo']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'file': forms.FileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
+            'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
 
@@ -65,18 +78,6 @@ class FollowForm(forms.ModelForm):
     class Meta:
         model = Ebook
         fields = ['follower']
-
-
-class UploadFileForm(forms.ModelForm):
-    class Meta:
-        model = UploadedResources
-        fields = ['title', 'visibility', 'file', 'featured_photo']
-
-        widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-control'}),
-            'file': forms.FileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
-            'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
-        }
 
 
 class UpdatePayment(forms.ModelForm):

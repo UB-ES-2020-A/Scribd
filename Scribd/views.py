@@ -120,7 +120,7 @@ def ebook_create_view(request):
                 description=form.cleaned_data.get('description'),
                 size=form.cleaned_data.get('size'),
                 media_type=form.cleaned_data.get('media_type'),
-                # featured_photo=form.cleaned_data.get('featured_photo'),
+                featured_photo=request.FILES['file'],
                 publisher=instance2,
             )
             ebook.save()

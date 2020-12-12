@@ -28,7 +28,8 @@ class Ebook(models.Model):
     size = models.IntegerField(default=0)
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = ResizedImageField(size=[350, 500], quality=100, upload_to="images", default='images/unknown.png')
+    featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
+    #ResizedImageField(size=[350, 500], quality=100, upload_to="images", default='images/unknown.png')
     url = models.URLField(max_length=200, default='readable_content/hp3.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
