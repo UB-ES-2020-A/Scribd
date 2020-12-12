@@ -433,7 +433,7 @@ def upload_file(request):
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
-@authentificated_use
+@authentificated_user
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:

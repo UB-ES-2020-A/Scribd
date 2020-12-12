@@ -1,4 +1,4 @@
-{% extends 'scribd/base.html' %}
+s{% extends 'scribd/base.html' %}
 {% load static %}
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
@@ -36,6 +36,10 @@
                     <div class="col">
                         <!--<input type="file" name="document">-->
                         {{ upload_file_form.visibility|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        <!--<input type="file" name="document">-->
+                        {{ upload_file_form.featured_photo|as_crispy_field }}
                     </div>
                     <div class="file-upload">
                         <button class="file-upload-btn" type="button"
