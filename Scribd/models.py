@@ -162,7 +162,7 @@ class Payments(models.Model):
 
 class Forum(models.Model):
     ebook = models.ForeignKey(Ebook, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, default="anonymous")
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
     email = models.CharField(max_length=200, null=True)
     topic = models.CharField(unique=True, max_length=300)
     description = models.CharField(max_length=1000, blank=True)
@@ -177,6 +177,7 @@ class Discussion(models.Model):
     forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
     discuss = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return str(self.forum)

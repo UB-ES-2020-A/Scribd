@@ -22,36 +22,36 @@
 
                         </div>
                         <div class="card-footer text-muted text-center">
-                        {% if request.user.is_authenticated %}
-                            <form method="post">
-                                <input type="hidden" name="next" value="{{ request.path }}">
-                                {% csrf_token %}
-                                {% if request.user.is_authenticated %}
-                                    {% if substract > 0 and not ebook_followed %}
-                                        <button name="follow" type="submit" class="btn"
-                                                style="background-color: #367C85; margin-top:25px"
-                                                onclick="history.pushState(null, null, location.href);
+                            {% if request.user.is_authenticated %}
+                                <form method="post">
+                                    <input type="hidden" name="next" value="{{ request.path }}">
+                                    {% csrf_token %}
+                                    {% if request.user.is_authenticated %}
+                                        {% if substract > 0 and not ebook_followed %}
+                                            <button name="follow" type="submit" class="btn"
+                                                    style="background-color: #367C85; margin-top:25px"
+                                                    onclick="history.pushState(null, null, location.href);
                         window.onpopstate = function () {
                             history.go(1);
                         };">
-                                            <h7 style="color: #FFFFFF">Follow</h7>
-                                        </button>
-                                    {% elif ebook_followed %}
-                                        <a href="{% url 'userprofilepage' request.user.username %}" class="btn"
-                                           style="background-color: #367C85;">
-                                            <h7 style="color: #FFFFFF">Read it now!</h7>
-                                        </a>
-                                    {% else %}
-                                        <a href="{% url 'upgradeaccount' request.user.username %}" class="btn"
-                                           style="background-color: #367C85;">
-                                            <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
-                                        </a>
+                                                <h7 style="color: #FFFFFF">Follow</h7>
+                                            </button>
+                                        {% elif ebook_followed %}
+                                            <a href="{% url 'userprofilepage' request.user.username %}" class="btn"
+                                               style="background-color: #367C85;">
+                                                <h7 style="color: #FFFFFF">Read it now!</h7>
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'upgradeaccount' request.user.username %}" class="btn"
+                                               style="background-color: #367C85;">
+                                                <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                                            </a>
+                                        {% endif %}
                                     {% endif %}
-                                {% endif %}
-                            </form>
+                                </form>
 
 
-                        {% endif %}
+                            {% endif %}
 
                         </div>
 
@@ -93,11 +93,11 @@
 
                             <div class="card-footer text-muted text-center my-lg-auto">
                                 {% if request.user.is_authenticated %}
-                                <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createreview"
-                                        type="submit"
-                                        style="background-color: #367C85">
-                                    <h7 style="color: #FFFFFF">Write a review</h7>
-                                </button>
+                                    <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createreview"
+                                            type="submit"
+                                            style="background-color: #367C85">
+                                        <h7 style="color: #FFFFFF">Write a review</h7>
+                                    </button>
 
                                 {% endif %}
                             </div>
@@ -106,33 +106,34 @@
                         <div id="forums" class="tab-pane">
                             {% for forum in forums %}
 
-                                <div id="{{ forum.name }}" class="card box container my-4">
+                                <div id="{{ forum.name }}" class="card box container">
                                     <br>
                                     <div class="card-title">
                                         <h4>{{ forum.topic }}</h4></a>
                                         <div class="card-body container">
-                                            <p>{{ forum.description }}</p>
-                                            <small class="text-muted">Posted by {{ forum.name }} </small>
+                                             <p class="card-text text-truncate mb-5">{{ forum.description }}</p>
+                                            <small class="text-muted">Posted by {{ forum.user.username }} </small>
                                         </div>
                                         <hr>
-
-                                        <a href="{% url 'forumdetail' ebook.id forum.id %}" class="btn"
-                                           style="background-color: #367C85">
-                                            <h7 style="color: #FFFFFF">Discuss!</h7>
-                                        </a>
+                                        <div class="justify-content-center">
+                                            <a href="{% url 'forumdetail' ebook.id forum.id %}" class="btn float-right"
+                                               style="background-color: #367C85">
+                                                <h7 style="color: #FFFFFF">Check it out!</h7>
+                                            </a>
+                                        </div>
 
 
                                     </div>
-
                                 </div>
+                                <hr>
                             {% endfor %}
-                            <div class="card-footer text-muted text-center my-lg-auto">
+                            <div class="card-footer text-muted text-center mt-4">
                                 {% if request.user.is_authenticated %}
-                                <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum"
-                                        type="submit"
-                                        style="background-color: #367C85">
-                                    <h7 style="color: #FFFFFF">Create Forum</h7>
-                                </button>
+                                    <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum"
+                                            type="submit"
+                                            style="background-color: #367C85">
+                                        <h7 style="color: #FFFFFF">Create Forum</h7>
+                                    </button>
 
                                 {% endif %}
                             </div>
