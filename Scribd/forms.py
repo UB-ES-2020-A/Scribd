@@ -90,16 +90,19 @@ class UpdatePayment(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
+
         fields = ["username",
                   "first_name", "last_name",
                   "password1", "password2",
                   "email"]
-
+        '''
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+        
+        '''
 
 
 class Subscription(forms.ModelForm):
