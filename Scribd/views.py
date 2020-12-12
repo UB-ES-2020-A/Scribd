@@ -455,11 +455,12 @@ def follow(request, pk):
             if forum_form.is_valid() and request.user.is_authenticated:
                 forum = Forum.objects.create(
                     ebook=Ebook.objects.get(id=pk),
-                    name=request.user.username,
+                    user=request.user,
                     email=request.user.email,
                     topic=forum_form.cleaned_data.get('topic'),
                     description=forum_form.cleaned_data.get('description'),
-                    link=forum_form.cleaned_data.get('link')
+                    link=forum_form.cleaned_data.get('link'),
+
                 )
                 forum.save()
                 next = request.POST.get('next', '/')
@@ -557,7 +558,7 @@ def ebook_forum(request, book_k, forum_k):
             discussion = Discussion.objects.create(
                 user=request.user,
                 forum=Forum.objects.get(id=forum_k),
-                discuss=discussion_form.cleaned_data.get("discuss")
+                discuss=discussion_form.cleaned_data.get("discuss"),
             )
 
             discussion.save()
