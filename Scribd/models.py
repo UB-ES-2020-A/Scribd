@@ -141,6 +141,7 @@ class DiscussionTickets(models.Model):
     userticket = models.ForeignKey(UserTickets, null=True, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, default=None)
     discuss = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return str(self.userticket)
