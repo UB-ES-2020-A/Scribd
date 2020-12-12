@@ -33,7 +33,7 @@ class Ebook(models.Model):
     url = models.URLField(max_length=200, default='readable_content/hp3.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
-    publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
+    publisher = models.ForeignKey(User, related_name='providers_key', on_delete=models.CASCADE, null=True,
                                   blank=True)
 
     follower = models.ManyToManyField(User, related_name='users_key', null=True, blank=True)

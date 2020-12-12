@@ -19,21 +19,34 @@
                 <div class="text-center user-profile-2"
                      style="margin-top: 100px; box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5); border-radius: 2%">
                     <ul class="list-group">
-                        <li class="list-group-item">
-                            <h4><b>{{ request.user.username }}</b></h4>
-                            <h6>{{ request.user.email }}</h6>
-                            <br>
-                            <h5>Subscription plan</h5>
-                            <strong>{{ request.user.user_profile.subs_type }}</strong>
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">{{ request.user.user_profile.n_books_followed }}</span>
-                            Followed books
-                        </li>
-                        <li class="list-group-item">
-                            <span class="badge">{{ request.user.user_profile.n_uploads }}</span>
-                            Uploaded resources
-                        </li>
+                        {% if request.user.is_provider %}
+                            <li class="list-group-item">
+                                <h4><b>{{ request.user.username }}</b></h4>
+                                <h6>{{ request.user.email }}</h6>
+                                <br>
+                            </li>
+
+                            <li class="list-group-item">
+                                <h4><b>About me:</b></h4>
+                                <p>{{ request.user.user_profile.bio}}</p>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item">
+                                <h4><b>{{ request.user.username }}</b></h4>
+                                <h6>{{ request.user.email }}</h6>
+                                <br>
+                                <h5>Subscription plan</h5>
+                                <strong>{{ request.user.user_profile.subs_type }}</strong>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">{{ request.user.user_profile.n_books_followed }}</span>
+                                Followed books
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge">{{ request.user.user_profile.n_uploads }}</span>
+                                Uploaded resources
+                            </li>
+                        {% endif %}
                     </ul>
                 </div><!-- End div .box-info -->
                 <!-- Begin user profile -->
@@ -50,249 +63,313 @@
                     </div>
                 </div><!-- End div .user-button -->
             </div>
-
-            <div class="col-sm-9">
-                <div class="custombase" style="background-color: #FFFFFF">
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
-                            <a class="nav-item nav-link active" style="color: #367C85" id="nav-home-tab"
-                               data-toggle="tab" href="#nav-home"
-                               role="tab"
-                               aria-controls="nav-home" aria-selected="true"><i
-                                    class="fa fa-user"></i> Profile</a>
-                            <a class="nav-item nav-link" style="color: #367C85" id="nav-profile-tab" data-toggle="tab"
-                               href="#nav-profile"
-                               role="tab"
-                               aria-controls="nav-profile" aria-selected="false"><i
-                                    class="fa fa-book"></i> Followed</a>
-                            <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
-                               href="#nav-contact"
-                               role="tab"
-                               aria-controls="nav-contact" aria-selected="false"><i
-                                    class="fa fa-upload"></i> Uploaded</a>
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                             aria-labelledby="nav-home-tab">
-                            <div class="container">
-                                <h5>About me</h5>
-                                <p style="margin-left: 10px; color: #1d2124;">{{ request.user.user_profile.bio }}</p>
-                                <hr>
-                                <h5>Contracted plan: <strong>{{ request.user.user_profile.subs_type }}</strong><small
-                                        style="color: #4e555b"> (The plan expires in 4 weeks since the payment is
-                                    done)</small></h5>
-                                {% if user.user_profile.expires < current_time or user.user_profile.subs_type == "Free trial" %}
-                                    <a href="upgrade/">
-                                        <h7 style="margin-left: 10px">Upgrade subscription now!</h7>
-                                    </a>
-                                    <br>
-                                {% elif user.user_profile.expires > current_time %}
-                                    <p style="color: #1d2124; margin-left: 10px">Your subscription will expire
-                                        in {{ user.user_profile.expires }}, but you can cancel anytime by <strong><a
-                                                href="cancelconfirmation/" style="color: darkred">
-                                            clicking here!
-                                        </a></strong></p>
-                                {% endif %}
-                                <hr>
-                                <p style="margin-left: 10px">You have read
-                                    <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
-                                    <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
-                                <p style="margin-left: 10px">You're part from this community since
-                                    <strong>{{ request.user.date_joined }}</strong></p>
+            {% if request.user.is_provider %}
+                <div class="col-sm-9">
+                    <div class="custombase" style="background-color: #FFFFFF">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
+                                <a class="nav-item nav-link active" style="color: #367C85" id="nav-profile-tab" data-toggle="tab"
+                                   href="#nav-profile"
+                                   role="tab"
+                                   aria-controls="nav-profile" aria-selected="false"><i
+                                        class="fa fa-book"></i> Uploaded books</a>
+                                <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
+                                   href="#nav-contact"
+                                   role="tab"
+                                   aria-controls="nav-contact" aria-selected="false"><i
+                                        class="fa fa-upload"></i> Upload books</a>
                             </div>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                            <br>
-                        </div>
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                             aria-labelledby="nav-profile-tab">
-                            <div class="container">
-                                <h5>Books followed</h5>
-                                <p style="margin-left: 10px">You have read
-                                    <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
-                                    <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
-                                <br>
-                                <div id="books" class="carousel slide" data-wrap="false">
-                                    <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <div class="container" style="margin-left: 15px; margin-top: 10px">
-                                                <div class="row">
-                                                    <!-- by now we range over all the books twice -->
-                                                    {% for ebook in user.users_key.values %}
-                                                        {% if 4 >= forloop.counter %}
-                                                            <div class="col-sm-12 col-lg-3">
-                                                                <div class="card"
-                                                                     style="width: 175px; text-align: center;">
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-profile" role="tabpanel"
+                                 aria-labelledby="nav-home-tab">
+                                 {% for ebook in user.providers_key.values %}
+                                 <div class="card flex-lg-row h-md-250 mt-1 mb-4 w-100">
+                                     <img class="card-img-left flex-auto d-none d-md-block" style="display: block;
+                                     max-width:20%;
+                                     width: auto;
+                                     height: auto;"
+                                          src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
+                                          <div class="card text-left w-100">
 
-                                                                    <div class="container" style="margin-top: 10px">
-                                                                        {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                                                                            {% load static %}
-                                                                            <img src="{% static 'images/unknown.png' %}"
-                                                                                 height="100%" width="100%" alt=""
-                                                                                 style="border-radius: 2%">
-                                                                        {% else %}
-                                                                            <img src="/media/{{ ebook.featured_photo }}"
-                                                                                 height="100%" width="100%" alt=""
-                                                                                 style="border-radius: 2%">
-                                                                        {% endif %}
-                                                                    </div>
-                                                                    <div class="card-body">
-                                                                        <small style="font-size: x-small">{{ ebook.title }}</small>
-                                                                        <a class="btn btn-sm btn-block"
-                                                                           href="{% static ebook.url %}"
-                                                                           style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
-                                                                                class="fa fa-book"></i> Read
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
+                                            <div class="card-body" style="border-radius: 20%">
+                                               <div class="row">
+                                               <div class="col-md-6 mt-md-0 mt-3">
+                                                <h3 class="card-title">{{ ebook.title }}</h3>
+                                                <br>
+                                                <h6>{{ ebook.publisher }}</h6>
+                                                <br>
+                                                <h6> by {{ ebook.autor }}</h6>
+                                                <p class="card-text">{{ ebook.description|truncatechars:330 }}</p>
+                                                <br>
+                                               </div>
+                                                <div class="col-md-3 mt-md-0 mt-3">
+                                                    <h6> Book ISBN: {{ ebook.ebook_number }}</h6>
+                                                    <hr>
+                                                    <h6> Editorial: {{ ebook.publisher }}</h6>
+                                                    <hr>
+                                                    <h6> Size: {{ ebook.size }} pgs</h6>
+                                                    <hr>
+                                                    <h6> Downloads: {{ ebook.count_downloads }}</h6>
+                                                    <hr>
+                                                    <h6> Category: {{ ebook.category }}</h6>
+                                                    <hr>
+                                                    <h6> Media type: {{ ebook.media_type }}</h6>
+                                               </div>
+                                           </div>
                                             </div>
                                         </div>
-                                        <div class="carousel-item">
-                                            <div class="container" style="margin-left: 15px; margin-top: 10px;">
-                                                <div class="row">
-                                                    <!-- by now we range over all the books twice -->
-                                                    {% for ebook in user.users_key.values %}
-                                                        {% if 4 < forloop.counter %}
-                                                            <div class="col-sm-12 col-lg-3">
-                                                                <div class="card"
-                                                                     style="width: 175px; text-align: center;">
-                                                                    <div class="container" style="margin-top: 10px">
-                                                                        {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                                                                            {% load static %}
-                                                                            <img src="{% static 'images/unknown.png' %}"
-                                                                                 height="100%" width="100%" alt=""
-                                                                                 style="border-radius: 2%">
-                                                                        {% else %}
-                                                                            <img src="/media/{{ ebook.featured_photo }}"
-                                                                                 height="100%" width="100%" alt=""
-                                                                                 style="border-radius: 2%">
-                                                                        {% endif %}
-                                                                    </div>
-                                                                    <div class="card-body" style="margin-top: -10px">
-                                                                        <small style="font-size: x-small">{{ ebook.title }}</small>
-                                                                        <a class="btn btn-sm btn-block"
-                                                                           style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
-                                                                                class="fa fa-book"></i> Read
-                                                                        </a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% if user.user_profile.n_books_followed > 4 %}
-                                    <a href="#books" class="carousel-control-prev"
-                                       data-slide="prev" style="height: 10%; width: 5%; margin-top: 250px">
-                                                <span class="carousel-control-prev-icon"
-                                                      style="filter: invert()"></span>
-                                    </a>
-                                    <a href="#books" class="carousel-control-next"
-                                       data-slide="next" style="height: 10%; width: 5%; margin-top: 250px">
-                                                <span class="carousel-control-next-icon"
-                                                      style="filter: invert()"></span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="nav-contact" role="tabpanel"
-                             aria-labelledby="nav-contact-tab">
-                            <div class="container">
-                                <h5>Files uploaded</h5>
-                                <p style="margin-left: 10px">
-                                    The number of files uploaded by now is
-                                    <strong>{{ request.user.user_profile.n_uploads }}</strong>
-                                    .</p>
-                                {% if user.user_profile.n_uploads == 0 %}
-                                    <a href="{% url 'upload_file' %}" style="margin-left: 10px">Upload now for the first
-                                        time</a>
-                                {% endif %}
-                                <br>
-                                <div id="uploads" class="carousel slide" data-wrap="false">
-                                    <div class="carousel-inner">
-                                        <div class="carousel-item active">
-                                            <div class="container" style="margin-left: 15px; margin-top: 10px">
-                                                <div class="row">
-                                                    <!-- by now we range over all the books twice -->
-                                                    {% for res in user.uploadedresources_set.values %}
-                                                        {% if 4 >= forloop.counter %}
-                                                            <div class="col-sm-12 col-lg-3">
-                                                                <div class="card"
-                                                                     style="width: 175px; text-align: center;">
-                                                                    <div class="container" style="margin-top: 10px">
-                                                                        <img src="{% static 'images/unknown.png' %}"
-                                                                             style="height: 100%; width: 100%; border-radius: 2%">
-                                                                    </div>
-                                                                    <div class="card-body">
-                                                                        <small style="font-size: x-small">Access
-                                                                            link:</small>
-                                                                        <a href="/media/{{ res.file }}"><a
-                                                                                href="/media/{{ res.file }}"><small
-                                                                                style="font-size: x-small">{{ res.file }}</small></a></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="carousel-item">
-                                            <div class="container" style="margin-left: 15px; margin-top: 10px;">
-                                                <div class="row">
-                                                    <!-- by now we range over all the books twice -->
-                                                    {% for res in user.uploadedresources_set.values %}
-                                                        {% if 4 < forloop.counter %}
-                                                            <div class="col-sm-12 col-lg-3">
-                                                                <div class="card"
-                                                                     style="width: 175px; text-align: center;">
-                                                                    <div class="container" style="margin-top: 10px">
-                                                                        <img src="{% static 'images/unknown.png' %}"
-                                                                             style="height: 100%; width: 100%; border-radius: 2%">
-                                                                    </div>
-                                                                    <div class="card-body" style="margin-top: -10px">
-                                                                        <small style="font-size: x-small">Access
-                                                                            link:</small>
-                                                                        <a href="/media/{{ res.file }}"><small
-                                                                                style="font-size: x-small">{{ res.title }}</small></a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% if user.user_profile.n_uploads > 4 %}
-                                    <a href="#uploads" class="carousel-control-prev"
-                                       data-slide="prev" style="height: 10%; width: 5%; margin-top: 250px">
-                                                <span class="carousel-control-prev-icon"
-                                                      style="filter: invert()"></span>
-                                    </a>
-                                    <a href="#uploads" class="carousel-control-next"
-                                       data-slide="next" style="height: 10%; width: 5%; margin-top: 250px">
-                                                <span class="carousel-control-next-icon"
-                                                      style="filter: invert()"></span>
-                                    </a>
-                                {% endif %}
+                                 </div>
+                                 {% endfor %}
+
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="col-sm-9">
+                    <div class="custombase" style="background-color: #FFFFFF">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
+                                <a class="nav-item nav-link active" style="color: #367C85" id="nav-home-tab"
+                                   data-toggle="tab" href="#nav-home"
+                                   role="tab"
+                                   aria-controls="nav-home" aria-selected="true"><i
+                                        class="fa fa-user"></i> Profile</a>
+                                <a class="nav-item nav-link" style="color: #367C85" id="nav-profile-tab" data-toggle="tab"
+                                   href="#nav-profile"
+                                   role="tab"
+                                   aria-controls="nav-profile" aria-selected="false"><i
+                                        class="fa fa-book"></i> Followed</a>
+                                <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
+                                   href="#nav-contact"
+                                   role="tab"
+                                   aria-controls="nav-contact" aria-selected="false"><i
+                                        class="fa fa-upload"></i> Uploaded</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                                 aria-labelledby="nav-home-tab">
+                                <div class="container">
+                                    <h5>About me</h5>
+                                    <p style="margin-left: 10px; color: #1d2124;">{{ request.user.user_profile.bio }}</p>
+                                    <hr>
+                                    <h5>Contracted plan: <strong>{{ request.user.user_profile.subs_type }}</strong><small
+                                            style="color: #4e555b"> (The plan expires in 4 weeks since the payment is
+                                        done)</small></h5>
+                                    {% if user.user_profile.expires < current_time or user.user_profile.subs_type == "Free trial" %}
+                                        <a href="upgrade/">
+                                            <h7 style="margin-left: 10px">Upgrade subscription now!</h7>
+                                        </a>
+                                        <br>
+                                    {% elif user.user_profile.expires > current_time %}
+                                        <p style="color: #1d2124; margin-left: 10px">Your subscription will expire
+                                            in {{ user.user_profile.expires }}, but you can cancel anytime by <strong><a
+                                                    href="cancelconfirmation/" style="color: darkred">
+                                                clicking here!
+                                            </a></strong></p>
+                                    {% endif %}
+                                    <hr>
+                                    <p style="margin-left: 10px">You have read
+                                        <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
+                                        <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
+                                    <p style="margin-left: 10px">You're part from this community since
+                                        <strong>{{ request.user.date_joined }}</strong></p>
+                                </div>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                                 aria-labelledby="nav-profile-tab">
+                                <div class="container">
+                                    <h5>Books followed</h5>
+                                    <p style="margin-left: 10px">You have read
+                                        <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
+                                        <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
+                                    <br>
+                                    <div id="books" class="carousel slide" data-wrap="false">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <div class="container" style="margin-left: 15px; margin-top: 10px">
+                                                    <div class="row">
+                                                        <!-- by now we range over all the books twice -->
+                                                        {% for ebook in user.users_key.values %}
+                                                            {% if 4 >= forloop.counter %}
+                                                                <div class="col-sm-12 col-lg-3">
+                                                                    <div class="card"
+                                                                         style="width: 175px; text-align: center;">
+
+                                                                        <div class="container" style="margin-top: 10px">
+                                                                            {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                                                                {% load static %}
+                                                                                <img src="{% static 'images/unknown.png' %}"
+                                                                                     height="100%" width="100%" alt=""
+                                                                                     style="border-radius: 2%">
+                                                                            {% else %}
+                                                                                <img src="/media/{{ ebook.featured_photo }}"
+                                                                                     height="100%" width="100%" alt=""
+                                                                                     style="border-radius: 2%">
+                                                                            {% endif %}
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <small style="font-size: x-small">{{ ebook.title }}</small>
+                                                                            <a class="btn btn-sm btn-block"
+                                                                               href="{% static ebook.url %}"
+                                                                               style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
+                                                                                    class="fa fa-book"></i> Read
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <div class="container" style="margin-left: 15px; margin-top: 10px;">
+                                                    <div class="row">
+                                                        <!-- by now we range over all the books twice -->
+                                                        {% for ebook in user.users_key.values %}
+                                                            {% if 4 < forloop.counter %}
+                                                                <div class="col-sm-12 col-lg-3">
+                                                                    <div class="card"
+                                                                         style="width: 175px; text-align: center;">
+                                                                        <div class="container" style="margin-top: 10px">
+                                                                            {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                                                                {% load static %}
+                                                                                <img src="{% static 'images/unknown.png' %}"
+                                                                                     height="100%" width="100%" alt=""
+                                                                                     style="border-radius: 2%">
+                                                                            {% else %}
+                                                                                <img src="/media/{{ ebook.featured_photo }}"
+                                                                                     height="100%" width="100%" alt=""
+                                                                                     style="border-radius: 2%">
+                                                                            {% endif %}
+                                                                        </div>
+                                                                        <div class="card-body" style="margin-top: -10px">
+                                                                            <small style="font-size: x-small">{{ ebook.title }}</small>
+                                                                            <a class="btn btn-sm btn-block"
+                                                                               style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
+                                                                                    class="fa fa-book"></i> Read
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if user.user_profile.n_books_followed > 4 %}
+                                        <a href="#books" class="carousel-control-prev"
+                                           data-slide="prev" style="height: 10%; width: 5%; margin-top: 250px">
+                                                    <span class="carousel-control-prev-icon"
+                                                          style="filter: invert()"></span>
+                                        </a>
+                                        <a href="#books" class="carousel-control-next"
+                                           data-slide="next" style="height: 10%; width: 5%; margin-top: 250px">
+                                                    <span class="carousel-control-next-icon"
+                                                          style="filter: invert()"></span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                                 aria-labelledby="nav-contact-tab">
+                                <div class="container">
+                                    <h5>Files uploaded</h5>
+                                    <p style="margin-left: 10px">
+                                        The number of files uploaded by now is
+                                        <strong>{{ request.user.user_profile.n_uploads }}</strong>
+                                        .</p>
+                                    {% if user.user_profile.n_uploads == 0 %}
+                                        <a href="{% url 'upload_file' %}" style="margin-left: 10px">Upload now for the first
+                                            time</a>
+                                    {% endif %}
+                                    <br>
+                                    <div id="uploads" class="carousel slide" data-wrap="false">
+                                        <div class="carousel-inner">
+                                            <div class="carousel-item active">
+                                                <div class="container" style="margin-left: 15px; margin-top: 10px">
+                                                    <div class="row">
+                                                        <!-- by now we range over all the books twice -->
+                                                        {% for res in user.uploadedresources_set.values %}
+                                                            {% if 4 >= forloop.counter %}
+                                                                <div class="col-sm-12 col-lg-3">
+                                                                    <div class="card"
+                                                                         style="width: 175px; text-align: center;">
+                                                                        <div class="container" style="margin-top: 10px">
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 style="height: 100%; width: 100%; border-radius: 2%">
+                                                                        </div>
+                                                                        <div class="card-body">
+                                                                            <small style="font-size: x-small">Access
+                                                                                link:</small>
+                                                                            <a href="/media/{{ res.file }}"><a
+                                                                                    href="/media/{{ res.file }}"><small
+                                                                                    style="font-size: x-small">{{ res.file }}</small></a></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="carousel-item">
+                                                <div class="container" style="margin-left: 15px; margin-top: 10px;">
+                                                    <div class="row">
+                                                        <!-- by now we range over all the books twice -->
+                                                        {% for res in user.uploadedresources_set.values %}
+                                                            {% if 4 < forloop.counter %}
+                                                                <div class="col-sm-12 col-lg-3">
+                                                                    <div class="card"
+                                                                         style="width: 175px; text-align: center;">
+                                                                        <div class="container" style="margin-top: 10px">
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 style="height: 100%; width: 100%; border-radius: 2%">
+                                                                        </div>
+                                                                        <div class="card-body" style="margin-top: -10px">
+                                                                            <small style="font-size: x-small">Access
+                                                                                link:</small>
+                                                                            <a href="/media/{{ res.file }}"><small
+                                                                                    style="font-size: x-small">{{ res.title }}</small></a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if user.user_profile.n_uploads > 4 %}
+                                        <a href="#uploads" class="carousel-control-prev"
+                                           data-slide="prev" style="height: 10%; width: 5%; margin-top: 250px">
+                                                    <span class="carousel-control-prev-icon"
+                                                          style="filter: invert()"></span>
+                                        </a>
+                                        <a href="#uploads" class="carousel-control-next"
+                                           data-slide="next" style="height: 10%; width: 5%; margin-top: 250px">
+                                                    <span class="carousel-control-next-icon"
+                                                          style="filter: invert()"></span>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
