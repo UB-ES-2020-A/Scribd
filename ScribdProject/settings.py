@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'bootstrap4',
     'django_jinja',
-    'social_django',
     'widget_tweaks',
     'crispy_forms'
 ]
@@ -52,7 +51,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -74,7 +72,6 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'ScribdProject.urls'
@@ -92,8 +89,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.i18n",
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
                 'Scribd.context_processors.inject_login_form'
             ],
             "extensions": [
