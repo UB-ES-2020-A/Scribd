@@ -89,7 +89,7 @@
                                     style="font-size: large"><i
                                     class="fa fa-github"></i> About</p></a>
                         </li>
-                        <li class="nav-item dropdown">
+                        <!--<li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
                                 Other Pages
@@ -101,7 +101,7 @@
                                 <a class="dropdown-item" href="404.html">404</a>
                                 <a class="dropdown-item" href="pricing.html">Pricing Table</a>
                             </div>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
 
@@ -117,7 +117,7 @@
         <!--Content-->
         <div class="modal-content">
             <!--Header-->
-            <div class="modal-header justify-content-center" style="background: #1e7e34">
+            <div class="modal-header justify-content-center" style="background: #343A40; border-radius: 1%">
                 <img src="{% static 'images/scribdLogoinverted.png' %}" style="width: 30%;">
             </div>
 
@@ -125,13 +125,13 @@
             <div class="modal-body">
                 <div class="text-center">
                      <img class="my-3" src="{% static 'images/login_icon.png' %}" style="width: 25%;">
-                    <p>Welcome {{ request.user.username }}, we hope you have a nice reading time!</p>
+                    <p> Welcome {{ request.user.username }}, we hope you have a nice reading time!</p>
                 </div>
             </div>
 
             <!--Footer-->
             <div class="modal-footer justify-content-center">
-                <a type="button" class="btn btn-success" data-dismiss="modal">Thanks! <i class="far fa-gem ml-1 text-white"></i></a>
+                <button type="button" class="btn" style="background-color: #367C85" data-dismiss="modal"><h7 style="color: #FFFFFF">Thanks! </h7><i class="far fa-gem ml-1 text-white"></i></button>
             </div>
         </div>
         <!--/.Content-->
@@ -161,8 +161,8 @@
 
             <!--Footer-->
             <div class="modal-footer justify-content-center">
-                <a type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></a>
-                <a type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">Close</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></button>
+                <button type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">Close</button>
             </div>
         </div>
         <!--/.Content-->
@@ -171,10 +171,10 @@
 
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog" role="document" style="border-radius: 2%">
         <div class="modal-content">
-            <div class="modal-header justify-content-center text-white" style="background:#367C85; ">
-                <h4 class="modal-title" id="exampleModalLabel">Log in</h4>
+            <div class="modal-header justify-content-center text-white" style="background:#343a40;">
+                <h3 class="modal-title" id="exampleModalLabel">Log in</h3>
 
             </div>
             <div class="modal-body text-center">
@@ -185,7 +185,7 @@
                     {{ login_form.username|as_crispy_field }}
                     {{ login_form.password|as_crispy_field }}
                     <hr>
-                    <button type="submit" class="btn btn-success btn-lg btn-block">Let me in!</button>
+                    <button type="submit" class="btn btn-lg btn-block" style="background-color: #367C85"><h7 style="color: #ffffff">Let me in!</h7></button>
                 </form>
 
             </div>
@@ -248,12 +248,6 @@
 
     </div>
     <!-- Footer Links -->
-
-    <!-- Copyright -->
-    <div class="footer-copyright text-center py-3" style="color: #FFFFFF">© 2020 Copyright:
-        <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
-    </div>
-    <!-- Copyright -->
 
 </footer>
 <!-- Footer -->

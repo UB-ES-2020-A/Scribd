@@ -78,6 +78,17 @@ class UploadFileForm(forms.ModelForm):
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_show_labels = False
+        self.helper.layout = (Layout(
+            Row(
+                Column('title', css_class='form-control col placeholder:hola'),
+                Column('visibility', css_class='checkbox')
+            )))
+
 
 class UpdatePayment(forms.ModelForm):
     class Meta:

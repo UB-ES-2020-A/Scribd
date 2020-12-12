@@ -55,13 +55,13 @@ body {
 
 .file-upload-wrap {
     margin-top: 20px;
-    border: 4px dashed #367C85;
+    border: 4px dashed darkgray;
     position: relative;
 }
 
 .file-dropping,
 .file-upload-wrap:hover {
-    background-color: #367C85;
+    background-color: #D3D3D3;
     border: 4px dashed #ffffff;
 }
 
