@@ -107,83 +107,91 @@
 </nav>
 {% block content %}{% endblock %}
 
- <!-- Central Modal Medium Success -->
- <div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-   aria-hidden="true">
-   <div class="modal-dialog modal-notify modal-success" role="document">
-     <!--Content-->
-     <div class="modal-content">
-       <!--Header-->
-       <div class="modal-header">
-         <p class="heading lead">Modal Success</p>
+<div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header justify-content-center" style="background: #1e7e34">
+                <img src="{% static 'images/scribdLogoinverted.png' %}" style="width: 30%;">
+            </div>
 
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true" class="white-text">&times;</span>
-         </button>
-       </div>
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                     <img class="my-3" src="{% static 'images/login_icon.png' %}" style="width: 25%;">
+                    <p>Welcome {{ request.user.username }}, we hope you have a nice reading time!</p>
+                </div>
+            </div>
 
-       <!--Body-->
-       <div class="modal-body">
-         <div class="text-center">
-           <i class="fas fa-check fa-4x mb-3 animated rotateIn"></i>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit iusto nulla aperiam blanditiis
-             ad consequatur in dolores culpa, dignissimos, eius non possimus fugiat. Esse ratione fuga, enim,
-             ab officiis totam.</p>
-         </div>
-       </div>
-
-       <!--Footer-->
-       <div class="modal-footer justify-content-center">
-         <a type="button" class="btn btn-success">Get it now <i class="far fa-gem ml-1 text-white"></i></a>
-         <a type="button" class="btn btn-outline-success waves-effect" data-dismiss="modal">No, thanks</a>
-       </div>
-     </div>
-     <!--/.Content-->
-   </div>
- </div>
- <!-- Central Modal Medium Success-->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#centralModalDanger">Launch
-   modal
-</button>
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-success" data-dismiss="modal">Thanks! <i class="far fa-gem ml-1 text-white"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
 
 
+<!-- Central Modal Medium Warning -->
+<div class="modal fade" id="centralModalWarning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header justify-content-center" style="background: #e0a800">
+                <img src="{% static 'images/scribdLogo.png' %}" style="width: 30%;">
+            </div>
 
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                    <img class="my-3" src="{% static 'images/warning.png' %}" style="width: 25%;">
+                    <p>There was a problem with the credentials so we couldn't log you in!</p>
+                    <p>Don't have an account yet? Create one <a href="{% url 'signup' %}"> here</a>  </p>
+                </div>
+            </div>
 
- <!-- Central Modal Medium Warning -->
- <div class="modal fade" id="centralModalWarning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-   aria-hidden="true">
-   <div class="modal-dialog modal-notify modal-warning" role="document">
-     <!--Content-->
-     <div class="modal-content">
-       <!--Header-->
-       <div class="modal-header">
-         <p class="heading lead">Modal Warning</p>
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-warning" data-toggle="modal" data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></a>
+                <a type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
 
-         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true" class="white-text">&times;</span>
-         </button>
-       </div>
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center text-white" style="background:#367C85; ">
+                <h4 class="modal-title" id="exampleModalLabel">Log in</h4>
 
-       <!--Body-->
-       <div class="modal-body">
-         <div class="text-center">
-           <i class="fas fa-check fa-4x mb-3 animated rotateIn"></i>
-           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit iusto nulla aperiam blanditiis
-             ad consequatur in dolores culpa, dignissimos, eius non possimus fugiat. Esse ratione fuga, enim,
-             ab officiis totam.</p>
-         </div>
-       </div>
+            </div>
+            <div class="modal-body text-center">
+                 <img class="my-4" src="{% static 'images/login_first.png' %}" style="width: 25%;">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
 
-       <!--Footer-->
-       <div class="modal-footer justify-content-center">
-         <a type="button" class="btn btn-warning">Get it now <i class="far fa-gem ml-1 text-white"></i></a>
-         <a type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">No, thanks</a>
-       </div>
-     </div>
-     <!--/.Content-->
-   </div>
- </div>
- <!-- Central Modal Medium Warning-->
+                    {{ login_form.username|as_crispy_field }}
+                    {{ login_form.password|as_crispy_field }}
+                    <hr>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Let me in!</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger waves-effect btn-lg btn-block" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <!-- Footer -->
 <footer class="page-footer font-small"
@@ -263,27 +271,24 @@
         crossorigin="anonymous"></script>
 
 
-    {% if request.session.login is not None %}
+
+
+{% if request.session.login is not None %}
     {% if request.session.login %}
         <script>
-        $('#centralModalSuccess').modal('show');
+            $('#centralModalSuccess').modal('show');
         </script>
     {% else %}
         <script>
-        $('#centralModalWarning').modal('show');
+            $('#centralModalWarning').modal('show');
         </script>
     {% endif %}
-        <script>
-        $.post('/update_session/', function(data) {
-
-});
-        </script>
+    <script>
+        $.post('update_session/', function (request) {
+        });
+    </script>
 {% endif %}
 </body>
-
-
-
-
 
 
 </html>

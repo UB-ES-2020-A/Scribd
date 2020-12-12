@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^profile/(?P<username>\w+)/updatepayment/$', update_payment_details, name='updatepayment'),
     url(r'^profile/(?P<username>\w+)/cancelconfirmation/$', downgrade_account_view, name='cancelconfirmation'),
 
-    url(r'/update_session/',update_session,name='update_session')
+    url(r'update_session/',update_session,name='update_session')
 
 ]
 
