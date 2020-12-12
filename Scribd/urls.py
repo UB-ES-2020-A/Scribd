@@ -6,7 +6,7 @@ from Scribd import views
 from Scribd.views import follow, ebook_create_view, user_profile_page, edit_profile_page, upgrade_account_view, \
     upload_file, login_create_view, signup_create_view, \
     provider_page, contract_page, ticket_page, ticketForumView, support_page, update_payment_details, \
-    downgrade_account_view, UserList, UserDetail,ebook_forum
+    downgrade_account_view, UserList, UserDetail, ebook_forum, update_session
 from ScribdProject import settings
 
 urlpatterns = [
@@ -40,6 +40,8 @@ urlpatterns = [
     url(r'^profile/(?P<username>\w+)/upgrade/$', upgrade_account_view, name='upgradeaccount'),  # only self
     url(r'^profile/(?P<username>\w+)/updatepayment/$', update_payment_details, name='updatepayment'),
     url(r'^profile/(?P<username>\w+)/cancelconfirmation/$', downgrade_account_view, name='cancelconfirmation'),
+
+    url(r'/update_session/',update_session,name='update_session')
 
 ]
 
