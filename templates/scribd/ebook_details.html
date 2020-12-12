@@ -11,7 +11,7 @@
 
             <div class="col-lg">
                 <div class="card flex-lg-row box-shadow h-md-250 mt-5">
-                    <img class="card-img-left flex-auto d-none d-md-block"
+                    <img class="card-img-left flex-auto d-none d-md-block" width="300" height="400"
                          src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
                     <div class="card text-center w-100">
 
@@ -28,7 +28,7 @@
                                 {% if request.user.is_authenticated %}
                                     {% if substract > 0 and not ebook_followed %}
                                         <button name="follow" type="submit" class="btn"
-                                                style="background-color: #367C85;"
+                                                style="background-color: #367C85; margin-top:25px"
                                                 onclick="history.pushState(null, null, location.href);
                         window.onpopstate = function () {
                             history.go(1);
