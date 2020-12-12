@@ -14,8 +14,7 @@ class EbookForm(forms.ModelForm):
 
         widgets = {
             'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
-            'featured_photo': forms.FileInput(),
-            #attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}
+            'featured_photo': forms.ClearableFileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
