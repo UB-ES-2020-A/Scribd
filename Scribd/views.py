@@ -20,6 +20,7 @@ from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
 from .user_models import User, userProfile, providerProfile
+from django.contrib import messages
 
 
 ##################################
@@ -196,14 +197,22 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
             userprofile.nbooks_by_subs = 10
             userprofile.save()
 
-        login(request, user, backend)
-        if user.is_provider:
-            return redirect('provider_page')
-        elif user.is_support:
-            return redirect('support_page')
-        elif user.is_provider:
-            return HttpResponseRedirect(reverse('admin:index'))
-        return redirect('index')
+            login(request, user, backend)
+
+            if user.is_provider:
+                return redirect('provider_page')
+            elif user.is_support:
+                return redirect('support_page')
+            elif user.is_provider:
+                return HttpResponseRedirect(reverse('admin:index'))
+            return redirect('index')
+
+        else:
+            messages.error(request, "Error")
+            return redirect('index')
+
+
+
 
     else:
         signup_form = RegisterForm()
