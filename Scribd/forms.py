@@ -10,16 +10,29 @@ from .user_models import User, userProfile
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
-        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo']
+        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'category', 'featured_photo']
 
         widgets = {
             'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
+            'featured_photo': forms.ClearableFileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
-            # 'featured_photo': forms.ImageField()
+            'category': forms.Select(attrs={'class': 'form-control'})
+            
+        }
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadedResources
+        fields = ['title', 'visibility', 'file', 'featured_photo']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'file': forms.FileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
+            'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
 
@@ -88,7 +101,6 @@ class UploadFileForm(forms.ModelForm):
                 Column('title', css_class='form-control col placeholder:hola'),
                 Column('visibility', css_class='checkbox')
             )))
-
 
 class UpdatePayment(forms.ModelForm):
     class Meta:
