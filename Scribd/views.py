@@ -204,8 +204,11 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
             return redirect('index')
 
         else:
-            messages.error(request, "Error")
-            return redirect('index')
+
+            context = {
+                "register_form": signup_form,
+            }
+            return render(request, 'registration/signup.html', context)
 
     else:
         signup_form = RegisterForm()
