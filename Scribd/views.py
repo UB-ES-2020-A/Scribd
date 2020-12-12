@@ -4,9 +4,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
 from requests import Response
 from rest_framework import generics, viewsets, permissions
@@ -152,7 +153,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 
         if user is not None:
             login(request, user, backend)
-
+            request.session['login'] = True
             if user.is_provider:
                 return redirect('provider_page')
             elif user.is_support:
@@ -160,9 +161,11 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
             elif user.is_provider:
                 return HttpResponseRedirect(reverse('admin:index'))
             return redirect('index')
+        else:
+            request.session['login'] = False
+            return redirect('index')
 
     else:
-
         login_form = AuthenticationForm()
 
     return render(request, 'scribd/mainpage.html', {'login_form': login_form})
@@ -211,6 +214,14 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
             "credit_form": credit_form
         }
         return render(request, 'registration/signup.html', context)
+
+@csrf_exempt
+def update_session(request):
+    if not request.is_ajax() or not request.method=='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    request.session['login'] = None
+    return HttpResponse('ok')
 
 
 ##################################
@@ -422,7 +433,7 @@ def upload_file(request):
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
-@authentificated_user
+@authentificated_use
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:
@@ -529,6 +540,7 @@ def follow(request, pk):
                 "reviews": reviews,
                 "discussion_form": discussion_form,
                 "create_forum": forum_form,
+                "review_form":review_form,
                 "form": form,
                 "ebook": ebook,
                 'forums': ebook.forum_set.all(),

@@ -1,7 +1,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns="">
 
 <head>
     <meta charset="utf-8">
@@ -35,7 +35,7 @@
         <div class="container-fluid">
             <div class="col-2">
                 <a class="navbar-brand" href="/"><img src="{% static 'images/scribdLogoinverted.png' %}"
-                                                      style="width: 50%;"></a>
+                                                      style="width: 75%;"></a>
             </div>
             <div class="col-10">
                 <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -111,29 +111,86 @@
 </header>
 {% block content %}{% endblock %}
 
+<div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header justify-content-center" style="background: #1e7e34">
+                <img src="{% static 'images/scribdLogoinverted.png' %}" style="width: 30%;">
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                     <img class="my-3" src="{% static 'images/login_icon.png' %}" style="width: 25%;">
+                    <p>Welcome {{ request.user.username }}, we hope you have a nice reading time!</p>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-success" data-dismiss="modal">Thanks! <i class="far fa-gem ml-1 text-white"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+
+<!-- Central Modal Medium Warning -->
+<div class="modal fade" id="centralModalWarning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header justify-content-center" style="background: #e0a800">
+                <img src="{% static 'images/scribdLogo.png' %}" style="width: 30%;">
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                    <img class="my-3" src="{% static 'images/warning.png' %}" style="width: 25%;">
+                    <p>There was a problem with the credentials so we couldn't log you in!</p>
+                    <p>Don't have an account yet? Create one <a href="{% url 'signup' %}"> here</a>  </p>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></a>
+                <a type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
 <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Log in</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-header justify-content-center text-white" style="background:#367C85; ">
+                <h4 class="modal-title" id="exampleModalLabel">Log in</h4>
+
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
+                 <img class="my-4" src="{% static 'images/login_first.png' %}" style="width: 25%;">
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
 
                     {{ login_form.username|as_crispy_field }}
                     {{ login_form.password|as_crispy_field }}
-
-                    <button type="submit" class="btn btn-success btn-lg btn-block">Log In</button>
+                    <hr>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Let me in!</button>
                 </form>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-danger waves-effect btn-lg btn-block" data-dismiss="modal">Close</button>
             </div>
 
         </div>
@@ -207,7 +264,7 @@
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -216,6 +273,25 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+
+
+
+
+{% if request.session.login is not None %}
+    {% if request.session.login %}
+        <script>
+            $('#centralModalSuccess').modal('show');
+        </script>
+    {% else %}
+        <script>
+            $('#centralModalWarning').modal('show');
+        </script>
+    {% endif %}
+    <script>
+        $.post('update_session/', function (request) {
+        });
+    </script>
+{% endif %}
 <script src="{% static 'js/upload.js' %}"></script>
 
 </body>

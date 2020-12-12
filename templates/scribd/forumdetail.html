@@ -1,4 +1,4 @@
-{% extends 'scribd-deprecated/base.html' %}
+{% extends 'scribd/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
 
@@ -45,34 +45,37 @@
                     </div>
 
                     <div class="card-footer text-muted text-center">
-                        <a class="btn btn-primary" data-toggle="collapse" href="#{{ forum.topic }}"
-                           role="button"
-                           aria-expanded="false" aria-controls="multiCollapseExample1">Give your
-                            view!</a>
-                        <form method="POST">
-                            <input type="hidden" name="next" value="{{ request.path }}">
-                            <input type="hidden" name="forum_name" value="{{ forum.topic }}"/>
-                            {% csrf_token %}
-                            <div class="row">
-                                <div class="col">
-                                    <div class="collapse multi-collapse" id="{{ forum.topic }}">
-                                        <div class="card card-body">
+                        {% if request.user.is_authenticated %}
+                    <a class="btn btn-primary" data-toggle="collapse" href="#{{ forum.topic }}"
+                       role="button"
+                       aria-expanded="false" aria-controls="multiCollapseExample1">Give your
+                        view!</a>
+                    <form method="POST">
+                        <input type="hidden" name="next" value="{{ request.path }}">
+                        <input type="hidden" name="forum_name" value="{{ forum.topic }}"/>
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col">
 
-                                            {{ discussion_form.discuss|as_crispy_field }}
+                                <div class="collapse multi-collapse" id="{{ forum.topic }}">
+                                    <div class="card card-body">
 
-                                            <button name="discussion" type="submit"
-                                                    class="btn btn-success btn-lg btn-block"
-                                                    style="background-color: #367C85; margin-bottom: 20px">
-                                                <h7 style="color: #FFFFFF">Post</h7>
-                                            </button>
-                                        </div>
+                                        {{ discussion_form.discuss|as_crispy_field }}
+
+                                        <button name="discussion" type="submit"
+                                                class="btn btn-success btn-lg btn-block"
+                                                style="background-color: #367C85; margin-bottom: 20px">
+                                            <h7 style="color: #FFFFFF">Post</h7>
+                                        </button>
+
                                     </div>
                                 </div>
+
                             </div>
 
-
-                        </form>
-                    </div>
+                    </form>
+                        {% endif %}
+                </div>
                 </div>
 
 

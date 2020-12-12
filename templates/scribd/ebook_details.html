@@ -22,6 +22,7 @@
 
                         </div>
                         <div class="card-footer text-muted text-center">
+                        {% if request.user.is_authenticated %}
                             <form method="post">
                                 <input type="hidden" name="next" value="{{ request.path }}">
                                 {% csrf_token %}
@@ -48,6 +49,10 @@
                                     {% endif %}
                                 {% endif %}
                             </form>
+
+
+                        {% endif %}
+
                         </div>
 
 
@@ -87,11 +92,14 @@
                             {% endfor %}
 
                             <div class="card-footer text-muted text-center my-lg-auto">
+                                {% if request.user.is_authenticated %}
                                 <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createreview"
                                         type="submit"
                                         style="background-color: #367C85">
                                     <h7 style="color: #FFFFFF">Write a review</h7>
                                 </button>
+
+                                {% endif %}
                             </div>
                         </div>
 
@@ -119,11 +127,14 @@
                                 </div>
                             {% endfor %}
                             <div class="card-footer text-muted text-center my-lg-auto">
+                                {% if request.user.is_authenticated %}
                                 <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum"
                                         type="submit"
                                         style="background-color: #367C85">
                                     <h7 style="color: #FFFFFF">Create Forum</h7>
                                 </button>
+
+                                {% endif %}
                             </div>
                         </div>
 

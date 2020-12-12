@@ -30,6 +30,8 @@ body {
 }
 
 .profile-avatar {
+    width: 210px;
+    height: 210px;
     position: relative;
     margin: 0 auto;
     margin-top: 196px;
