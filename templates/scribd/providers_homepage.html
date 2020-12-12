@@ -31,7 +31,7 @@
                 </div><!-- End div .box-info -->
             </div>
 
-            <div class="col-sm-9">
+            <div class="col-sm-9" style="margin-top: 40px;">
                 <div class="custombase" style="background-color: #FFFFFF">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
@@ -173,9 +173,12 @@
                                         <div class="form-group col-md-4 mb-0">
                                             {{ book_form.media_type|as_crispy_field }}
                                         </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                            {{ book_form.category|as_crispy_field }}
+                                        </div>
                                     </div>
 
-                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Add resource</button>
+                                    <button class="btn btn-primary btn-lg btn-block" style="background-color: #367C85;" type="submit">Add resource</button>
                                 </form>
                             </div>
                         </div>

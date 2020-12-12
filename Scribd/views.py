@@ -121,6 +121,7 @@ def ebook_create_view(request):
                 size=form.cleaned_data.get('size'),
                 media_type=form.cleaned_data.get('media_type'),
                 featured_photo=form.cleaned_data.get('featured_photo'),
+                category=form.cleaned_data.get("category"),
                 publisher=instance2,
             )
             ebook.save()
@@ -154,12 +155,6 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
         if user is not None:
             login(request, user, backend)
             request.session['login'] = True
-            if user.is_provider:
-                return redirect('provider_page')
-            elif user.is_support:
-                return redirect('support_page')
-            elif user.is_provider:
-                return HttpResponseRedirect(reverse('admin:index'))
             return redirect('index')
         else:
             request.session['login'] = False

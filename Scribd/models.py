@@ -17,7 +17,24 @@ class Ebook(models.Model):
     CATEGORY_EBOOK = (
         ("Thriller", "Thriller"),
         ("Drama", "Drama"),
+        ("Action", "Action"),
+        ("Adventure", "Adventure"),
+        ("Classics", "Classics"),
+        ("Comic Book", "Comic Book"),
+        ("Fantasy", "Fantasy"),
+        ("Historical Fiction", "Historical Fiction"),
+        ("Horror", "Horror"),
+        ("Literary Fiction", "Literary Fiction"),
+        ("Romance", "Romance"),
+        ("Sci-Fi", "Sci-Fi"),
+        ("Biography", "Biography"),
+        ("Cookbook", "Cookbook"),
+        ("Essay", "Essay"),
+        ("History", "History"),
+        ("Poetry", "Poetry"),
+        ("Other", "Other"),
     )
+
     _category = dict(CATEGORY_EBOOK)
 
     ebook_number = models.CharField(max_length=8, unique=True, default='')  # IBAN?
@@ -26,7 +43,7 @@ class Ebook(models.Model):
     description = models.TextField(default='')
     is_promot = models.BooleanField(default='False', blank=True, null=True)
     size = models.IntegerField(default=0)
-    category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
+    category = models.CharField(max_length=20, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
     featured_photo = ResizedImageField(size=[350, 500], quality=100, upload_to="images", default='images/unknown.png')
     url = models.URLField(max_length=200, default='readable_content/hp3.pdf',

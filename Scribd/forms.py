@@ -10,7 +10,7 @@ from .user_models import User, userProfile
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
-        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo']
+        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'category', 'featured_photo']
 
         widgets = {
             'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
@@ -19,7 +19,8 @@ class EbookForm(forms.ModelForm):
             'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
-            'media_type': forms.Select(attrs={'class': 'form-control'})
+            'media_type': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'})
             
         }
 
