@@ -104,7 +104,7 @@
                                             <div class="media flex-wrap w-100 align-items-center"><img
                                                     src="https://bootdey.com/img/Content/avatar/avatar6.png"
                                                     class="d-block ui-w-40 rounded-circle" alt="" style="width: 8%;">
-                                                <div class="media-body ml-3">{{ forum.user.username }}
+                                                <div class="media-body ml-3">{{ objs.user.username }}
                                                     <div class="text-muted small">
                                                         <div>Member since <strong>{{ objs.user.date_joined }}</strong>
                                                         </div>
@@ -114,9 +114,9 @@
                                             </div>
                                         {% else %}
                                             <div class="media flex-wrap w-100 align-items-center"><img
-                                                    src="{{ forum.user.user_profile.profile_image.url }}"
+                                                    src="{{ objs.user.user_profile.profile_image.url }}"
                                                     class="d-block ui-w-40 rounded-circle" alt="">
-                                                <div class="media-body ml-3">{{ forum.user.username }}
+                                                <div class="media-body ml-3">{{ objs.user.username }}
                                                     <div class="text-muted small">
                                                         <div>Member since <strong>{{ objs.user.date_joined }}</strong>
                                                         </div>
