@@ -74,6 +74,7 @@ class UploadFileForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'file': forms.FileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 

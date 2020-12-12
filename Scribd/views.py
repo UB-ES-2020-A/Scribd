@@ -407,15 +407,17 @@ def update_payment_details(request, username):
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+        print("estoy aqui PAYASO")
         if form.is_valid():
+            print("EL FORM ES VALIDO")
             instance = form.save(commit=False)
             instance.user = request.user
-
             instance.user.user_profile.n_uploads += 1
             instance.user.user_profile.save()
             form.save()
             return redirect('index')
     else:
+        print("EL FORM NO ES VALIDO")
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
