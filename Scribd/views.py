@@ -1,5 +1,4 @@
 import datetime
-
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.db.models import Q
@@ -14,10 +13,10 @@ from Scribd.decorators import allowed_users, authentificated_user
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, UpdatePayment, \
     CreateInForum, CreateInDiscussion, CreateInDiscussionTicket, ReviewForm
-from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
+from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets, Ebook
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
-from .user_models import User, userProfile
+from .user_models import User, userProfile, providerProfile
 from django.core.paginator import Paginator
 
 
@@ -108,16 +107,29 @@ def ebooks(request, search=""):
 
 
 def ebook_create_view(request):
+    instance2 = providerProfile.objects.get(user=request.user)
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save(commit=False)
-            instance = form.save(commit=False)
-            form.save()
+            ebook = Ebook.objects.create(
+                ebook_number=form.cleaned_data.get('ebook_number'),
+                title=form.cleaned_data.get('title'),
+                autor=form.cleaned_data.get('autor'),
+                description=form.cleaned_data.get('description'),
+                size=form.cleaned_data.get('size'),
+                media_type=form.cleaned_data.get('media_type'),
+                #featured_photo=form.cleaned_data.get('featured_photo'),
+                publisher=instance2,
+                )
+            ebook.save()
             return redirect('index')
     else:
         form = EbookForm()
-    return render(request, 'forms/add_book.html', {'book_form': form})
+    books = []
+    for book in Ebook.objects.all():
+        if str(book.publisher)[21:] == instance2.publisher:
+            books.append(book)
+    return render(request, 'scribd/providers_homepage.html', {'book_form': form, 'provider_instance': instance2, 'books': books})
 
 
 ##################################
