@@ -1,0 +1,165 @@
+{% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content" style="margin-bottom: 20px; margin-top: 20px">
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- Begin user profile -->
+                <div class="text-center user-profile-2"
+                     style="margin-top: 100px; box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5); border-radius: 2%">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h4><b>Username: {{ request.user.username }}</b></h4>
+                            <hr>
+                            <h4><b>Publisher: {{ provider_instance.publisher }}</b></h4>
+                            <hr>
+                            <h6>{{ request.user.email }}</h6>
+                            <hr>
+                            <a href="/media/contracts/ejemplo_contrato.pdf"
+                               style="color: inherit;text-decoration: inherit"><h5><b>Publisher contract</b></h5></a>
+                        </li>
+                    </ul>
+                </div><!-- End div .box-info -->
+            </div>
+
+            <div class="col-sm-9">
+                <div class="custombase" style="background-color: #FFFFFF">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
+                            <a class="nav-item nav-link active" style="color: #367C85" id="nav-profile-tab"
+                               data-toggle="tab"
+                               href="#nav-profile"
+                               role="tab"
+                               aria-controls="nav-profile" aria-selected="false"><i
+                                    class="fa fa-book"></i> Uploaded books</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
+                               href="#nav-contact"
+                               role="tab"
+                               aria-controls="nav-contact" aria-selected="false"><i
+                                    class="fa fa-upload"></i> Upload books</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-profile" role="tabpanel"
+                             aria-labelledby="nav-home-tab">
+                            {% if books %}
+                                {% for ebook in books %}
+                                    <div class="card flex-lg-row h-md-250 mt-1 mb-4 w-100">
+                                        <img class="card-img-left flex-auto d-none d-md-block" style="display: block;
+                                 max-width:20%;
+                                 width: auto;
+                                 height: auto;"
+                                             src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
+                                        <div class="card text-left w-100">
+
+                                            <div class="card-body" style="border-radius: 20%">
+                                                <div class="row">
+                                                    <div class="col-md-6 mt-md-0 mt-3">
+                                                        <h3 class="card-title">{{ ebook.title }}</h3>
+                                                        <br>
+                                                        <h6>{{ ebook.publisher }}</h6>
+                                                        <br>
+                                                        <h6> by {{ ebook.autor }}</h6>
+                                                        <p class="card-text">
+                                                            {{ ebook.description|truncatechars:330 }}</p>
+                                                        <br>
+                                                    </div>
+                                                    <div class="col-md-3 mt-md-0 mt-3">
+                                                        <h6> Book ISBN: {{ ebook.ebook_number }}</h6>
+                                                        <hr>
+                                                        <h6> Editorial: {{ ebook.publisher }}</h6>
+                                                        <hr>
+                                                        <h6> Size: {{ ebook.size }} pgs</h6>
+                                                        <hr>
+                                                        <h6> Downloads: {{ ebook.count_downloads }}</h6>
+                                                        <hr>
+                                                        <h6> Category: {{ ebook.category }}</h6>
+                                                        <hr>
+                                                        <h6> Media type: {{ ebook.media_type }}</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="text-center w-100">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <h3>No books from your publisher have been published yet.</h3>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <br>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                             aria-labelledby="nav-profile-tab">
+                            <div class="sign-up-header pb-md-4 mx-auto text-center">
+                                <h1 class="display-4">Create Resource</h1>
+                            </div>
+                            <div class="pl-2 pr-2 pb-2">
+                                <form method="POST">
+                                    {% csrf_token %}
+
+                                    {% if book_form.non_field_errors %}
+                                        <div class="alert alert-danger" role="alert">
+                                            {% for error in book_form.non_field_errors %}
+                                                {{ error }}
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.ebook_number|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.featured_photo|as_crispy_field }}
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.title|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.autor|as_crispy_field }}
+                                        </div>
+                                    </div>
+                                    {{ book_form.description|as_crispy_field }}
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4 mb-0">
+                                            {{ book_form.size|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-4 mb-0">
+                                            {{ book_form.media_type|as_crispy_field }}
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-primary btn-lg btn-block" type="submit">Add resource</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

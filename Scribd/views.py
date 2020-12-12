@@ -2,10 +2,12 @@ import datetime
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, DetailView
 from requests import Response
 from rest_framework import generics, viewsets, permissions
@@ -13,11 +15,11 @@ from rest_framework import generics, viewsets, permissions
 from Scribd.decorators import allowed_users, authentificated_user
 from Scribd.forms import EbookForm, RegisterForm, TicketForm, ProfileForm, UploadFileForm, \
     FollowForm, ProfileFormProvider, Subscription, CancelSubscription, UpgradeAccountForm, UpdatePayment, \
-    CreateInForum, CreateInDiscussion, CreateInDiscussionTicket
+    CreateInForum, CreateInDiscussion, CreateInDiscussionTicket, ReviewForm
 from Scribd.models import ViewedEbooks, Review, Discussion, DiscussionTickets
 from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
-from .user_models import User, userProfile
+from .user_models import User, userProfile, providerProfile
 
 
 ##################################
@@ -30,10 +32,30 @@ def base(request):
 
 def index(request):
     ebooks = Ebook.objects.all()
+    paginator = Paginator(ebooks, 3)
+    try:
+        page = int(request.GET.get('page', '1'))
+    except:
+        page = 1
+    try:
+        posts = paginator.page(page)
+    except(EmptyPage, InvalidrPage):
+        posts = paginator.page(paginator.num_pages)
+    # Get the index of the current page
+    index = posts.number - 1  # edited to something easier without index
+    # This value is maximum index of your pages, so the last page - 1
+    max_index = len(paginator.page_range)
+    # You want a range of 7, so lets calculate where to slice the list
+    start_index = index - 3 if index >= 3 else 0
+    end_index = index + 3 if index <= max_index - 3 else max_index
+    # Get our new page range. In the latest versions of Django page_range returns 
+    # an iterator. Thus pass it to list, to make our slice possible again.
+    page_range = list(paginator.page_range)[start_index:end_index]
     promoted = True
     context = {
-        'ebooks': ebooks,
+        'ebooks': posts,
         'promoted': promoted,
+        'page_range': page_range,
         'viewedebooks': _check_session(request)
     }
     return render(request, 'scribd/mainpage.html', context)
@@ -87,40 +109,35 @@ def ebooks(request, search=""):
 
 
 def ebook_create_view(request):
+    instance2 = providerProfile.objects.get(user=request.user)
     if request.method == 'POST':
         form = EbookForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save(commit=False)
-            instance = form.save(commit=False)
-            form.save()
+            ebook = Ebook.objects.create(
+                ebook_number=form.cleaned_data.get('ebook_number'),
+                title=form.cleaned_data.get('title'),
+                autor=form.cleaned_data.get('autor'),
+                description=form.cleaned_data.get('description'),
+                size=form.cleaned_data.get('size'),
+                media_type=form.cleaned_data.get('media_type'),
+                # featured_photo=form.cleaned_data.get('featured_photo'),
+                publisher=instance2,
+            )
+            ebook.save()
             return redirect('index')
     else:
         form = EbookForm()
-    return render(request, 'forms/add_book.html', {'book_form': form})
+    books = []
+    for book in Ebook.objects.all():
+        if str(book.publisher)[21:] == instance2.publisher:
+            books.append(book)
+    return render(request, 'scribd/providers_homepage.html',
+                  {'book_form': form, 'provider_instance': instance2, 'books': books})
 
 
 ##################################
 ####### VISTA REVIEW #############
 ##################################
-
-@authentificated_user
-def review(request, pk):
-    if request.method == "POST":
-        ebook = Ebook.objects.get(id=pk)
-        lista = [a for a, b in Review.STARS if b == int(request.POST["star"])]
-        review = Review()
-        review.ebook = ebook
-        review.comment = request.POST["comment"]
-        review.value_stars = lista[0]
-        review.user = request.user
-        review.save()
-        return HttpResponseRedirect(reverse('ebook_custom_detail', kwargs={"pk": pk}))
-    context = {
-        'book_number': pk,
-        # 'viewedrestaurants': _check_session(request)
-
-    }
-    return render(request, 'scribd/review.html', context)
 
 
 ##################################
@@ -136,7 +153,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 
         if user is not None:
             login(request, user, backend)
-
+            request.session['login'] = True
             if user.is_provider:
                 return redirect('provider_page')
             elif user.is_support:
@@ -144,12 +161,14 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
             elif user.is_provider:
                 return HttpResponseRedirect(reverse('admin:index'))
             return redirect('index')
+        else:
+            request.session['login'] = False
+            return redirect('index')
 
     else:
-
         login_form = AuthenticationForm()
 
-    return render(request, 'scribd/base.html', {'login_form': login_form})
+    return render(request, 'scribd/mainpage.html', {'login_form': login_form})
 
 
 ##################################
@@ -196,6 +215,14 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
         }
         return render(request, 'registration/signup.html', context)
 
+@csrf_exempt
+def update_session(request):
+    if not request.is_ajax() or not request.method=='POST':
+        return HttpResponseNotAllowed(['POST'])
+
+    request.session['login'] = None
+    return HttpResponse('ok')
+
 
 ##################################
 ####### VISTA PROFILE ###########
@@ -226,7 +253,7 @@ def edit_profile_page(request, username):
     context = {
         "form": form
     }
-    return render(request, 'forms/edit_user_profile.html', context)
+    return render(request, 'forms/edit_user_profile_v2.html', context)
 
 
 class user_profile_page(DetailView):
@@ -240,7 +267,10 @@ class user_profile_page(DetailView):
     def get_context_data(self, **kwargs):
         context = super(user_profile_page, self).get_context_data(**kwargs)
         current_time = datetime.datetime.now()
+        user = self.get_object()
+        substract = user.user_profile.nbooks_by_subs - user.user_profile.n_books_followed
         context['current_time'] = current_time
+        context['substract'] = substract
         return context
 
 
@@ -354,7 +384,7 @@ def downgrade_account_view(request, username):
         context = {
             "form": form,
         }
-        return render(request, 'forms/cancel_suscription_confirmation.html', context)
+        return render(request, 'forms/cancel_subscription_confirmation_v2.html', context)
 
 
 @authentificated_user
@@ -388,15 +418,17 @@ def update_payment_details(request, username):
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
+        print("estoy aqui PAYASO")
         if form.is_valid():
+            print("EL FORM ES VALIDO")
             instance = form.save(commit=False)
             instance.user = request.user
-
             instance.user.user_profile.n_uploads += 1
             instance.user.user_profile.save()
             form.save()
             return redirect('index')
     else:
+        print("EL FORM NO ES VALIDO")
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
@@ -427,34 +459,41 @@ def follow(request, pk):
             if forum_form.is_valid() and request.user.is_authenticated:
                 forum = Forum.objects.create(
                     ebook=Ebook.objects.get(id=pk),
-                    name=request.user.username,
+                    user=request.user,
                     email=request.user.email,
                     topic=forum_form.cleaned_data.get('topic'),
                     description=forum_form.cleaned_data.get('description'),
-                    link=forum_form.cleaned_data.get('link')
+                    link=forum_form.cleaned_data.get('link'),
+
                 )
                 forum.save()
                 next = request.POST.get('next', '/')
                 return HttpResponseRedirect(next)
 
-        elif 'discussion' in request.POST:
+        elif 'review' in request.POST:
+            print(request.POST)
+            review_form = ReviewForm(request.POST)
 
-            discussion_form = CreateInDiscussion(request.POST)
-
-            if discussion_form.is_valid() and request.user.is_authenticated:
-                discussion = Discussion.objects.create(
-                    user=User.objects.get(id=User.objects.get(username=request.user.username).id),
-
-                    forum=Forum.objects.get(id=Forum.objects.get(topic=request.POST.get('forum_name')).id),
-                    discuss=discussion_form.cleaned_data.get("discuss")
+            if review_form.is_valid() and request.user.is_authenticated:
+                review = Review.objects.create(
+                    ebook=Ebook.objects.get(id=pk),
+                    comment=review_form.cleaned_data.get("comment"),
+                    value_stars=review_form.cleaned_data.get("value_stars"),
+                    user=request.user
                 )
+                review.save()
 
-                discussion.save()
-                next = request.POST.get('next', '/')
-                return HttpResponseRedirect(next)
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+        else:
+            print(request.POST)
+            print("There was a problem with this post bro")
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
 
     else:
         discussion_form = CreateInDiscussion()
+        review_form = ReviewForm
         forum_form = CreateInForum()
         form = FollowForm()
         ebook = Ebook.objects.get(id=pk)
@@ -466,35 +505,80 @@ def follow(request, pk):
 
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
-            followed = False
-            for e in list(request.user.users_key.values()):
-                if e['id'] == ebook.id:
-                    followed = True
+            if request.user.is_provider or request.user.is_provider or request.user.is_superuser:
+                context = {
+                    "form": form,
+                    "ebook": ebook,
+                    "review_form": review_form,
+                    "reviews": reviews,
+                    "discussion_form": discussion_form,
+                    "create_forum": forum_form,
+                    'forums': ebook.forum_set.all(),
+                    'count': count,
+                    'discussions': discussions
+                }
+            else:
+                followed = False
+                for e in list(request.user.users_key.values()):
+                    if e['id'] == ebook.id:
+                        followed = True
 
-            context = {
-                "form": form,
-                "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
-                "ebook_followed": followed,
-                "ebook": ebook,
-                "reviews": reviews,
-                "discussion_form": discussion_form,
-                "create_forum": forum_form,
-                'forums': ebook.forum_set.all(),
-                'count': count,
-                'discussions': discussions
-            }
+                context = {
+                    "form": form,
+                    "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
+                    "ebook_followed": followed,
+                    "ebook": ebook,
+                    "review_form": review_form,
+                    "reviews": reviews,
+                    "discussion_form": discussion_form,
+                    "create_forum": forum_form,
+                    'forums': ebook.forum_set.all(),
+                    'count': count,
+                    'discussions': discussions
+                }
         else:
             context = {
                 "reviews": reviews,
                 "discussion_form": discussion_form,
                 "create_forum": forum_form,
+                "review_form":review_form,
                 "form": form,
                 "ebook": ebook,
                 'forums': ebook.forum_set.all(),
                 'count': count,
                 'discussions': discussions
             }
-        return render(request, 'scribd/ebook_detail.html', context)
+
+        return render(request, 'scribd/ebook_details.html', context)
+
+
+def ebook_forum(request, book_k, forum_k):
+    if request.method == 'POST':
+        discussion_form = CreateInDiscussion(request.POST)
+
+        if discussion_form.is_valid() and request.user.is_authenticated:
+            discussion = Discussion.objects.create(
+                user=request.user,
+                forum=Forum.objects.get(id=forum_k),
+                discuss=discussion_form.cleaned_data.get("discuss"),
+            )
+
+            discussion.save()
+            next = request.POST.get('next', '/')
+            return HttpResponseRedirect(next)
+
+    else:
+
+        discussion_form = CreateInDiscussion()
+        forum = Forum.objects.get(id=forum_k)
+        discussions = forum.discussion_set.all()
+        context = {
+            'forum': forum,
+            'discussion_form': discussion_form,
+            'discuss': discussions
+        }
+
+        return render(request, 'scribd/forumdetail.html', context)
 
 
 class UploadsViewSet(viewsets.ModelViewSet):
@@ -574,14 +658,26 @@ def ticketForumView(request, pk):
 
 @authentificated_user
 def support_page(request):
-    print(request.user.is_support)
-    tickets = UserTickets.objects.all()
+    if request.method == 'POST':
+        ticket_form = TicketForm(request.POST, request.FILES)
+        if ticket_form.is_valid():
+            ticket = UserTickets.objects.create(
+                ticket_title=ticket_form.cleaned_data.get('ticket_title'),
+                ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
+                ticket_user=User.objects.get(username=request.user.username),
 
-    print(tickets)
-    context = {
-        'tickets': tickets,
-    }
-    return render(request, 'scribd/support_page.html', context)
+            )
+            ticket.save()
+
+            return redirect('support_page')
+    else:
+        ticket_form = TicketForm()
+        tickets = UserTickets.objects.all()
+        context = {
+            'tickets': tickets,
+            'ticket_form': ticket_form
+        }
+        return render(request, 'scribd/support_page.html', context)
 
 
 ##################################
@@ -595,22 +691,6 @@ def add_books_form(request):
 class ebookListView(ListView):
     model = Ebook
     template_name = 'scribd/ebooks_list.html'
-
-
-def ebookDetailView(request):
-    forums = Ebook.objects.Forum.objects.all()
-    print("********************************************************")
-    count = forums.count()
-    discussions = []
-    for i in forums:
-        discussions.append(i.discussion_set.all())
-
-    context = {
-        'forums': forums,
-        'count': count,
-        'discussions': discussions}
-
-    return render(request, 'scribd/ebook_detail.html', context)
 
 
 class EbookViewSet(viewsets.ModelViewSet):

@@ -4,38 +4,39 @@
     <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px">
         <div id="{{ ticket.ticket_title }}" class="card box container">
             <br>
-            <div class="card-title">
+            <div class="card-header text-center">
                 <h3> {{ ticket.ticket_title }} </h3>
-                <div class="card-body container">
-                    <p>{{ ticket.ticket_summary }}</p>
-                </div>
-                <hr>
-                <p> By: {{ ticket.ticket_user.username }}</p>
-                email- {{ ticket.ticket_user.email }}
-                <hr>
-                <h4>Views from other users</h4>
+            </div>
+            <div class="card-body container">
+                <p>{{ ticket.ticket_summary }}</p>
+            </div>
+            <hr>
+            <p> By: {{ ticket.ticket_user.username }}</p>
+            email- {{ ticket.ticket_user.email }}
+            <hr>
+            <h4 class="mb-3">Conversation</h4>
 
-                {% for message in discuss %}
+            {% for message in discuss %}
 
 
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text"> {{ message.discuss }}
-                            </p>
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text"> {{ message.discuss }}
+                        </p>
 
-                            <footer class="blockquote-footer">{{ message.user.username }} </footer>
+                        <footer class="blockquote-footer">{{ message.user.username }} </footer>
 
-                        </div>
                     </div>
-                    <br>
+                </div>
+                <br>
 
-                {% endfor %}
+            {% endfor %}
 
 
 
-
+            <div class="card-footer text-muted text-center">
                 <a class="btn btn-primary" data-toggle="collapse" href="#{{ ticket.id_uTicket }}" role="button"
-                   aria-expanded="false" aria-controls="multiCollapseExample1">Give your view!</a>
+                   aria-expanded="false" aria-controls="multiCollapseExample1">Chat</a>
                 <form method="POST">
                     <input type="hidden" name="next" value="{{ request.path }}">
                     {% csrf_token %}
@@ -60,5 +61,6 @@
             </div>
         </div>
         <br>
+    </div>
     </div>
 {% endblock %}

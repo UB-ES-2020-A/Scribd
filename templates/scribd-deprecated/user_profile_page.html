@@ -1,4 +1,4 @@
-{% extends 'scribd-deprecated/base.html' %}
+{% extends 'scribd/base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}Profile page{% endblock %}
 {% block content %}
@@ -87,6 +87,7 @@
                                                              style="border-radius: 2%">
                                                     {% else %}
                                                         {% load static %}
+
                                                         <img src="{{ ebook.featured_photo.url }}" height="400px"
                                                              width="280px"
                                                              alt=""

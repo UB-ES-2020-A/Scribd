@@ -1,4 +1,5 @@
 from django.db import models
+from django_resized import ResizedImageField
 
 from .user_models import User, providerProfile
 
@@ -27,8 +28,8 @@ class Ebook(models.Model):
     size = models.IntegerField(default=0)
     category = models.CharField(max_length=8, choices=CATEGORY_EBOOK, default='')
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='static/readable_content/hp3.pdf',
+    featured_photo = ResizedImageField(size=[350, 500], quality=100, upload_to="images", default='images/unknown.png')
+    url = models.URLField(max_length=200, default='readable_content/hp3.pdf',
                           blank=True, null=True)
     count_downloads = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
@@ -109,7 +110,7 @@ class Review(models.Model):
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
     ticket_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    ticket_title = models.CharField(max_length=30, blank=False, default='Ticket')
+    ticket_title = models.CharField(max_length=30, blank=False, default=' ')
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
     ticket_solved = models.BooleanField(default=False)
@@ -161,7 +162,7 @@ class Payments(models.Model):
 
 class Forum(models.Model):
     ebook = models.ForeignKey(Ebook, null=True, blank=True, on_delete=models.CASCADE)
-    name = models.CharField(max_length=200, default="anonymous")
+    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
     email = models.CharField(max_length=200, null=True)
     topic = models.CharField(unique=True, max_length=300)
     description = models.CharField(max_length=1000, blank=True)
@@ -176,6 +177,7 @@ class Discussion(models.Model):
     forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
     user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
     discuss = models.CharField(max_length=1000)
+    date = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return str(self.forum)

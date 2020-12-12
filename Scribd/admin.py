@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Ebook, Review, ViewedEbooks, EbookInsertDate, UserTickets, Forum, Discussion
+from .models import Ebook, Review, ViewedEbooks, EbookInsertDate, UserTickets, Forum, Discussion, UploadedResources
 # Register your models here
 from .user_models import User, providerProfile, supportProfile, userProfile
 
@@ -15,7 +15,7 @@ class CustomUserAdmin(UserAdmin):
     # form = RegisterForm
     model = User
     fieldsets = UserAdmin.fieldsets + (
-        ("Custom Information", {'fields': ('is_provider', 'is_support', 'is_suscribed', 'profile_image')}),)
+        ("Custom Information", {'fields': ('is_provider', 'is_support', 'is_suscribed')}),)
 
 
 admin.site.register(User, CustomUserAdmin)
@@ -29,6 +29,7 @@ admin.site.register(EbookInsertDate)
 admin.site.register(UserTickets)
 admin.site.register(Forum)
 admin.site.register(Discussion)
+admin.site.register(UploadedResources)
 # Configurar el titulo del panel admin
 title = "Administration Scribd"
 admin.site.site_header = title

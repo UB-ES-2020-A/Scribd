@@ -1,4 +1,5 @@
 from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Row, Column
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
@@ -18,18 +19,34 @@ class EbookForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
+            # 'featured_photo': forms.ImageField()
         }
 
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = userProfile
-        fields = ['bio']
+        fields = ['profile_image', 'portrait', 'bio']
 
         widgets = {
-            'last_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'bio': forms.Textarea(attrs={'class': 'form-control'})
+            'bio': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_show_labels = False
+        self.helper.layout = (Layout(
+            Row(
+                Column('profile_image', css_class='form-group col')
+            ),
+            Row(
+                Column('portrait', css_class='form-group col')
+            ),
+            Row(
+                Column('bio'),
+            )))
 
 
 class UpgradeAccountForm(forms.ModelForm):
@@ -57,6 +74,7 @@ class UploadFileForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'file': forms.FileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
@@ -125,20 +143,19 @@ class TicketForm(forms.ModelForm):
 
         widgets = {
             'ticket_title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
+                attrs={'class': 'form-control'}),
             'ticket_summary': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
 
-class reviewForm(forms.ModelForm):
+class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ["comment", "value_stars"]
 
         widgets = {
-            'comment_title': forms.TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Ticket title (cannot be left blank)'}),
-            'comment': forms.Textarea(attrs={'class': 'form-control'}),
+            'comment': forms.Textarea(attrs={'class': 'form-control'})
+
         }
 
 
@@ -146,9 +163,9 @@ class reviewForm(forms.ModelForm):
 ####### FORMS FORUM ##############
 ##################################
 
+
 class CreateInForum(forms.ModelForm):
     class Meta:
-        print("Still creating the form-------------------------------------------")
         model = Forum
         fields = ["topic", "description"]
 

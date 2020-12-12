@@ -1,0 +1,67 @@
+{% extends 'scribd/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container">
+        <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+            <h1 class="display-5" style="color: darkred"><strong>Warning!</strong></h1>
+            <h1 class="display-5" style="color: darkred">You are about to downgrade your subscription</h1>
+        </div>
+        <div class="custombase px-3 py-3 pt-md-5 pb-md-4 mx-auto"
+             style="background-color: #FFFFFF; height: auto; margin-bottom: 50px">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <h2>Dear {{ user.username }}, your actual subscription is:
+                            <strong style="color:#367C85;">{{ form.subs_type.value }}.</strong>
+                        </h2>
+                        <h4>After cancelling your plan will be: <strong style="color: darkred">Free Trial</strong>.
+                        </h4>
+                    </div>
+                </div>
+                <br>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <p style="text-align: justify">
+                            Attention, read carefully the following lines:
+                        <div class="container">
+                            <li>If you go ahead you will only able to access <strong>the 10 first books</strong>
+                                followed.
+                            </li>
+                            <li>If you go ahead your payments won't be atomatic anymore.</li>
+                            <li>If you need to access subscriptions benefits you may to upgrade manually again.</li>
+                        </div>
+                        </p>
+                        <br>
+                        <label style="color: #4e555b;"><input type="checkbox"
+                                                              onchange="document.getElementById('acceptAndContinue').disabled = !this.checked;">
+                            Check this case and click to cancel your subscription.</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col" style="text-align: end">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="accept" id="acceptAndContinue" class="btn"
+                            style="background-color: #367C85; margin-bottom: 100px; " onclick="history.pushState(null, null, location.href);
+                        window.onpopstate = function () {
+                            history.go(1);
+                        };" disabled="disabled">
+                        <h7 style="color: #FFFFFF">Accept and continue</h7>
+                    </button>
+                </form>
+            </div>
+
+            <div class="col" style="text-align: start">
+                <button class="btn" style="background-color: darkred; margin-bottom: 100px;"
+                        onclick="window.history.back()">
+                    <h7 style="color: #FFFFFF">Go back</h7>
+                </button>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

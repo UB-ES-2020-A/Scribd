@@ -1,18 +1,16 @@
 {% load static %}
 {% load crispy_forms_tags %}
-
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns="">
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
     <title>
-        {% block title %} {% endblock %}
+        {% block title %}{% endblock %}
     </title>
 
     <link rel="icon"
@@ -20,75 +18,281 @@
           href="{% static 'images/icono.png' %}">
 
     <!-- Bootstrap core CSS -->
-    <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
+    <link href="{% static 'css/user_profile_stylesheet.css' %}" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="static/css/modern-business.css" rel="stylesheet">
-
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
 </head>
 
 <body>
 <!-- Navigation -->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="mainpage.html">Scribd</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <form action="{% url 'ebooks' %}" method="GET" class="form-inline ml-2 my-2 my-lg-0" style="padding-left: 20px">
-            <input class="form-control mr-sm-2" type="text" name="search" value="" placeholder="Search"
-                   aria-label="Search"
-                   style="background-color: #F3F6FD; height: 33px; width: 350px; border-color: slategrey">
-            <button class="btn my-2 my-sm-0" type="submit"
-                    style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
-                <img src="{% static 'images/lupa.png' %}" width="18px" height="18px" style="margin-top: -10px">
-            </button>
-        </form>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">Uploads</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="services.html">Register</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="contact.html">Log In</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">
-                        Profile
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownBlog">
-                        <a class="dropdown-item" href="blog-home-1.html">My Account</a>
-                        <a class="dropdown-item" href="blog-home-2.html">My Post</a>
-                        <a class="dropdown-item" href="blog-post.html">Blog Post</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-            </ul>
+
+<header>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <div class="col-2">
+                <a class="navbar-brand" href="/"><img src="{% static 'images/scribdLogoinverted.png' %}"
+                                                      style="width: 75%;"></a>
+            </div>
+            <div class="col-10">
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <form action="{% url 'ebooks' %}" method="GET" class="form-inline ml-2 my-2 my-lg-0"
+                          style="padding-left: 20px">
+                        <input class="form-control mr-sm-2" type="text" name="search" value="" placeholder="Search"
+                               aria-label="Search"
+                               style="background-color: #F3F6FD; height: 33px; width: 350px; border-color: slategrey">
+                        <button class="btn my-2 my-sm-0" type="submit"
+                                style="background-color: #367C85; height: 33px; margin-left: -30px; border-top-left-radius: 0%; border-bottom-left-radius: 0%">
+                            <img src="{% static 'images/lupa.png' %}" width="18px" height="18px"
+                                 style="margin-top: -10px">
+                        </button>
+                    </form>
+                    <ul class="navbar-nav ml-auto" style="margin-top: 20px">
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'upload_file' %}">
+                                    <p style="font-size: large; color: #FFFFFF"><i
+                                            class="fa fa-upload"></i> Upload files</p>
+                                </a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link"
+                                   href="{% url 'userprofilepage' request.user.username %}"><strong
+                                        style="color:#367C85;font-size: large"><i
+                                        class="fa fa-user"></i> {{ request.user.username }}</strong></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/logout">
+                                    <p style="font-size: large; color: #FFFFFF">Log Out <i
+                                            class="fa fa-sign-out"></i></p>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="/accounts/signup/">
+                                    <p style="font-size: large; color: #FFFFFF"><i
+                                            class="fa fa-plus-circle"></i> Register</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="modal" data-target="#login">
+                                    <p style="font-size: large; color: #FFFFFF"><i
+                                            class="fa fa-sign-in"></i> Log In</p>
+                                </a>
+                            </li>
+                        {% endif %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md"><p
+                                    style="font-size: large"><i
+                                    class="fa fa-github"></i> About</p></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                Other Pages
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownPages">
+                                <a class="dropdown-item" href="full-width.html">Full Width Page</a>
+                                <a class="dropdown-item" href="sidebar.html">Sidebar Page</a>
+                                <a class="dropdown-item" href="faq.html">FAQ</a>
+                                <a class="dropdown-item" href="404.html">404</a>
+                                <a class="dropdown-item" href="pricing.html">Pricing Table</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+</header>
+{% block content %}{% endblock %}
+
+<div class="modal fade" id="centralModalSuccess" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-success" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header justify-content-center" style="background: #1e7e34">
+                <img src="{% static 'images/scribdLogoinverted.png' %}" style="width: 30%;">
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                     <img class="my-3" src="{% static 'images/login_icon.png' %}" style="width: 25%;">
+                    <p>Welcome {{ request.user.username }}, we hope you have a nice reading time!</p>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-success" data-dismiss="modal">Thanks! <i class="far fa-gem ml-1 text-white"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+
+<!-- Central Modal Medium Warning -->
+<div class="modal fade" id="centralModalWarning" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-notify modal-warning" role="document">
+        <!--Content-->
+        <div class="modal-content text-center">
+            <!--Header-->
+            <div class="modal-header justify-content-center" style="background: #e0a800">
+                <img src="{% static 'images/scribdLogo.png' %}" style="width: 30%;">
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <div class="text-center">
+                    <img class="my-3" src="{% static 'images/warning.png' %}" style="width: 25%;">
+                    <p>There was a problem with the credentials so we couldn't log you in!</p>
+                    <p>Don't have an account yet? Create one <a href="{% url 'signup' %}"> here</a>  </p>
+                </div>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></a>
+                <a type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">Close</a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+
+<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center text-white" style="background:#367C85; ">
+                <h4 class="modal-title" id="exampleModalLabel">Log in</h4>
+
+            </div>
+            <div class="modal-body text-center">
+                 <img class="my-4" src="{% static 'images/login_first.png' %}" style="width: 25%;">
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+
+                    {{ login_form.username|as_crispy_field }}
+                    {{ login_form.password|as_crispy_field }}
+                    <hr>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Let me in!</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger waves-effect btn-lg btn-block" data-dismiss="modal">Close</button>
+            </div>
+
         </div>
     </div>
-</nav>
+</div>
 
+<!-- Footer -->
+<footer class="page-footer font-small"
+        style="background-color: #343a40;">
 
-{% block content %} {% endblock %}
+    <!-- Footer Links -->
+    <div class="container text-center text-md-left">
 
+        <!-- Grid row -->
+        <div class="row">
 
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Scribd</p>
+            <!-- Grid column -->
+            <div class="col-md-6 mt-md-0 mt-3">
+
+                <!-- Content -->
+                <h5 class="text-uppercase mt-3" style="color: #FFFFFF">Scribd</h5>
+                <a href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md">About us</a>
+
+            </div>
+            <!-- Grid column -->
+
+            <hr class="clearfix w-100 d-md-none pb-3">
+
+            <!-- Grid column -->
+            <div class="col-md-3 mb-md-0 mb-3">
+
+                <!-- Links -->
+                <h5 class="text-uppercase mt-3" style="color: #FFFFFF">Links</h5>
+
+                <ul class="list-unstyled">
+                    <li>
+                        <a class="link" href="signup/">Register</a>
+                    </li>
+                    <li>
+                        <a href="#">About us</a>
+                    </li>
+                    <li>
+                        <a href="#">Forum</a>
+                    </li>
+                    <li>
+                        <a href="sendTicket/">send a Ticket</a>
+                    </li>
+                </ul>
+
+            </div>
+            <!-- Grid column -->
+
+        </div>
+        <!-- Grid row -->
+
     </div>
-    <!-- /.container -->
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3" style="color: #FFFFFF">© 2020 Copyright:
+        <a href="https://mdbootstrap.com/"> MDBootstrap.com</a>
+    </div>
+    <!-- Copyright -->
+
 </footer>
+<!-- Footer -->
+
+<div class="container-fluid" style="background-color: #343a40; height: 45px; position: absolute">
+</div>
 
 <!-- Bootstrap core JavaScript -->
-<script src="static/vendor/jquery/jquery.min.js"></script>
-<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+
+
+
+{% if request.session.login is not None %}
+    {% if request.session.login %}
+        <script>
+            $('#centralModalSuccess').modal('show');
+        </script>
+    {% else %}
+        <script>
+            $('#centralModalWarning').modal('show');
+        </script>
+    {% endif %}
+    <script>
+        $.post('update_session/', function (request) {
+        });
+    </script>
+{% endif %}
+<script src="{% static 'js/upload.js' %}"></script>
+
 </body>
 </html>
