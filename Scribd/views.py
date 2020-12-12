@@ -430,7 +430,6 @@ def upload_file(request):
 
 
 
-@authentificated_user
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:
@@ -537,6 +536,7 @@ def follow(request, pk):
                 "reviews": reviews,
                 "discussion_form": discussion_form,
                 "create_forum": forum_form,
+                "review_form":review_form,
                 "form": form,
                 "ebook": ebook,
                 'forums': ebook.forum_set.all(),
