@@ -231,8 +231,16 @@
                                                                 <div class="card"
                                                                      style="width: 175px; text-align: center;">
                                                                     <div class="container" style="margin-top: 10px">
-                                                                        <img src="{% static 'images/unknown.png' %}"
-                                                                             style="height: 100%; width: 100%; border-radius: 2%">
+                                                                        {% if res.featured_photo.url == '/media/images/unknown.png' %}
+                                                                            {% load static %}
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% else %}
+                                                                            <img src="/media/{{ res.featured_photo }}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% endif %}
                                                                     </div>
                                                                     <div class="card-body">
                                                                         <small style="font-size: x-small">Access
@@ -258,8 +266,15 @@
                                                                 <div class="card"
                                                                      style="width: 175px; text-align: center;">
                                                                     <div class="container" style="margin-top: 10px">
-                                                                        <img src="{% static 'images/unknown.png' %}"
-                                                                             style="height: 100%; width: 100%; border-radius: 2%">
+                                                                        {% if res.featured_photo.url == '/media/images/unknown.png' %}
+                                                                            {% load static %}
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% else %}
+                                                                            <img src="/media/{{ res.featured_photo }}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
                                                                     </div>
                                                                     <div class="card-body" style="margin-top: -10px">
                                                                         <small style="font-size: x-small">Access
