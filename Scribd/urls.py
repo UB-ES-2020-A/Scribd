@@ -5,8 +5,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from Scribd import views
 from Scribd.views import follow, ebook_create_view, user_profile_page, edit_profile_page, upgrade_account_view, \
     upload_file, login_create_view, signup_create_view, \
-    provider_page, contract_page, ticket_page, ticketForumView, support_page, update_payment_details, \
-    downgrade_account_view, UserList, UserDetail,ebook_forum
+    contract_page, ticketForumView, support_page, update_payment_details, \
+    downgrade_account_view, UserList, UserDetail, ebook_forum
 from ScribdProject import settings
 
 urlpatterns = [

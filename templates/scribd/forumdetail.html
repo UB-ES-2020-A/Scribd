@@ -25,54 +25,54 @@
 
 
 
-                            {% for objs in discuss %}
-                                {% if objs.forum == forum %}
+                        {% for objs in discuss %}
+                            {% if objs.forum == forum %}
 
-                                    <div class="card text-lg-left">
-                                        <div class="card-body">
-                                            <p class="card-text"> {{ objs.discuss }}
-                                            </p>
+                                <div class="card text-lg-left">
+                                    <div class="card-body">
+                                        <p class="card-text"> {{ objs.discuss }}
+                                        </p>
 
-                                            <footer class="blockquote-footer">{{ objs.user.username }} </footer>
+                                        <footer class="blockquote-footer">{{ objs.user.username }} </footer>
 
-                                        </div>
                                     </div>
-                                    <br>
-                                {% endif %}
-                            {% endfor %}
+                                </div>
+                                <br>
+                            {% endif %}
+                        {% endfor %}
 
 
                     </div>
 
                     <div class="card-footer text-muted text-center">
-                    <a class="btn btn-primary" data-toggle="collapse" href="#{{ forum.topic }}"
-                       role="button"
-                       aria-expanded="false" aria-controls="multiCollapseExample1">Give your
-                        view!</a>
-                    <form method="POST">
-                        <input type="hidden" name="next" value="{{ request.path }}">
-                        <input type="hidden" name="forum_name" value="{{ forum.topic }}"/>
-                        {% csrf_token %}
-                        <div class="row">
-                            <div class="col">
-                                <div class="collapse multi-collapse" id="{{ forum.topic }}">
-                                    <div class="card card-body">
+                        <a class="btn btn-primary" data-toggle="collapse" href="#{{ forum.topic }}"
+                           role="button"
+                           aria-expanded="false" aria-controls="multiCollapseExample1">Give your
+                            view!</a>
+                        <form method="POST">
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <input type="hidden" name="forum_name" value="{{ forum.topic }}"/>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col">
+                                    <div class="collapse multi-collapse" id="{{ forum.topic }}">
+                                        <div class="card card-body">
 
-                                        {{ discussion_form.discuss|as_crispy_field }}
+                                            {{ discussion_form.discuss|as_crispy_field }}
 
-                                        <button name="discussion" type="submit"
-                                                class="btn btn-success btn-lg btn-block"
-                                                style="background-color: #367C85; margin-bottom: 20px">
-                                            <h7 style="color: #FFFFFF">Post</h7>
-                                        </button>
+                                            <button name="discussion" type="submit"
+                                                    class="btn btn-success btn-lg btn-block"
+                                                    style="background-color: #367C85; margin-bottom: 20px">
+                                                <h7 style="color: #FFFFFF">Post</h7>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
 
-                    </form>
-                </div>
+                        </form>
+                    </div>
                 </div>
 
 

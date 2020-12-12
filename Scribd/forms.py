@@ -1,6 +1,5 @@
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, ButtonHolder, Button, Submit, Row, Column
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Row, Column
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
@@ -20,7 +19,7 @@ class EbookForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
-            #'featured_photo': forms.ImageField()
+            # 'featured_photo': forms.ImageField()
         }
 
 
