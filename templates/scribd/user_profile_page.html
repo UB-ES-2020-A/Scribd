@@ -5,10 +5,10 @@
         <div class="col-sm-3 avatar-container">
             {% if user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
                 <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-circle profile-avatar"
-                     alt="User avatar" style="border-radius: 2%; width: 75%; height: auto">
+                     alt="User avatar" style="border-radius: 2%" width="auto" height="auto">
             {% else %}
                 <img src="{{ user.user_profile.profile_image.url }}" class="img-fluid profile-avatar"
-                     style="border-radius: 2%; width: 75%; height: auto" alt="User avatar">
+                     style="border-radius: 2%" width="300" height="300" alt="User avatar">
             {% endif %}
         </div>
     </div>

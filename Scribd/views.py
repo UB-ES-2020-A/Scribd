@@ -163,7 +163,7 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 
         login_form = AuthenticationForm()
 
-    return render(request, 'scribd/base.html', {'login_form': login_form})
+    return render(request, 'scribd/mainpage.html', {'login_form': login_form})
 
 
 ##################################
@@ -490,24 +490,37 @@ def follow(request, pk):
 
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
-            followed = False
-            for e in list(request.user.users_key.values()):
-                if e['id'] == ebook.id:
-                    followed = True
+            if request.user.is_provider or request.user.is_provider or request.user.is_superuser:
+                context = {
+                    "form": form,
+                    "ebook": ebook,
+                    "review_form": review_form,
+                    "reviews": reviews,
+                    "discussion_form": discussion_form,
+                    "create_forum": forum_form,
+                    'forums': ebook.forum_set.all(),
+                    'count': count,
+                    'discussions': discussions
+                }
+            else:
+                followed = False
+                for e in list(request.user.users_key.values()):
+                    if e['id'] == ebook.id:
+                        followed = True
 
-            context = {
-                "form": form,
-                "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
-                "ebook_followed": followed,
-                "ebook": ebook,
-                "review_form": review_form,
-                "reviews": reviews,
-                "discussion_form": discussion_form,
-                "create_forum": forum_form,
-                'forums': ebook.forum_set.all(),
-                'count': count,
-                'discussions': discussions
-            }
+                context = {
+                    "form": form,
+                    "substract": request.user.user_profile.nbooks_by_subs - request.user.user_profile.n_books_followed,
+                    "ebook_followed": followed,
+                    "ebook": ebook,
+                    "review_form": review_form,
+                    "reviews": reviews,
+                    "discussion_form": discussion_form,
+                    "create_forum": forum_form,
+                    'forums': ebook.forum_set.all(),
+                    'count': count,
+                    'discussions': discussions
+                }
         else:
             context = {
                 "reviews": reviews,
