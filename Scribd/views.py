@@ -32,7 +32,7 @@ def base(request):
 
 
 def index(request):
-    ebooks = Ebook.objects.all()
+    ebooks = Ebook.objects.all().order_by('id')
     paginator = Paginator(ebooks, 3)
     try:
         page = int(request.GET.get('page', '1'))
