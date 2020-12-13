@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings, Client
 from django.urls import reverse
 
-from Scribd.models import Ebook, UploadedResources, Payments, UserTickets
+from Scribd.models import Ebook, UploadedResources, Payments, UserTickets, Forum
 from Scribd.user_models import User, userProfile
 
 
@@ -468,6 +468,195 @@ class EbookDetailsTesting(TestCase):
         self.assertTrue(reviews == new_reviews)
 
 
+class TicketDetailTesting(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+
+        self.user = User.objects.create_user(
+            email="pepito123@gmail.com",
+            username="pepito123",
+            first_name="Pepito",
+            last_name="123",
+            password="xTu<3D\R",
+        )
+        self.user.set_password("xTu<3D\R")
+        userprofile = userProfile.objects.create(user=self.user)
+        userprofile.bio = ("Soy un usuario de prueba", )
+        userprofile.subs_type = ("Free Trial", )
+        userprofile.nbooks_by_subs = ("10", )
+        userprofile.card_titular = "Pepito 123"
+
+        self.ticket = UserTickets.objects.create(
+            ticket_summary='test',
+            ticket_title='test',
+            ticket_user=self.user
+        )
+
+        self.ticket.save()
+        self.user.save()
+
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_ticketdetail_page_url(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        response = self.client.get("/ticket/"+str(self.ticket.id_uTicket)+"/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/ticketdetail.html")
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_ticketdetail_page_view_name(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        response = self.client.get(
+            reverse("ticket_detail",kwargs={'pk': self.ticket.id_uTicket}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/ticketdetail.html")
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_ticketdetail_page_url_not_authenticated(self):
+
+        response = self.client.get("/ticket/"+str(self.ticket.id_uTicket)+"/")
+        self.assertEqual(response.status_code, 302)
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_ticketdetail_page_view_not_authenticated_name(self):
+        response = self.client.get(
+            reverse("ticket_detail", kwargs={'pk': self.ticket.id_uTicket}))
+        self.assertEqual(response.status_code, 302)
+
+
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_create_message(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+
+        comment = 'test'
+        comments = self.ticket.discussiontickets_set.count()
+        response = self.client.post(reverse("ticket_detail", kwargs={'pk': self.ticket.id_uTicket}),data={'discuss':comment})
+
+        new_comments = self.ticket.discussiontickets_set.count()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(comments < new_comments)
+        self.assertTrue(self.ticket.discussiontickets_set.all()[new_comments-1].user == self.user)
+        self.assertTrue(self.ticket.discussiontickets_set.all()[new_comments-1].discuss == comment)
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+
+    def test_create_message_not_authenticated(self):
+
+        comment = 'test'
+        comments = self.ticket.discussiontickets_set.count()
+        self.client.post(reverse("ticket_detail", kwargs={'pk': self.ticket.id_uTicket}),
+                                    data={'discuss': comment})
+
+        new_comments = self.ticket.discussiontickets_set.count()
+
+        self.assertTrue(comments == new_comments)
+
+
+class ForumDetailTesting(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+
+        self.user = User.objects.create_user(
+            email="pepito123@gmail.com",
+            username="pepito123",
+            first_name="Pepito",
+            last_name="123",
+            password="xTu<3D\R",
+        )
+        self.user.set_password("xTu<3D\R")
+        userprofile = userProfile.objects.create(user=self.user)
+        userprofile.bio = ("Soy un usuario de prueba",)
+        userprofile.subs_type = ("Free Trial",)
+        userprofile.nbooks_by_subs = ("10",)
+        userprofile.card_titular = "Pepito 123"
+
+        self.book = Ebook.objects.create(
+            ebook_number="74564",
+            title="Don Quijote",
+            autor="Miguel de Cervantes",
+            description="",
+            is_promot=False,
+            size=2,
+            media_type="pdf",
+        )
+
+        self.forum = Forum.objects.create(
+            ebook=self.book,
+            user=self.user,
+            email=self.user.email,
+            topic='test',
+            description='test',
+            link='test',
+        )
+
+        self.forum.save()
+        self.book.save()
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_forumdetail_page_url(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        response = self.client.get("/ebookdetail/" + str(self.book.id)+"/forum/"+str(self.forum.id)+"/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/forumdetail.html")
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_forumdetail_page_view_name(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        response = self.client.get(
+            reverse("forumdetail", kwargs={'book_k': self.book.id,'forum_k':self.forum.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/forumdetail.html")
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_create_forum_message(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+
+        comment = 'test'
+        comments = self.forum.discussion_set.count()
+        response = self.client.post(reverse("forumdetail", kwargs={'book_k': self.book.id,'forum_k':self.forum.id}),
+                                    data={'discuss': comment})
+
+        new_comments = self.forum.discussion_set.count()
+
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(comments < new_comments)
+        self.assertTrue(self.forum.discussion_set.all()[new_comments - 1].user == self.user)
+        self.assertTrue(self.forum.discussion_set.all()[new_comments - 1].discuss == comment)
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_create_forum_message_not_authenticated(self):
+        comment = 'test'
+        comments = self.forum.discussion_set.count()
+        self.client.post(reverse("forumdetail", kwargs={'book_k': self.book.id, 'forum_k': self.forum.id}),
+                                    data={'discuss': comment})
+        new_comments = self.forum.discussion_set.count()
+
+        self.assertTrue(comments == new_comments)
+
+
+
+
 class SupportPageTesting(TestCase):
     def setUp(self) -> None:
         self.client = Client()
@@ -563,3 +752,14 @@ class SupportPageTesting(TestCase):
         new_tickets = UserTickets.objects.count()
 
         self.assertTrue(tickets == new_tickets)
+
+
+class page404Testing(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+
+    def test404(self):
+        response = self.client.get("/randomlink/")
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/404.html")
