@@ -1,13 +1,23 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Ebook, Review, ViewedEbooks, EbookInsertDate, UserTickets, Forum, Discussion, UploadedResources
+from .models import (
+    Ebook,
+    Review,
+    ViewedEbooks,
+    EbookInsertDate,
+    UserTickets,
+    Forum,
+    Discussion,
+    UploadedResources,
+)
+
 # Register your models here
 from .user_models import User, providerProfile, supportProfile, userProfile
 
 
 class EbookAdmin(admin.ModelAdmin):
-    readonly_fields = ('created_at', 'updated_at')
+    readonly_fields = ("created_at", "updated_at")
 
 
 class CustomUserAdmin(UserAdmin):
@@ -15,7 +25,11 @@ class CustomUserAdmin(UserAdmin):
     # form = RegisterForm
     model = User
     fieldsets = UserAdmin.fieldsets + (
-        ("Custom Information", {'fields': ('is_provider', 'is_support', 'is_suscribed')}),)
+        (
+            "Custom Information",
+            {"fields": ("is_provider", "is_support", "is_suscribed")},
+        ),
+    )
 
 
 admin.site.register(User, CustomUserAdmin)
