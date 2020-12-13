@@ -530,7 +530,7 @@ def follow(request, pk):
 
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
-            if (request.user.is_provider or request.user.is_provider
+            if (request.user.is_provider or request.user.is_support
                     or request.user.is_superuser):
                 context = {
                     "form": form,
