@@ -5,7 +5,7 @@
     <div class="container mt-4 my-4">
     {% if not request.user.is_support %}
         <section class="jumbotron text-center">
-            <div class="container">
+            <div class="p-5 bg-white box-shadow">
                 <h1 class="jumbotron-heading">Welcome to the support page!</h1>
                 <p class="lead text-muted">Please, if you have a problem write a ticket to contact with our support
                     staff!</p>
@@ -23,7 +23,7 @@
     {% else %}
 
         <section class="jumbotron text-center">
-            <div class="container">
+            <div class="my-3 p-3 bg-white rounded box-shadow">
                 <h1 class="jumbotron-heading">Welcome again {{ request.user.username }}</h1>
                 <p class="lead text-muted">These are the current opened tickets!</p>
             </div>
@@ -35,6 +35,7 @@
 
                 <div class="row">
                     {% for ticket in tickets %}
+                        {% if ticket.ticket_user.username == request.user.username or request.user.is_support %}
                         <div class="col-lg-6 align-items-stretch">
                             <div class="card mb-4 box-shadow">
                                 <div class="card-header">
@@ -58,6 +59,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

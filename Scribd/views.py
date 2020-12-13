@@ -1,5 +1,6 @@
 import datetime
 
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
@@ -31,7 +32,7 @@ def base(request):
 
 
 def index(request):
-    ebooks = Ebook.objects.all()
+    ebooks = Ebook.objects.all().order_by('id')
     paginator = Paginator(ebooks, 3)
     try:
         page = int(request.GET.get('page', '1'))
@@ -120,7 +121,8 @@ def ebook_create_view(request):
                 description=form.cleaned_data.get('description'),
                 size=form.cleaned_data.get('size'),
                 media_type=form.cleaned_data.get('media_type'),
-                # featured_photo=form.cleaned_data.get('featured_photo'),
+                featured_photo=form.cleaned_data.get('featured_photo'),
+                category=form.cleaned_data.get("category"),
                 publisher=instance2,
             )
             ebook.save()
@@ -129,7 +131,7 @@ def ebook_create_view(request):
         form = EbookForm()
     books = []
     for book in Ebook.objects.all():
-        if str(book.publisher)[21:] == instance2.publisher:
+        if str(book.publisher.publisher) == instance2.publisher:
             books.append(book)
     return render(request, 'scribd/providers_homepage.html',
                   {'book_form': form, 'provider_instance': instance2, 'books': books})
@@ -154,12 +156,6 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
         if user is not None:
             login(request, user, backend)
             request.session['login'] = True
-            if user.is_provider:
-                return redirect('provider_page')
-            elif user.is_support:
-                return redirect('support_page')
-            elif user.is_provider:
-                return HttpResponseRedirect(reverse('admin:index'))
             return redirect('index')
         else:
             request.session['login'] = False
@@ -175,8 +171,6 @@ def login_create_view(request, backend='django.contrib.auth.backends.ModelBacken
 ####### VISTA REGISTRO ###########
 ##################################
 
-# TODO HAY UN BUG EN EL SEGUNDO FORMULARIO
-
 def signup_create_view(request, backend='django.contrib.auth.backends.ModelBackend'):
     if request.method == 'POST':
         signup_form = RegisterForm(request.POST, request.FILES)
@@ -188,36 +182,40 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
                 first_name=signup_form.cleaned_data.get('first_name'),
                 last_name=signup_form.cleaned_data.get('last_name'),
                 password=signup_form.cleaned_data.get('password1'))
-            # credit_form = Subscription(request.POST or None, request.FILES)
-            # if credit_form.is_valid():
 
             userprofile = userProfile.objects.create(user=user)
             userprofile.subs_type = "Free trial"
             userprofile.nbooks_by_subs = 10
             userprofile.save()
 
-        login(request, user, backend)
-        if user.is_provider:
-            return redirect('provider_page')
-        elif user.is_support:
-            return redirect('support_page')
-        elif user.is_provider:
-            return HttpResponseRedirect(reverse('admin:index'))
-        return redirect('index')
+            login(request, user, backend)
+
+            if user.is_provider:
+                return redirect('provider_page')
+            elif user.is_support:
+                return redirect('support_page')
+            elif user.is_provider:
+                return HttpResponseRedirect(reverse('admin:index'))
+            return redirect('index')
+
+        else:
+
+            context = {
+                "register_form": signup_form,
+            }
+            return render(request, 'registration/signup.html', context)
 
     else:
         signup_form = RegisterForm()
-        credit_form = Subscription()
-
         context = {
             "register_form": signup_form,
-            "credit_form": credit_form
         }
         return render(request, 'registration/signup.html', context)
 
+
 @csrf_exempt
 def update_session(request):
-    if not request.is_ajax() or not request.method=='POST':
+    if not request.is_ajax() or not request.method == 'POST':
         return HttpResponseNotAllowed(['POST'])
 
     request.session['login'] = None
@@ -415,12 +413,11 @@ def update_payment_details(request, username):
     return render(request, 'forms/update_payment.html', context)
 
 
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        print("estoy aqui PAYASO")
         if form.is_valid():
-            print("EL FORM ES VALIDO")
             instance = form.save(commit=False)
             instance.user = request.user
             instance.user.user_profile.n_uploads += 1
@@ -428,12 +425,10 @@ def upload_file(request):
             form.save()
             return redirect('index')
     else:
-        print("EL FORM NO ES VALIDO")
         form = UploadFileForm()
     return render(request, 'forms/upload.html', {'upload_file_form': form})
 
 
-@authentificated_user
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:
@@ -541,7 +536,7 @@ def follow(request, pk):
                 "reviews": reviews,
                 "discussion_form": discussion_form,
                 "create_forum": forum_form,
-                "review_form":review_form,
+                "review_form": review_form,
                 "form": form,
                 "ebook": ebook,
                 'forums': ebook.forum_set.all(),
@@ -594,7 +589,7 @@ class UploadsViewSet(viewsets.ModelViewSet):
 ##################################
 ####### VISTA TICKETS ############
 ##################################
-
+@authentificated_user
 class ticketListView(ListView):
     model = UserTickets
     template_name = 'scribd/support_page.html'
@@ -607,7 +602,7 @@ class ticketViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return UserTickets.objects.all().order_by('id')
 
-
+@authentificated_user
 def ticket_page(request):
     if request.method == 'POST':
         ticket_form = TicketForm(request.POST, request.FILES)
@@ -616,17 +611,15 @@ def ticket_page(request):
                 ticket_title=ticket_form.cleaned_data.get('ticket_title'),
                 ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
                 ticket_user=User.objects.get(username=request.user.username),
-
             )
             ticket.save()
-
             return redirect('index')
     else:
         ticket_form = TicketForm()
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
-
+@authentificated_user
 def ticketForumView(request, pk):
     if request.method == 'POST':
         discussion_form = CreateInDiscussionTicket(request.POST)
@@ -752,3 +745,20 @@ class ForumViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return User.objects.all().order_by('date_created')
+
+
+##################################
+####### 404/500/403/400 ##############
+##################################
+
+def error404(request, exception):
+    return render(request, "scribd/404.html", {})
+
+def error500(request, exception=None):
+    return render(request, "scribd/500.html", {})
+
+"""def custom_permission_denied_view(request, exception=None):
+    return render(request, "scribd/403.html", {})
+
+def custom_bad_request_view(request, exception=None):
+    return render(request, "scribd/400.html", {})"""

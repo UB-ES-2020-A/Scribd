@@ -15,13 +15,13 @@ Including another URLconf
 """
 
 from django.conf import settings
-from django.conf.urls import url
+from django.conf.urls import url, handler404, handler500
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
 
-from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet, ForumViewSet
+from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet, ForumViewSet, error404, error500
 
 router = routers.DefaultRouter()
 router.register(r'ebooks', EbookViewSet)
@@ -40,3 +40,6 @@ urlpatterns = [
     url('accounts/', include('django.contrib.auth.urls'))
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = error404
+handler500 = error500

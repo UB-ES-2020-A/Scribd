@@ -10,16 +10,29 @@ from .user_models import User, userProfile
 class EbookForm(forms.ModelForm):
     class Meta:
         model = Ebook
-        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'featured_photo']
+        fields = ['ebook_number', 'title', 'autor', 'description', 'size', 'media_type', 'category', 'featured_photo']
 
         widgets = {
             'ebook_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'max lenght: 8 digits'}),
+            'featured_photo': forms.ClearableFileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'autor': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'size': forms.NumberInput(attrs={'class': 'form-control'}),
             'media_type': forms.Select(attrs={'class': 'form-control'}),
-            # 'featured_photo': forms.ImageField()
+            'category': forms.Select(attrs={'class': 'form-control'})
+            
+        }
+
+class UploadFileForm(forms.ModelForm):
+    class Meta:
+        model = UploadedResources
+        fields = ['title', 'visibility', 'file', 'featured_photo']
+
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'file': forms.FileInput(attrs={'class': 'file-upload-input', 'onchange': 'readURL(this);'}),
+            'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
 
@@ -78,6 +91,16 @@ class UploadFileForm(forms.ModelForm):
             'visibility': forms.RadioSelect(choices=model.VISIBILITY_CHOICES)
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_show_labels = False
+        self.helper.layout = (Layout(
+            Row(
+                Column('title', css_class='form-control col placeholder:hola'),
+                Column('visibility', css_class='checkbox')
+            )))
 
 class UpdatePayment(forms.ModelForm):
     class Meta:
@@ -90,16 +113,19 @@ class UpdatePayment(forms.ModelForm):
 class RegisterForm(UserCreationForm):
     class Meta:
         model = User
+
         fields = ["username",
                   "first_name", "last_name",
                   "password1", "password2",
                   "email"]
-
+        '''
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'first_name': forms.TextInput(attrs={'class': 'form-control'}),
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
+        
+        '''
 
 
 class Subscription(forms.ModelForm):
