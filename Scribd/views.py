@@ -107,7 +107,7 @@ def ebooks(request, search=""):
                 | Q(category__icontains=query)
                 | Q(media_type__icontains=query)
                 | Q(featured_photo__icontains=query)
-                | Q(url__icontains=query))
+                | Q(file__icontains=query))
         else:
             ebooks = Ebook.objects.all()
 
@@ -139,6 +139,7 @@ def ebook_create_view(request):
                 featured_photo=form.cleaned_data.get("featured_photo"),
                 category=form.cleaned_data.get("category"),
                 publisher=instance2,
+                file=form.cleaned_data.get("file")
             )
             ebook.save()
             return redirect("index")
@@ -740,7 +741,7 @@ class BookUpdateView(generics.RetrieveUpdateAPIView):
         instance.category = request.data.get("category")
         instance.media_type = request.data.get("media_type")
         instance.count_downloads = request.data.get("count_downloads")
-        instance.url = request.data.get("url")
+        instance.file = request.data.get("file")
         instance.save()
 
         serializer = EbookSerializer(data=request.data)

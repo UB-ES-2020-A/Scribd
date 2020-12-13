@@ -18,6 +18,7 @@ class EbookForm(forms.ModelForm):
             "size",
             "media_type",
             "category",
+            "file",
             "featured_photo",
         ]
 

@@ -52,7 +52,7 @@ class Ebook(models.Model):
                                        quality=100,
                                        upload_to="images",
                                        default="images/unknown.png")
-    url = models.URLField(max_length=200,
+    file = models.FileField(max_length=200,
                           default="readable_content/hp3.pdf",
                           blank=True,
                           null=True)
