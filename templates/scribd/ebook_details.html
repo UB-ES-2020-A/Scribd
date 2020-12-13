@@ -42,10 +42,13 @@
                                                 <h7 style="color: #FFFFFF">Read it now!</h7>
                                             </a>
                                         {% else %}
-                                            <a href="{% url 'upgradeaccount' request.user.username %}" class="btn"
-                                               style="background-color: #367C85;">
-                                                <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
-                                            </a>
+                                            {% if request.user.is_superuser %}
+                                            {% else %}
+                                                <a href="{% url 'upgradeaccount' request.user.username %}" class="btn"
+                                                   style="background-color: #367C85;">
+                                                    <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
+                                                </a>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </form>
