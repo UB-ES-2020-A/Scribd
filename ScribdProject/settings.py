@@ -150,6 +150,8 @@ WSGI_APPLICATION = "ScribdProject.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'travis_ci_test',
+        'PORT': '',
         'CONN_MAX_AGE': 500
 
     }
