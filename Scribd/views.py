@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -53,7 +53,7 @@ def index(request):
         page = 1
     try:
         posts = paginator.page(page)
-    except (EmptyPage, InvalidrPage):
+    except (EmptyPage, InvalidPage):
         posts = paginator.page(paginator.num_pages)
     # Get the index of the current page
     index = posts.number - 1  # edited to something easier without index
