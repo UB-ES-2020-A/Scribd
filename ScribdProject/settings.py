@@ -149,8 +149,10 @@ WSGI_APPLICATION = "ScribdProject.wsgi.application"
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'es-scribd',
+        'CONN_MAX_AGE': 500
+
     }
 }
 
