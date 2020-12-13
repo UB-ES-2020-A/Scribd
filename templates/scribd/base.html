@@ -51,10 +51,9 @@
                         </button>
                     </form>
                     <ul class="navbar-nav ml-auto" style="margin-top: 20px">
-
                         {% if request.user.is_authenticated %}
                             <li class="nav-item">
-                                {% if not request.user.is_provider and not request.user.is_support %}
+                                {% if not request.user.is_provider and not request.user.is_support and not request.user.is_superuser %}
                                     <a class="nav-link" href="{% url 'upload_file' %}">
                                         <p style="font-size: large; color: #FFFFFF"><i
                                                 class="fa fa-upload"></i> Upload files</p>
