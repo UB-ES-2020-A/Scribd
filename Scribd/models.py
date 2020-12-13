@@ -37,22 +37,38 @@ class Ebook(models.Model):
 
     _category = dict(CATEGORY_EBOOK)
 
-    ebook_number = models.CharField(max_length=8, unique=True, default='')  # IBAN?
-    title = models.CharField(max_length=50, blank=False, default='')
-    autor = models.CharField(max_length=50, blank=False, default='')
-    description = models.TextField(default='')
-    is_promot = models.BooleanField(default='False', blank=True, null=True)
+    ebook_number = models.CharField(max_length=8, unique=True,
+                                    default="")  # IBAN?
+    title = models.CharField(max_length=50, blank=False, default="")
+    autor = models.CharField(max_length=50, blank=False, default="")
+    description = models.TextField(default="")
+    is_promot = models.BooleanField(default="False", blank=True, null=True)
     size = models.IntegerField(default=0)
-    category = models.CharField(max_length=20, choices=CATEGORY_EBOOK, default='')
-    media_type = models.CharField(max_length=5, choices=TYPE_FILE, default='')
-    featured_photo = ResizedImageField(size=[350, 500], quality=100, upload_to="images", default='images/unknown.png')
-    url = models.URLField(max_length=200, default='readable_content/hp3.pdf',
-                          blank=True, null=True)
+    category = models.CharField(max_length=20,
+                                choices=CATEGORY_EBOOK,
+                                default="")
+    media_type = models.CharField(max_length=5, choices=TYPE_FILE, default="")
+    featured_photo = ResizedImageField(size=[350, 500],
+                                       quality=100,
+                                       upload_to="images",
+                                       default="images/unknown.png")
+    file = models.FileField(max_length=200,
+                          default="readable_content/hp3.pdf",
+                          blank=True,
+                          null=True)
     count_downloads = models.PositiveIntegerField(default=0)
-    publisher = models.ForeignKey(providerProfile, related_name='providers_key', on_delete=models.CASCADE, null=True,
-                                  blank=True)
+    publisher = models.ForeignKey(
+        providerProfile,
+        related_name="providers_key",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
 
-    follower = models.ManyToManyField(User, related_name='users_key', null=True, blank=True)
+    follower = models.ManyToManyField(User,
+                                      related_name="users_key",
+                                      null=True,
+                                      blank=True)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -70,20 +86,20 @@ class Ebook(models.Model):
         return self.url
 
     def __str__(self):
-        return ('[**Promoted**]' if self.is_promot else '') + self.title
+        return ("[**Promoted**]" if self.is_promot else "") + self.title
 
     class Meta:
-        verbose_name = 'Ebook'
-        verbose_name_plural = 'Ebooks'
+        verbose_name = "Ebook"
+        verbose_name_plural = "Ebooks"
 
 
 class ViewedEbooks(models.Model):
     id_vr = models.AutoField(primary_key=True)
-    ebook = models.ManyToManyField(Ebook, through='EbookInsertDate')
+    ebook = models.ManyToManyField(Ebook, through="EbookInsertDate")
 
     class Meta:
-        verbose_name = 'ViewedEbooks'
-        verbose_name_plural = 'ViewedEbooks'
+        verbose_name = "ViewedEbooks"
+        verbose_name_plural = "ViewedEbooks"
 
 
 class EbookInsertDate(models.Model):
@@ -92,7 +108,7 @@ class EbookInsertDate(models.Model):
     date_added = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-date_added']
+        ordering = ["-date_added"]
 
 
 class Review(models.Model):
@@ -115,8 +131,8 @@ class Review(models.Model):
         return self._d_stars[self.value_stars]
 
     class Meta:
-        verbose_name = 'Review'
-        verbose_name_plural = 'Reviews'
+        verbose_name = "Review"
+        verbose_name_plural = "Reviews"
 
 
 ##################################
@@ -127,19 +143,26 @@ class Review(models.Model):
 class UserTickets(models.Model):
     id_uTicket = models.AutoField(primary_key=True)
     ticket_user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    ticket_title = models.CharField(max_length=30, blank=False, default=' ')
+    ticket_title = models.CharField(max_length=30, blank=False, default=" ")
     ticket_summary = models.CharField(max_length=300)
     ticket_date_added = models.DateTimeField(auto_now_add=True)
     ticket_solved = models.BooleanField(default=False)
 
     class Meta:
-        verbose_name = 'UserTickets'
-        verbose_name_plural = 'UserTickets'
+        verbose_name = "UserTickets"
+        verbose_name_plural = "UserTickets"
 
 
 class DiscussionTickets(models.Model):
-    userticket = models.ForeignKey(UserTickets, null=True, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, blank=True, null=True, on_delete=models.CASCADE, default=None)
+    userticket = models.ForeignKey(UserTickets,
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             blank=True,
+                             null=True,
+                             on_delete=models.CASCADE,
+                             default=None)
     discuss = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -151,6 +174,7 @@ class DiscussionTickets(models.Model):
 ####### MODELOS PROFILE ##########
 ##################################
 
+
 class UploadedResources(models.Model):
     # Available extensions
     VISIBILITY_CHOICES = (
@@ -160,11 +184,15 @@ class UploadedResources(models.Model):
     _v_choices = dict(VISIBILITY_CHOICES)
 
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=50, blank=False, default='')
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)  # One to many
-    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default='')
-    featured_photo = models.ImageField(upload_to="images", default='images/unknown.png')
-    file = models.FileField(upload_to='uploads', default='')
+    title = models.CharField(max_length=50, blank=False, default="")
+    user = models.ForeignKey(User, null=True,
+                             on_delete=models.CASCADE)  # One to many
+    visibility = models.CharField(max_length=10,
+                                  choices=VISIBILITY_CHOICES,
+                                  default="")
+    featured_photo = models.ImageField(upload_to="images",
+                                       default="images/unknown.png")
+    file = models.FileField(upload_to="uploads", default="")
 
 
 class Payments(models.Model):
@@ -178,9 +206,16 @@ class Payments(models.Model):
 ####### MODELOS FORUM ############
 ##################################
 
+
 class Forum(models.Model):
-    ebook = models.ForeignKey(Ebook, null=True, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    ebook = models.ForeignKey(Ebook,
+                              null=True,
+                              blank=True,
+                              on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             blank=True,
+                             on_delete=models.CASCADE,
+                             default=None)
     email = models.CharField(max_length=200, null=True)
     topic = models.CharField(unique=True, max_length=300)
     description = models.CharField(max_length=1000, blank=True)
@@ -193,7 +228,10 @@ class Forum(models.Model):
 
 class Discussion(models.Model):
     forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User,
+                             blank=True,
+                             on_delete=models.CASCADE,
+                             default=None)
     discuss = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True, null=True)
 

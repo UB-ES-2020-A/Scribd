@@ -54,7 +54,7 @@
 
             </div>
             <div class="footer text-muted text-center">
-                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
+                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated %}
                     <a class="btn btn-primary my-3" data-toggle="collapse" href="#{{ forum.topic }}"
                        role="button"
                        aria-expanded="false" aria-controls="multiCollapseExample1">Give your
@@ -103,7 +103,8 @@
                                         {% if objs.user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
                                             <div class="media flex-wrap w-100 align-items-center"><img
                                                     src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                                                    class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75">
+                                                    class="d-block ui-w-40 rounded-circle" alt="" width="75"
+                                                    height="75">
                                                 <div class="media-body ml-3">{{ objs.user.username }}
                                                     <div class="text-muted small">
                                                         <div>Member since <strong>{{ objs.user.date_joined }}</strong>
@@ -115,7 +116,8 @@
                                         {% else %}
                                             <div class="media flex-wrap w-100 align-items-center"><img
                                                     src="{{ objs.user.user_profile.profile_image.url }}"
-                                                    class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75" >
+                                                    class="d-block ui-w-40 rounded-circle" alt="" width="75"
+                                                    height="75">
                                                 <div class="media-body ml-3">{{ objs.user.username }}
                                                     <div class="text-muted small">
                                                         <div>Member since <strong>{{ objs.user.date_joined }}</strong>

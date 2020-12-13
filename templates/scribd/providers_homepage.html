@@ -3,13 +3,13 @@
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="{% static 'css/styles-upload.css' %}">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/styles-upload.css' %}">
 
-</head>
+    </head>
     <div class="content" style="margin-bottom: 20px; margin-top: 20px">
         <div class="row">
             <div class="col-sm-3">
@@ -54,7 +54,8 @@
                             {% if books %}
                                 {% for ebook in books %}
                                     <div class="card flex-lg-row h-md-250 mt-1 mb-4 w-100">
-                                        <img class="card-img-left flex-auto d-none d-md-block" width="300" height="400" style="display: block;"
+                                        <img class="card-img-left flex-auto d-none d-md-block" width="300" height="400"
+                                             style="display: block;"
                                              src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
                                         <div class="card text-left w-100">
 
@@ -69,6 +70,7 @@
                                                         <p class="card-text">
                                                             {{ ebook.description|truncatechars:330 }}</p>
                                                         <br>
+                                                        <a class="link" href="{{ ebook.file.url }}" target="_blank">File</a>
                                                     </div>
                                                     <div class="col-md-3 mt-md-0 mt-3">
                                                         <h6> Book ISBN: {{ ebook.ebook_number }}</h6>
@@ -132,9 +134,6 @@
                                     {% endif %}
 
                                     <div class="form-row">
-                                        <div class="form-group col-md-6 mb-0">
-                                            {{ book_form.ebook_number|as_crispy_field }}
-                                        </div>
                                         <div class="file-upload">
                                             <button class="file-upload-btn" type="button"
                                                     onclick="$('.file-upload-input').trigger( 'click' )">Add File
@@ -148,11 +147,18 @@
                                             <div class="file-upload-content">
                                                 <img class="file-upload-file" src="#" alt="your file"/>
                                                 <div class="file-title-wrap">
-                                                    <button type="button" onclick="removeUpload()" class="remove-file">Remove <span
+                                                    <button type="button" onclick="removeUpload()" class="remove-file">
+                                                        Remove <span
                                                             class="file-title">Uploaded File</span>
                                                     </button>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.ebook_number|as_crispy_field }}
+                                        </div>
+                                         <div class="form-group col-md-6 mb-0">
+                                            {{ book_form.file|as_crispy_field }}
                                         </div>
                                     </div>
 
@@ -178,7 +184,9 @@
                                         </div>
                                     </div>
 
-                                    <button class="btn btn-primary btn-lg btn-block" style="background-color: #367C85;" type="submit">Add resource</button>
+                                    <button class="btn btn-primary btn-lg btn-block" style="background-color: #367C85;"
+                                            type="submit">Add resource
+                                    </button>
                                 </form>
                             </div>
                         </div>

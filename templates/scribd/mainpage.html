@@ -71,10 +71,12 @@
 
         <!-- Portfolio Section -->
         <h3>Our selection of the <strong>best books</strong> is waiting for you!</h3>
-
-
+        <br>
+        {% if search %}
+            <h3>Search for: {{ search }}</h3>
+        {% endif %}
         <div class="row">
-            {% for ebook in ebooks.object_list %}
+            {% for ebook in ebooks %}
                 <div class="card flex-lg-row h-md-250 mt-3 w-100" style="box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5)">
                     <img class="card-img-left flex-auto d-none d-md-block" width="300" height="400"
                          src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
