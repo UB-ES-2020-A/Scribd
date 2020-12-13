@@ -44,6 +44,12 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
+        - python manage.py loaddata fixtures/ebooks.json
+      script:
+        - coverage run --source='.' manage.py test Scribd
+      after_success:
+        - coveralls
+
     - stage: test
       name: "test"
       # Create test database
@@ -51,6 +57,11 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
+        - python manage.py loaddata fixtures/ebooks.json
+      script:
+        - coverage run --source='.' manage.py test Scribd
+      after_success:
+        - coveralls
       true:
         repo: UB-ES-2020-A/Scribd
       branches:
@@ -72,6 +83,11 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
+        - python manage.py loaddata fixtures/ebooks.json
+      script:
+        - coverage run --source='.' manage.py test Scribd
+      after_success:
+        - coveralls
       deploy:
         - provider: heroku
           skip_cleanup: true
