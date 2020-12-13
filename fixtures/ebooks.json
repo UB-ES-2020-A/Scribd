@@ -1,0 +1,458 @@
+[
+  {
+    "model": "Scribd.ebook",
+    "pk": 2,
+    "fields": {
+      "ebook_number": "10402",
+      "title": "Harry Potter And The Chamber Of Secrets",
+      "autor": "J. K. Rowling",
+      "description": "Chilling, malevolent voices whisper from the walls only to Harry, and it seems certain that his classmate Draco Malfoy is out to get him. Soon it's not just Harry who is worried about survival, as dreadful things begin to happen at Hogwarts. The mysteriously gleaming, foot-high words on the wall proclaim, The Chamber of Secrets Has Been Opened. Enemies of the Heir, Beware. But what exactly does it mean? Harry, Hermione, and Ron do everything that is wizardry possible--including risking their own lives--to solve this 50-year-old, seemingly deadly mystery. This deliciously suspenseful novel is every bit as gripping, imaginative, and creepy as the first; familiar student concerns--fierce rivalry, blush-inducing crushes, pedantic professors--seamlessly intertwined with the bizarre, horrific, fantastical, or just plain funny. Once again, Rowling writes with a combination of wit, whimsy, and a touch of the macabre that will leave readers young and old desperate for the next installment.",
+      "is_promot": false,
+      "size": 251,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/91HHqVTAJQL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 3,
+    "fields": {
+      "ebook_number": "10403",
+      "title": "Harry Potter And The Prisoner Of Azkaban",
+      "autor": "J. K. Rowling",
+      "description": "the Hogwarts School for Witchcraft and Wizardry. Right before the start of term, a supremely dangerous criminal breaks out of a supposedly impregnable wizards' prison; it will come as no surprise to Potter fans that the villain, a henchman of Harry's old enemy Lord Voldemort, appears to have targeted Harry. In many ways this installment seems to serve a transitional role in the seven-volume series: while many of the adventures are breathlessly relayed, they appear to be laying groundwork for even more exciting adventures to come. The beauty here lies in the genius of Rowling's plotting. Seemingly minor details established in books one and two unfold to take on unforeseen significance, and the finale, while not airtight in its internal logic, is utterly thrilling. Rowling's wit never flags, whether constructing the workings of the wizard world (Just how would a magician be made to stay behind bars?) or tossing off quick jokes (a grandmother wears a hat decorated with a stuffed vulture; the divination classroom looks like a tawdry tea shop). The Potter spell is holding strong. All ages.",
+      "is_promot": false,
+      "size": 317,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/91uix57XjL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 4,
+    "fields": {
+      "ebook_number": "11704",
+      "title": "Harry Potter And The Goblet Of Fire",
+      "autor": "J. K. Rowling",
+      "description": "Harry Potter returns to Hogwarts for his fourth year, where the Triwizard Tournament is soon due to begin. Students must be over seventeen to enter, with the winner receiving eternal glory. Harry can't enter it this year, or can he. When his name is read out from the Goblet of Fire, everyone assumes that Harry has cheated. Harry insists that he never placed his name in there, with someone else behind it. But who? Harry must now survive through dragons, sea creatures and a terrifying maze, all before coming face-to-face with a particular dark wizard.",
+      "is_promot": false,
+      "size": 636,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/81t2CVWEsUL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 5,
+    "fields": {
+      "ebook_number": "20229",
+      "title": "harry potter and the order of the phoenix",
+      "autor": "J. K. Rowling",
+      "description": "After a lonely summer on Privet Drive, Harry returns to a Hogwarts full of ill-fortune. Few of students and parents believe him or Dumbledore that Voldemort is really back. The ministry had decided to step in by appointing a new Defense Against the Dark Arts teacher, Professor Dolores Umbridge, who proves to be the nastiest person Harry has ever encountered. Harry also can't help stealing glances with the beautiful Cho Chang. To top it off are dreams that Harry can't explain, and a mystery behind something for which Voldemort is searching. With these many things, Harry begins one of his toughest years at Hogwarts School of Witchcraft and Wizardry.",
+      "is_promot": false,
+      "size": 968,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/81yheYBjiuL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 6,
+    "fields": {
+      "ebook_number": "20981",
+      "title": "harry potter and the half blood prince",
+      "autor": "J. K. Rowling",
+      "description": "In Harry Potter's sixth year at Hogwarts School of Witchcraft, he finds a book marked mysteriously, \"This book is the property of the Half Blood Prince\", which helps him excel at Potions class and teaches him a few dark and dangerous ones along the way. Meanwhile, Harry is taking private lessons with Dumbledore in order to find out about Voldemort's past so they can find out what might be his only weakness.",
+      "is_promot": false,
+      "size": 607,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/91YH0ZtB9XL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 7,
+    "fields": {
+      "ebook_number": "21114",
+      "title": "Harry Potter and the Deathly Hallows",
+      "autor": "J. K. Rowling",
+      "description": "Following Dumbledore's death, Voldemort is attempting to take control of the Ministry of Magic. Meanwhile, Harry is about to turn seventeen, and lose the protection from his mother. Members of the Order of the Phoenix relocate the Dursleys, and prepare to move Harry to the Burrow, by flying him there, using Harry's friends as decoys. Death Eaters attack them upon departure, and in the ensuing battle, \"Mad-Eye\" Moody and Hedwig are killed and George Weasley severely wounded. Voldemort arrives to kill Harry, but Harry's wand fends him off on its own.",
+      "is_promot": false,
+      "size": 607,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/914CT7iyyvL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 8,
+    "fields": {
+      "ebook_number": "196748",
+      "title": "The Martian Chronicles",
+      "autor": "Ray Bradbury",
+      "description": "The Martian Chronicles is a science fiction fix-up, published in 1950, by American writer Ray Bradbury that chronicles the settlement of Mars, the home of indigenous Martians, by Americans leaving a troubled Earth that is eventually devastated by nuclear war. The book is a work of science fiction, apocalyptic and post-apocalyptic fiction, dystopian fiction, and horror that projects American society immediately after World War II into a technologically advanced future where the amplification of humanity's potentials to create and destroy have both miraculous and devastating consequences.",
+      "is_promot": false,
+      "size": 222,
+      "category": "Sci-Fi",
+      "media_type": "pdf",
+      "featured_photo": "images/91l3myG1aeL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 9,
+    "fields": {
+      "ebook_number": "982237",
+      "title": "The Metamorphoses",
+      "autor": "Ovid",
+      "description": "The Metamorphoses is an 8 AD Latin narrative poem by the Roman poet Ovid, considered his magnum opus. Comprising 11,995 lines, 15 books and over 250 myths, the poem chronicles the history of the world from its creation to the deification of Julius Caesar within a loose mythico-historical framework.",
+      "is_promot": false,
+      "size": 1190,
+      "category": "Poetry",
+      "media_type": "pdf",
+      "featured_photo": "images/61vuTZXQt-L.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 10,
+    "fields": {
+      "ebook_number": "349785",
+      "title": "It",
+      "autor": "Stephen King",
+      "description": "In fall 1957 the body of five-year-old Georgie Denbrough is found by a storm drain in a street near his home in Derry, Maine. His arm has been ripped off, and the death is officially ruled an accident; officials say Georgie's arm was caught in a strong current caused by recent flooding. In reality Georgie is the victim of a creature his brother Bill and his friends come to call It, a malevolent and ancient creature that feeds on Derry's children. The last thing Georgie sees is It in the form of Pennywise the Dancing Clown, standing in the storm drain and offering him a paper boat and a balloon. Through the winter and spring of 1957 and 1958, It takes other children, some of whose bodies are never found.",
+      "is_promot": false,
+      "size": 1138,
+      "category": "Horror",
+      "media_type": "pdf",
+      "featured_photo": "images/41nngxCNKxL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 11,
+    "fields": {
+      "ebook_number": "349876",
+      "title": "Asylum",
+      "autor": "Madeleine Roux",
+      "description": "Dan is a new attendee to the New Hampshire College Prep (NHCP) summer program, where he befriends two other attendees, Abby and Jordan. Abby and Dan kindle a romance, which threatens their friendship with Jordan. This becomes the least of his problems, as the trio ends up getting drawn into the past mysteries of their dorm, the Brookline Dorm, which used to serve as a psychiatric hospital. Exploring the dorm's grounds and history brings evidence that one of Abby's relatives attended the hospital and that one of Dan's relatives may have been the hospital's warden. Things grow more tense after a boy is killed at the university and Dan discovers that there was once a serial killer named \"The Sculptor\" that attended thanages to meet her aunt, Dan travels back home.",
+      "is_promot": false,
+      "size": 242,
+      "category": "Horror",
+      "media_type": "pdf",
+      "featured_photo": "images/51hjygZf42L._SX331_BO1204203200_.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 12,
+    "fields": {
+      "ebook_number": "576576",
+      "title": "Sanctum",
+      "autor": "Madeleine Roux",
+      "description": "Dan and his friends have decided to return to the prep school in order to investigate the past summer's mysteries further, especially as someone is sending them creepy old pictures and GPS coordinates to abandoned houses near the Brookline Dorm. Dan is determined to explore these coordinates in order to end the torment once and for all. They discover that the carnival from the photos is hosted on campus and that's just where the horrifying story begins.",
+      "is_promot": false,
+      "size": 343,
+      "category": "Horror",
+      "media_type": "pdf",
+      "featured_photo": "images/51OMyEJBtL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 13,
+    "fields": {
+      "ebook_number": "654566",
+      "title": "Catacomb",
+      "autor": "Madeleine Roux",
+      "description": "Dan and his friends, Abby and Jordan, decided to take a road trip the summer after senior year. On their way to visit Jordan's uncle in New Orleans, the friends realize they're being followed and photographed. Dan begins to receive messages from someone who died last Halloween and the strange occurrences only escalate once they reach New Orleans. Dan realizes that the disturbing events that have happened to him might not be coincidence, but fate. His past might be connected to a group called the Bone Artists, who are disturbingly interested in past killers. Dan just hopes he can make it out of this road trip alive with his life.",
+      "is_promot": false,
+      "size": 332,
+      "category": "Horror",
+      "media_type": "pdf",
+      "featured_photo": "images/51txZZd9eYL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 1,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 14,
+    "fields": {
+      "ebook_number": "3456662",
+      "title": "to kill a mockingbird",
+      "autor": "Harper Lee",
+      "description": "Small-town Alabama, 1932. Atticus Finch is a lawyer and a widower. He has two young children, Jem and Scout. Atticus Finch is currently defending Tom Robinson, a black man accused of raping a white woman. Meanwhile, Jem and Scout are intrigued by their neighbours, the Radleys, and the mysterious, seldom-seen Boo Radley in particular.",
+      "is_promot": false,
+      "size": 281,
+      "category": "Thriller",
+      "media_type": "pdf",
+      "featured_photo": "images/51IXWZzlgSL._SX342_SY445_QL70_ML2_.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 15,
+    "fields": {
+      "ebook_number": "4563455",
+      "title": "Murder on the Orient Express",
+      "autor": "Agatha Christie",
+      "description": "Hoping for a well-deserved and much-needed rest, the renowned Belgian detective, Hercule Poirot, returns to England aboard the luxurious Orient Express, along with an eclectic array of high-class passengers. But when the rapid locomotive's journey comes to a halt due to a massive avalanche, the moustachioed detective will use the unfortunate mishap to his advantage, to investigate the brutal murder of a fellow traveller. Inevitably, in a confined space where everyone is a suspect, Poirot must work fast before the unknown killer strikes again, as a strange coincidence links the remaining commuters together. Is the methodical detective worthy of his reputation?",
+      "is_promot": false,
+      "size": 256,
+      "category": "Thriller",
+      "media_type": "pdf",
+      "featured_photo": "images/512QZIRWfL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 16,
+    "fields": {
+      "ebook_number": "3453335",
+      "title": "The Goodful Cookbook: Simple and Balanced Recipes",
+      "autor": "Goodful",
+      "description": "Nourish your mind and body with more than 125 recipes that make everyday meals a more intentional self-care experience, whether you're an omnivore or you follow a plant-based, keto, or low-carb diet.\r\nThe Goodful philosophy is simple: use a foundation of wholesome, fresh ingredients, eat when hungry, and ultimately do what you need to do to feel good.",
+      "is_promot": false,
+      "size": 200,
+      "category": "Cookbook",
+      "media_type": "pdf",
+      "featured_photo": "images/91XkfdLgeDL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 17,
+    "fields": {
+      "ebook_number": "6934345",
+      "title": "A Song of Ice and Fire: A Game of Thrones",
+      "autor": "George R. R. Martin",
+      "description": "Upon the death of Lord Jon Arryn, the principal advisor to King Robert Baratheon, Robert recruits his childhood friend Eddard \"Ned\" Stark, now lord of the North, to replace Arryn as \"Hand of the King\", and to betroth his daughter Sansa to Robert's son Joffrey. Ned accepts the position when he learns that Arryn's widow Lysa believes he was poisoned by Robert's wife Queen Cersei Lannister and her family. Shortly thereafter, Ned's son Bran discovers Cersei having sex with her twin brother Jaime Lannister, who throws Bran from the tower to conceal their affair, leaving him comatose and paralyzing his legs.",
+      "is_promot": false,
+      "size": 694,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/51NF6gOqnuL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 18,
+    "fields": {
+      "ebook_number": "33567734",
+      "title": "A Song of Ice and Fire: A Clash of Kings",
+      "autor": "George R. R. Martin",
+      "description": "A Clash of Kings depicts the Seven Kingdoms of Westeros in civil war, while the Night's Watch mounts a reconnaissance to investigate the mysterious people known as wildlings. Meanwhile, Daenerys Targaryen continues her plan to reconquer the Seven Kingdoms.",
+      "is_promot": false,
+      "size": 768,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/91KxXAjRDL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 19,
+    "fields": {
+      "ebook_number": "543456",
+      "title": "A Song of Ice and Fire: A Storm of Swords",
+      "autor": "George R. R. Martin",
+      "description": "A Storm of Swords picks up the story slightly before the end of its predecessor, A Clash of Kings. The Seven Kingdoms of Westeros are still in the grip of the War of the Five Kings,[6] wherein Joffrey Baratheon and his uncle Stannis Baratheon compete for the Iron Throne, while Robb Stark of the North and Balon Greyjoy of the Iron Islands declare their independence (Stannis's brother Renly Baratheon, the fifth \"king\", has already been killed). Meanwhile, a large host of wildlings, the tribes from beyond the Seven Kingdoms' northern border, approach the Wall that marks the border, under the leadership of Mance Rayder, the self-proclaimed \"King Beyond the Wall\", with only the undermanned Night's Watch in opposition. Finally, Daenerys Targaryen, the daughter of a deposed former king of Westeros and \"mother\" of the world's only living dragons, sails west, planning to retake her late father's throne.",
+      "is_promot": false,
+      "size": 973,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/91PUHDK0JAL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 20,
+    "fields": {
+      "ebook_number": "654675",
+      "title": "A Song of Ice and Fire: A Feast for Crows",
+      "autor": "George R. R. Martin",
+      "description": "The War of the Five Kings is slowly coming to its end. The secessionist kings Robb Stark and Balon Greyjoy have been killed. One claimant to the throne, Stannis Baratheon, has gone to fight off invading wildling tribes at the northern Wall, where Robb's half-brother Jon Snow has become the 998th Lord Commander of the Night's Watch, the order responsible for guarding the Wall. The eight-year-old King Tommen Baratheon now rules in King's Landing under the regency of his mother, Cersei Lannister. The warrior woman Brienne of Tarth has been sent by Cersei's brother (and lover) Jaime Lannister on a mission to find Robb's sister Sansa Stark. Sansa is hiding in the Vale, protected by her mother's childhood friend Petyr 'Littlefinger' Baelish, who has murdered his wife Lysa Arryn and named himself Protector of the Vale and guardian of Lysa's son, the eight-year-old Lord Robert Arryn.",
+      "is_promot": false,
+      "size": 753,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/51gj84oTsL._SX324_BO1204203200_.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 21,
+    "fields": {
+      "ebook_number": "654767",
+      "title": "A Song of Ice and Fire: A Dance with Dragons",
+      "autor": "George R. R. Martin",
+      "description": "Stannis Baratheon, a claimant to the Iron Throne of Westeros, occupies the Wall at the realm's northern border, having helped to repel an invasion of wildlings from the northern wilderness. Stannis executes Mance Rayder, the leader of the wildlings, for refusing to submit to him, and marches his army south to seek support in his bid for the throne. Jon Snow, the newly elected Lord Commander of the Night's Watch, the order that defends the Wall, prepares the defense against the Others, hostile inhuman creatures from the far north. Jon negotiates with wildling leader Tormund Giantsbane to let the wildlings past the Wall in exchange for their assistance in defending it. This results in a fragile peace but creates unrest among the Night's Watch, who have considered the wildlings their enemies for centuries.",
+      "is_promot": false,
+      "size": 1056,
+      "category": "Fantasy",
+      "media_type": "pdf",
+      "featured_photo": "images/81WInI5d-TL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 22,
+    "fields": {
+      "ebook_number": "45647",
+      "title": "Dracula",
+      "autor": "Bram Stoker",
+      "description": "The story is told in an epistolary format, as a series of letters, diary entries, newspaper articles, and ships' log entries, whose narrators are the novel's protagonists, and occasionally supplemented with newspaper clippings relating events not directly witnessed. The events portrayed in the novel take place chronologically and largely in England and Transylvania within the same year between 3 May and 6 November. A short note at the end of the final chapter is written 7 years after the events outlined in the novel. The tale begins with Jonathan Harker, a newly qualified English solicitor, visiting Count Dracula at his castle in the Carpathian Mountains on the border of Transylvania, Bukovina, and Moldavia, to provide legal support for a real estate transaction overseen by Harker's employer, Mr. Peter Hawkins of Exeter. Initially impressed by Dracula's gracious manners, Harker soon realizes that he is Dracula's prisoner. Wandering the Count's castle against Dracula's admonition, Harker encounters three vampire sisters, from whom he is rescued by Dracula. Harker soon realizes that Dracula himself is also a vampire. After the preparations are made, Dracula leaves Transylvania and abandons Harker to the sisters. Harker barely escapes from the castle with his life.",
+      "is_promot": false,
+      "size": 418,
+      "category": "Horror",
+      "media_type": "pdf",
+      "featured_photo": "images/41W9YFWvAL._SX346_BO1204203200_.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 23,
+    "fields": {
+      "ebook_number": "4536576",
+      "title": "Memorias de Idhún I: La Resistencia",
+      "autor": "Laura Gallego",
+      "description": "El d�a en que se produjo en Idhún la conjunci�n astral de los tres soles y las tres lunas, Ashran el Nigromante se hizo con el poder all�. En nuestro mundo, un guerrero y un mago exiliados de Idh�n han formado la Resistencia, a la que pertenecen tambi�n Jack y Victoria, dos adolescentes nacidos en la Tierra. El objetivo del grupo es acabar con el reinado de las serpientes aladas, pero Kirtash, un joven y despiadado asesino, enviado por Ashran a la Tierra, no se lo va a permitir�",
+      "is_promot": false,
+      "size": 556,
+      "category": "Adventure",
+      "media_type": "pdf",
+      "featured_photo": "images/91gptViUokL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 24,
+    "fields": {
+      "ebook_number": "47543",
+      "title": "Memorias de Idh�n II: Tr�ada",
+      "autor": "Laura Gallego",
+      "description": "Memorias de Idh�n: Tr�ada es la segunda parte de la trilog�a de Memorias de Idh�n, tres libros creados por Laura Gallego Garc�a y que giran en torno a Idh�n, un mundo lleno de magia y de misterio y con tres soles y tres lunas. En este libro la Resistencia vuelve a Idh�n, y finalmente, la Tr�ada (Jack, Victoria y Kirtash habr�n de luchar contra Ashran el Nigromante.",
+      "is_promot": false,
+      "size": 766,
+      "category": "Adventure",
+      "media_type": "pdf",
+      "featured_photo": "images/91xh9sfhCcL.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  },
+  {
+    "model": "Scribd.ebook",
+    "pk": 25,
+    "fields": {
+      "ebook_number": "652345",
+      "title": "Memorias de Idh�n III: Pante�n",
+      "autor": "Laura Gallego",
+      "description": "El panorama ha cambiado totalmente en Idh�n. Tras la Batalla de Awa, los sheks que sobrevivieron han huido a las monta�as para recuperarse del mazazo recibido (salvo el peque�o grupo encabezado por Ziessel, que cruz� la Puerta dimensional hacia La Tierra). Ashran el Nigromante ha muerto y la Torre de Drackwen ha quedado en ruinas. En la Torre de Kazlunn, el �ltimo unicornio agoniza. Despu�s de que su cuerno fuera extirpado, Victoria est� al borde de la muerte. Sin embargo, acaba recuper�ndose, y se va a la Tierra con Kirtash (tambi�n llamado Christian) para vivir en su �tico de Nueva York y protegerse de todos los peligros que los acechan; sin embargo Jack se queda en Idh�n para investigar una serie de extra�os sucesos que est�n teniendo lugar en el planeta: una serie de misteriosos terremotos han obligado a los gigantes a exiliarse de Nanhai, rumbo al sur; un tornado devasta la regi�n de Celestia; una ola gigante se estrella contra las costas del reino de Nanetten... No tardan en darse cuenta de que los dioses han llegado a Idh�n, y est�n arrasando todo a su paso. Su misi�n es buscar al S�ptimo, cuya esencia huy� del cuerpo de Ashran el Nigromante y ahora se aloja en el de la fe�rica Gerde.",
+      "is_promot": false,
+      "size": 942,
+      "category": "Adventure",
+      "media_type": "pdf",
+      "featured_photo": "images/portada2371.jpeg",
+      "file": "hp3.pdf",
+      "count_downloads": 0,
+      "publisher": 2,
+      "follower": []
+    }
+  }
+]
