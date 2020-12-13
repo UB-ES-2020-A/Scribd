@@ -496,7 +496,7 @@ def follow(request, pk):
                 return HttpResponseRedirect(next)
 
         elif "review" in request.POST:
-            print(request.POST)
+
             review_form = ReviewForm(request.POST)
 
             if review_form.is_valid():
@@ -511,8 +511,7 @@ def follow(request, pk):
             next = request.POST.get("next", "/")
             return HttpResponseRedirect(next)
         else:
-            print(request.POST)
-            print("There was a problem with this post bro")
+
             next = request.POST.get("next", "/")
             return HttpResponseRedirect(next)
 
@@ -530,7 +529,7 @@ def follow(request, pk):
 
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
-            if (request.user.is_provider or request.user.is_provider
+            if (request.user.is_provider or request.user.is_support
                     or request.user.is_superuser):
                 context = {
                     "form": form,
@@ -591,10 +590,10 @@ def follow(request, pk):
 
 
 def ebook_forum(request, book_k, forum_k):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         discussion_form = CreateInDiscussion(request.POST)
 
-        if discussion_form.is_valid() and request.user.is_authenticated:
+        if discussion_form.is_valid():
             discussion = Discussion.objects.create(
                 user=request.user,
                 forum=Forum.objects.get(id=forum_k),
@@ -648,10 +647,11 @@ class ticketViewSet(viewsets.ModelViewSet):
 
 @authentificated_user
 def ticketForumView(request, pk):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         discussion_form = CreateInDiscussionTicket(request.POST)
 
-        if discussion_form.is_valid() and request.user.is_authenticated:
+        if discussion_form.is_valid():
+
             discussion = DiscussionTickets.objects.create(
                 user=User.objects.get(id=User.objects.get(
                     username=request.user.username).id),
