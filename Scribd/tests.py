@@ -20,6 +20,8 @@ class EbookTestCase(TestCase):
             media_type="pdf",
         )
 
+
+
     def test_ebook_search(self):
         quijote = Ebook.objects.get(title="Don Quijote")
         self.assertEqual(quijote.autor, "Miguel de Cervantes")
@@ -182,6 +184,8 @@ class LoginTesting(TestCase):
         userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
+        self.client.save()
+
     @override_settings(STATICFILES_STORAGE=
                        "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_wrong_login(self):
@@ -338,6 +342,10 @@ class EbookDetailsTesting(TestCase):
         userprofile.subs_type = ("Free Trial", )
         userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
+
+        self.book.save()
+        self.user.save()
+        userprofile.save()
 
     @override_settings(STATICFILES_STORAGE=
                        "django.contrib.staticfiles.storage.StaticFilesStorage")
@@ -603,6 +611,7 @@ class ForumDetailTesting(TestCase):
             link='test',
         )
 
+        self.user.save()
         self.forum.save()
         self.book.save()
 
@@ -674,6 +683,8 @@ class SupportPageTesting(TestCase):
         userprofile.subs_type = ("Free Trial", )
         userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
+
+        self.user.save()
 
     @override_settings(STATICFILES_STORAGE=
                        "django.contrib.staticfiles.storage.StaticFilesStorage")
