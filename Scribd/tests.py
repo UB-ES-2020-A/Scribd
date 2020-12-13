@@ -415,6 +415,7 @@ class EbookDetailsTesting(TestCase):
         self.assertTrue(self.book.review_set.all()[new_reviews-1].comment == comment)
         self.assertTrue(self.book.review_set.all()[new_reviews-1].value_stars == value_stars)
 
+
     @override_settings(STATICFILES_STORAGE=
                        "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_create_review_not_authenticated(self):
