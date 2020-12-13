@@ -61,18 +61,18 @@
 
                                             <div class="card-body" style="border-radius: 20%">
                                                 <div class="row">
-                                                    <div class="col-md-6 mt-md-0 mt-3">
+                                                    <div class="col-md-7 mt-md-0 mt-3">
                                                         <h3 class="card-title">{{ ebook.title }}</h3>
                                                         <br>
                                                         <h6>{{ ebook.publisher }}</h6>
                                                         <br>
                                                         <h6> by {{ ebook.autor }}</h6>
-                                                        <p class="card-text">
-                                                            {{ ebook.description|truncatechars:330 }}</p>
+                                                        <p class="card-text" style="text-align: justify">
+                                                            {{ ebook.description|truncatechars:500 }}</p>
                                                         <br>
                                                         <a class="link" href="{{ ebook.file.url }}" target="_blank">File</a>
                                                     </div>
-                                                    <div class="col-md-3 mt-md-0 mt-3">
+                                                    <div class="col-md-4 mt-md-0 mt-3">
                                                         <h6> Book ISBN: {{ ebook.ebook_number }}</h6>
                                                         <hr>
                                                         <h6> Editorial: {{ ebook.publisher }}</h6>
