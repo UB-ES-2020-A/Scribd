@@ -22,18 +22,28 @@ class EbookForm(forms.ModelForm):
         ]
 
         widgets = {
-            "ebook_number": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "max lenght: 8 digits"}
-            ),
-            "featured_photo": forms.ClearableFileInput(
-                attrs={"class": "file-upload-input", "onchange": "readURL(this);"}
-            ),
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "autor": forms.TextInput(attrs={"class": "form-control"}),
-            "description": forms.Textarea(attrs={"class": "form-control"}),
-            "size": forms.NumberInput(attrs={"class": "form-control"}),
-            "media_type": forms.Select(attrs={"class": "form-control"}),
-            "category": forms.Select(attrs={"class": "form-control"}),
+            "ebook_number":
+            forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "max lenght: 8 digits"
+            }),
+            "featured_photo":
+            forms.ClearableFileInput(attrs={
+                "class": "file-upload-input",
+                "onchange": "readURL(this);"
+            }),
+            "title":
+            forms.TextInput(attrs={"class": "form-control"}),
+            "autor":
+            forms.TextInput(attrs={"class": "form-control"}),
+            "description":
+            forms.Textarea(attrs={"class": "form-control"}),
+            "size":
+            forms.NumberInput(attrs={"class": "form-control"}),
+            "media_type":
+            forms.Select(attrs={"class": "form-control"}),
+            "category":
+            forms.Select(attrs={"class": "form-control"}),
         }
 
 
@@ -43,11 +53,15 @@ class UploadFileForm(forms.ModelForm):
         fields = ["title", "visibility", "file", "featured_photo"]
 
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "file": forms.FileInput(
-                attrs={"class": "file-upload-input", "onchange": "readURL(this);"}
-            ),
-            "visibility": forms.RadioSelect(choices=model.VISIBILITY_CHOICES),
+            "title":
+            forms.TextInput(attrs={"class": "form-control"}),
+            "file":
+            forms.FileInput(attrs={
+                "class": "file-upload-input",
+                "onchange": "readURL(this);"
+            }),
+            "visibility":
+            forms.RadioSelect(choices=model.VISIBILITY_CHOICES),
         }
 
 
@@ -68,9 +82,7 @@ class ProfileForm(forms.ModelForm):
         self.helper.layout = Layout(
             Row(Column("profile_image", css_class="form-group col")),
             Row(Column("portrait", css_class="form-group col")),
-            Row(
-                Column("bio"),
-            ),
+            Row(Column("bio"), ),
         )
 
 
@@ -96,11 +108,15 @@ class UploadFileForm(forms.ModelForm):
         fields = ["title", "visibility", "file", "featured_photo"]
 
         widgets = {
-            "title": forms.TextInput(attrs={"class": "form-control"}),
-            "file": forms.FileInput(
-                attrs={"class": "file-upload-input", "onchange": "readURL(this);"}
-            ),
-            "visibility": forms.RadioSelect(choices=model.VISIBILITY_CHOICES),
+            "title":
+            forms.TextInput(attrs={"class": "form-control"}),
+            "file":
+            forms.FileInput(attrs={
+                "class": "file-upload-input",
+                "onchange": "readURL(this);"
+            }),
+            "visibility":
+            forms.RadioSelect(choices=model.VISIBILITY_CHOICES),
         }
 
     def __init__(self, *args, **kwargs):
@@ -112,8 +128,7 @@ class UploadFileForm(forms.ModelForm):
             Row(
                 Column("title", css_class="form-control col placeholder:hola"),
                 Column("visibility", css_class="checkbox"),
-            )
-        )
+            ))
 
 
 class UpdatePayment(forms.ModelForm):
@@ -156,17 +171,21 @@ class Subscription(forms.ModelForm):
         ]
 
         widgets = {
-            "card_titular": forms.TextInput(
+            "card_titular":
+            forms.TextInput(
                 attrs={
                     "class": "form-control",
                     "placeholder": "Full name as displayed on the card",
-                }
-            ),
-            "card_number": forms.TextInput(attrs={"class": "form-control"}),
-            "card_cvv": forms.PasswordInput(attrs={"class": "form-control"}),
-            "card_expiration": forms.TextInput(
-                attrs={"class": "form-control", "placeholder": "mm/yy"}
-            ),
+                }),
+            "card_number":
+            forms.TextInput(attrs={"class": "form-control"}),
+            "card_cvv":
+            forms.PasswordInput(attrs={"class": "form-control"}),
+            "card_expiration":
+            forms.TextInput(attrs={
+                "class": "form-control",
+                "placeholder": "mm/yy"
+            }),
         }
 
 
@@ -218,13 +237,14 @@ class CreateInForum(forms.ModelForm):
         fields = ["topic", "description"]
 
         widgets = {
-            "topic": forms.TextInput(
+            "topic":
+            forms.TextInput(
                 attrs={
                     "class": "form-control",
                     "placeholder": "Forum title (cannot be left blank)",
-                }
-            ),
-            "description": forms.Textarea(attrs={"class": "form-control"}),
+                }),
+            "description":
+            forms.Textarea(attrs={"class": "form-control"}),
         }
 
 

@@ -37,20 +37,25 @@ class Ebook(models.Model):
 
     _category = dict(CATEGORY_EBOOK)
 
-    ebook_number = models.CharField(max_length=8, unique=True, default="")  # IBAN?
+    ebook_number = models.CharField(max_length=8, unique=True,
+                                    default="")  # IBAN?
     title = models.CharField(max_length=50, blank=False, default="")
     autor = models.CharField(max_length=50, blank=False, default="")
     description = models.TextField(default="")
     is_promot = models.BooleanField(default="False", blank=True, null=True)
     size = models.IntegerField(default=0)
-    category = models.CharField(max_length=20, choices=CATEGORY_EBOOK, default="")
+    category = models.CharField(max_length=20,
+                                choices=CATEGORY_EBOOK,
+                                default="")
     media_type = models.CharField(max_length=5, choices=TYPE_FILE, default="")
-    featured_photo = ResizedImageField(
-        size=[350, 500], quality=100, upload_to="images", default="images/unknown.png"
-    )
-    url = models.URLField(
-        max_length=200, default="readable_content/hp3.pdf", blank=True, null=True
-    )
+    featured_photo = ResizedImageField(size=[350, 500],
+                                       quality=100,
+                                       upload_to="images",
+                                       default="images/unknown.png")
+    url = models.URLField(max_length=200,
+                          default="readable_content/hp3.pdf",
+                          blank=True,
+                          null=True)
     count_downloads = models.PositiveIntegerField(default=0)
     publisher = models.ForeignKey(
         providerProfile,
@@ -60,9 +65,10 @@ class Ebook(models.Model):
         blank=True,
     )
 
-    follower = models.ManyToManyField(
-        User, related_name="users_key", null=True, blank=True
-    )
+    follower = models.ManyToManyField(User,
+                                      related_name="users_key",
+                                      null=True,
+                                      blank=True)
 
     def get_ebook_media_type(self):
         return self._type_files[self.media_type]
@@ -148,12 +154,15 @@ class UserTickets(models.Model):
 
 
 class DiscussionTickets(models.Model):
-    userticket = models.ForeignKey(
-        UserTickets, null=True, blank=True, on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        User, blank=True, null=True, on_delete=models.CASCADE, default=None
-    )
+    userticket = models.ForeignKey(UserTickets,
+                                   null=True,
+                                   blank=True,
+                                   on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             blank=True,
+                             null=True,
+                             on_delete=models.CASCADE,
+                             default=None)
     discuss = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True, null=True)
 
@@ -176,9 +185,13 @@ class UploadedResources(models.Model):
 
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=50, blank=False, default="")
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)  # One to many
-    visibility = models.CharField(max_length=10, choices=VISIBILITY_CHOICES, default="")
-    featured_photo = models.ImageField(upload_to="images", default="images/unknown.png")
+    user = models.ForeignKey(User, null=True,
+                             on_delete=models.CASCADE)  # One to many
+    visibility = models.CharField(max_length=10,
+                                  choices=VISIBILITY_CHOICES,
+                                  default="")
+    featured_photo = models.ImageField(upload_to="images",
+                                       default="images/unknown.png")
     file = models.FileField(upload_to="uploads", default="")
 
 
@@ -195,8 +208,14 @@ class Payments(models.Model):
 
 
 class Forum(models.Model):
-    ebook = models.ForeignKey(Ebook, null=True, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    ebook = models.ForeignKey(Ebook,
+                              null=True,
+                              blank=True,
+                              on_delete=models.CASCADE)
+    user = models.ForeignKey(User,
+                             blank=True,
+                             on_delete=models.CASCADE,
+                             default=None)
     email = models.CharField(max_length=200, null=True)
     topic = models.CharField(unique=True, max_length=300)
     description = models.CharField(max_length=1000, blank=True)
@@ -209,7 +228,10 @@ class Forum(models.Model):
 
 class Discussion(models.Model):
     forum = models.ForeignKey(Forum, blank=True, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, blank=True, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User,
+                             blank=True,
+                             on_delete=models.CASCADE,
+                             default=None)
     discuss = models.CharField(max_length=1000)
     date = models.DateTimeField(auto_now_add=True, null=True)
 

@@ -24,12 +24,12 @@ class CustomUserAdmin(UserAdmin):
     # add_form = RegisterForm, Subscription
     # form = RegisterForm
     model = User
-    fieldsets = UserAdmin.fieldsets + (
-        (
-            "Custom Information",
-            {"fields": ("is_provider", "is_support", "is_suscribed")},
-        ),
-    )
+    fieldsets = UserAdmin.fieldsets + ((
+        "Custom Information",
+        {
+            "fields": ("is_provider", "is_support", "is_suscribed")
+        },
+    ), )
 
 
 admin.site.register(User, CustomUserAdmin)

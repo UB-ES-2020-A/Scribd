@@ -1,6 +1,5 @@
 # Create your tests here.
 
-
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings, Client
 from django.urls import reverse
@@ -61,9 +60,9 @@ class UserTestCase(TestCase):
             password="xTu<3D\R",
         )
         userprofile = userProfile.objects.create(user=user)
-        userprofile.bio = ("Soy un usuario de prueba",)
-        userprofile.subs_type = ("Free Trial",)
-        userprofile.nbooks_by_subs = ("10",)
+        userprofile.bio = ("Soy un usuario de prueba", )
+        userprofile.subs_type = ("Free Trial", )
+        userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
         self.assertEqual(user.email, "pepito123@gmail.com")
@@ -121,9 +120,8 @@ class MyTest(TestCase):
     def setUpTestingViews(self):
         self.client = Client()
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_base(self):
         response = self.client.get(reverse("base"))
 
@@ -131,9 +129,8 @@ class MyTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "scribd/base.html")
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_ebooks(self):
         response = self.client.get(reverse("ebooks"))
 
@@ -141,18 +138,16 @@ class MyTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "scribd/mainpage.html")
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_users(self):
         response = self.client.get(reverse("users"))
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_ebooks(self):
         response = self.client.get(reverse("ebooks"))
 
@@ -160,9 +155,8 @@ class MyTest(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "scribd/mainpage.html")
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_ebooks(self):
         response = self.client.get(reverse("ebooks"))
 
@@ -183,24 +177,25 @@ class LoginTesting(TestCase):
         )
         self.user.set_password("xTu<3D\R")
         userprofile = userProfile.objects.create(user=self.user)
-        userprofile.bio = ("Soy un usuario de prueba",)
-        userprofile.subs_type = ("Free Trial",)
-        userprofile.nbooks_by_subs = ("10",)
+        userprofile.bio = ("Soy un usuario de prueba", )
+        userprofile.subs_type = ("Free Trial", )
+        userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_wrong_login(self):
         response = self.client.post(
             "/accounts/login/",
-            data={"username": self.user.username, "password": "randompassword"},
+            data={
+                "username": self.user.username,
+                "password": "randompassword"
+            },
         )
         self.assertEquals(response.status_code, 302)
 
-    @override_settings(
-        STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage"
-    )
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_correct_login(self):
         self.client.login(username=self.user.username, password="xTu<3D\R")
         response = self.client.get(reverse("index"))
@@ -218,12 +213,14 @@ class SignupTesting(TestCase):
     def test_signup_page_url(self):
         response = self.client.get("/accounts/signup/")
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name="registration/signup.html")
+        self.assertTemplateUsed(response,
+                                template_name="registration/signup.html")
 
     def test_signup_page_view_name(self):
         response = self.client.get(reverse("signup"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name="registration/signup.html")
+        self.assertTemplateUsed(response,
+                                template_name="registration/signup.html")
 
     def test_correct_password(self):
         password = "xTu<3D\R"
@@ -323,22 +320,23 @@ class EbookDetailsTesting(TestCase):
         )
         self.user.set_password("xTu<3D\R")
         userprofile = userProfile.objects.create(user=self.user)
-        userprofile.bio = ("Soy un usuario de prueba",)
-        userprofile.subs_type = ("Free Trial",)
-        userprofile.nbooks_by_subs = ("10",)
+        userprofile.bio = ("Soy un usuario de prueba", )
+        userprofile.subs_type = ("Free Trial", )
+        userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
     def test_ebookdetails_page_url(self):
         response = self.client.get("/ebookdetail/" + str(self.book.id) + "/")
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name="scribd/ebook_details.html")
+        self.assertTemplateUsed(response,
+                                template_name="scribd/ebook_details.html")
 
     def test_signup_page_view_name(self):
         response = self.client.get(
-            reverse("ebook_custom_detail", kwargs={"pk": self.book.id})
-        )
+            reverse("ebook_custom_detail", kwargs={"pk": self.book.id}))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, template_name="scribd/ebook_details.html")
+        self.assertTemplateUsed(response,
+                                template_name="scribd/ebook_details.html")
 
     """def test_follow_book(self):
         self.client.login(username=self.user.username, password='xTu<3D\R')

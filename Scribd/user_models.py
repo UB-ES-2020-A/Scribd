@@ -45,17 +45,20 @@ class userProfile(models.Model):
     )
     _subs_type = dict(SUBS_TYPE)
 
-    portrait = models.ImageField(upload_to="images", default="images/portadascribd.png")
-    profile_image = models.ImageField(upload_to="images", default="images/unknown.png")
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name="user_profile", on_delete=models.CASCADE
-    )
+    portrait = models.ImageField(upload_to="images",
+                                 default="images/portadascribd.png")
+    profile_image = models.ImageField(upload_to="images",
+                                      default="images/unknown.png")
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                related_name="user_profile",
+                                on_delete=models.CASCADE)
     bio = models.CharField(max_length=500, blank=True, default="")
 
     # suscription
-    subs_type = models.CharField(
-        max_length=15, choices=SUBS_TYPE, default="Free trial", null=True
-    )
+    subs_type = models.CharField(max_length=15,
+                                 choices=SUBS_TYPE,
+                                 default="Free trial",
+                                 null=True)
     nbooks_by_subs = models.IntegerField(default=10, blank=True, null=True)
     expires = models.DateTimeField(default=datetime.now())
     cancelled = models.BooleanField(default=True)
@@ -82,7 +85,9 @@ class providerProfile(models.Model):
         on_delete=models.CASCADE,
     )
     name = models.CharField(max_length=64)
-    publisher = models.CharField(verbose_name="Provider", max_length=255, blank=True)
+    publisher = models.CharField(verbose_name="Provider",
+                                 max_length=255,
+                                 blank=True)
 
     def __str__(self):
         return "Profile of Provider: {}".format(self.publisher)

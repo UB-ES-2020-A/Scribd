@@ -55,16 +55,17 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = (
 )
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend",)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.ModelBackend", )
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticatedOrReadOnly"
-    ],
-    "PAGE_SIZE": 20,
-    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "DEFAULT_PERMISSION_CLASSES":
+    ["rest_framework.permissions.IsAuthenticatedOrReadOnly"],
+    "PAGE_SIZE":
+    20,
+    "DEFAULT_PAGINATION_CLASS":
+    "rest_framework.pagination.LimitOffsetPagination",
 }
 
 MIDDLEWARE = [
@@ -88,7 +89,8 @@ TEMPLATES = [
         "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "ScribdProject.jinja2.environment",
+            "environment":
+            "ScribdProject.jinja2.environment",
             "context_processors": [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
@@ -118,8 +120,10 @@ TEMPLATES = [
                 "backend": "django_jinja.cache.BytecodeCache",
                 "enabled": False,
             },
-            "autoescape": True,
-            "translation_engine": "django.utils.translation",
+            "autoescape":
+            True,
+            "translation_engine":
+            "django.utils.translation",
         },
     },
     {
@@ -155,16 +159,20 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        "NAME":
+        "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -189,7 +197,7 @@ LOGOUT_REDIRECT_URL = "/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "Scribd/static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "Scribd/static"), )
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media").replace("\\", "/")
