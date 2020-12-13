@@ -34,7 +34,6 @@ from Scribd.permissions import EditBookPermissions
 from Scribd.serializers import *
 from .user_models import User, userProfile, providerProfile
 
-
 ##################################
 ####### VISTA MAINPAGE ###########
 ##################################
@@ -81,7 +80,8 @@ def _check_session(request):
         viewedebooks.save()
         request.session["viewedebooks"] = viewedebooks.id_vr
     else:
-        viewedebooks = ViewedEbooks.objects.get(id_vr=request.session["viewedebooks"])
+        viewedebooks = ViewedEbooks.objects.get(
+            id_vr=request.session["viewedebooks"])
     return viewedebooks
 
 
@@ -107,8 +107,7 @@ def ebooks(request, search=""):
                 | Q(category__icontains=query)
                 | Q(media_type__icontains=query)
                 | Q(featured_photo__icontains=query)
-                | Q(url__icontains=query)
-            )
+                | Q(url__icontains=query))
         else:
             ebooks = Ebook.objects.all()
 
@@ -122,6 +121,7 @@ def ebooks(request, search=""):
     }
 
     return render(request, "scribd/mainpage.html", context)
+
 
 # TODO
 def ebook_create_view(request):
@@ -146,13 +146,17 @@ def ebook_create_view(request):
         form = EbookForm()
     books = []
     for book in Ebook.objects.all():
-        if(book.publisher is not None):
+        if book.publisher is not None:
             if str(book.publisher.publisher) == instance2.publisher:
                 books.append(book)
     return render(
         request,
         "scribd/providers_homepage.html",
-        {"book_form": form, "provider_instance": instance2, "books": books},
+        {
+            "book_form": form,
+            "provider_instance": instance2,
+            "books": books
+        },
     )
 
 
@@ -160,13 +164,13 @@ def ebook_create_view(request):
 ####### VISTA REVIEW #############
 ##################################
 
-
 ##################################
 ####### VISTA LOGIN ##############
 ##################################
 
 
-def login_create_view(request, backend="django.contrib.auth.backends.ModelBackend"):
+def login_create_view(request,
+                      backend="django.contrib.auth.backends.ModelBackend"):
     if request.method == "POST":
         login_form = AuthenticationForm(None, data=request.POST)
         username = request.POST["username"]
@@ -192,7 +196,8 @@ def login_create_view(request, backend="django.contrib.auth.backends.ModelBacken
 ##################################
 
 
-def signup_create_view(request, backend="django.contrib.auth.backends.ModelBackend"):
+def signup_create_view(request,
+                       backend="django.contrib.auth.backends.ModelBackend"):
     if request.method == "POST":
         signup_form = RegisterForm(request.POST, request.FILES)
         user = None
@@ -245,7 +250,9 @@ def update_session(request):
 
 def edit_profile_page_provider(request):
     if request.method == "POST":
-        form = ProfileFormProvider(request.POST, request.FILES, instance=request.user)
+        form = ProfileFormProvider(request.POST,
+                                   request.FILES,
+                                   instance=request.user)
         if form.is_valid():
             form.save()
             return redirect("index")
@@ -257,9 +264,9 @@ def edit_profile_page_provider(request):
 
 def edit_profile_page(request, username):
     if request.method == "POST":
-        form = ProfileForm(
-            request.POST, request.FILES, instance=request.user.user_profile
-        )
+        form = ProfileForm(request.POST,
+                           request.FILES,
+                           instance=request.user.user_profile)
         if form.is_valid():
             form.save()
             return redirect("userprofilepage", username=username)
@@ -281,9 +288,8 @@ class user_profile_page(DetailView):
         context = super(user_profile_page, self).get_context_data(**kwargs)
         current_time = datetime.datetime.now()
         user = self.get_object()
-        substract = (
-            user.user_profile.nbooks_by_subs - user.user_profile.n_books_followed
-        )
+        substract = (user.user_profile.nbooks_by_subs -
+                     user.user_profile.n_books_followed)
         context["current_time"] = current_time
         context["substract"] = substract
         return context
@@ -330,8 +336,10 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 def upgrade_account_view(request, username):
     if request.method == "POST":
 
-        form = UpgradeAccountForm(request.POST, instance=request.user.user_profile)
-        form_subs = Subscription(request.POST, instance=request.user.user_profile)
+        form = UpgradeAccountForm(request.POST,
+                                  instance=request.user.user_profile)
+        form_subs = Subscription(request.POST,
+                                 instance=request.user.user_profile)
         user = User.objects.get(username=username)
         prev_state = user.user_profile.subs_type
         if form.is_valid() and form_subs.is_valid():
@@ -363,9 +371,8 @@ def upgrade_account_view(request, username):
                 # otherwise, we add 50 new books
                 else:
                     user.user_profile.nbooks_by_subs += 50
-            user.user_profile.expires = datetime.datetime.now() + datetime.timedelta(
-                weeks=4
-            )
+            user.user_profile.expires = datetime.datetime.now(
+            ) + datetime.timedelta(weeks=4)
             user.user_profile.save()
             return redirect("userprofilepage", username=username)
     else:
@@ -383,10 +390,8 @@ def upgrade_account_view(request, username):
 def downgrade_account_view(request, username):
     if request.method == "POST":
         user = User.objects.get(username=username)
-        if (
-            user.user_profile.subs_type == "Regular"
-            or user.user_profile.subs_type == "Pro"
-        ):
+        if (user.user_profile.subs_type == "Regular"
+                or user.user_profile.subs_type == "Pro"):
             # downgrade to Free trial user
             user.user_profile.subs_type = "Free trial"
             user.user_profile.nbooks_by_subs = 10
@@ -405,9 +410,9 @@ def downgrade_account_view(request, username):
         context = {
             "form": form,
         }
-        return render(
-            request, "forms/cancel_subscription_confirmation_v2.html", context
-        )
+        return render(request,
+                      "forms/cancel_subscription_confirmation_v2.html",
+                      context)
 
 
 @authentificated_user
@@ -420,15 +425,13 @@ def update_payment_details(request, username):
             user = User.objects.get(username=username)
             if credit_form.is_valid():
                 user.user_profile.card_titular = (
-                    credit_form.cleaned_data.get("card_titular"),
-                )
+                    credit_form.cleaned_data.get("card_titular"), )
                 user.user_profile.card_number = (
-                    credit_form.cleaned_data.get("card_number"),
-                )
+                    credit_form.cleaned_data.get("card_number"), )
                 user.user_profile.card_expiration = (
-                    credit_form.cleaned_data.get("card_expiration"),
-                )
-                user.user_profile.card_cvv = credit_form.cleaned_data.get("card_cvv")
+                    credit_form.cleaned_data.get("card_expiration"), )
+                user.user_profile.card_cvv = credit_form.cleaned_data.get(
+                    "card_cvv")
 
                 user.user_profile.save()
                 return redirect("userprofilepage", username=username)
@@ -457,14 +460,12 @@ def upload_file(request):
 
 
 def follow(request, pk):
-    if request.method == 'POST' and request.user.is_authenticated:
-        if 'follow' in request.POST:
-
+    if request.method == "POST" and request.user.is_authenticated:
+        if "follow" in request.POST:
 
             form = FollowForm(request.POST)
             if form.is_valid():
                 user = request.user
-
 
                 # always update the value. Controlled in front-end
 
@@ -528,11 +529,8 @@ def follow(request, pk):
 
         reviews = Review.objects.filter(ebook=ebook)
         if request.user.is_authenticated:
-            if (
-                request.user.is_provider
-                or request.user.is_provider
-                or request.user.is_superuser
-            ):
+            if (request.user.is_provider or request.user.is_provider
+                    or request.user.is_superuser):
                 context = {
                     "form": form,
                     "ebook": ebook,
@@ -551,18 +549,29 @@ def follow(request, pk):
                         followed = True
 
                 context = {
-                    "form": form,
-                    "substract": request.user.user_profile.nbooks_by_subs
-                    - request.user.user_profile.n_books_followed,
-                    "ebook_followed": followed,
-                    "ebook": ebook,
-                    "review_form": review_form,
-                    "reviews": reviews,
-                    "discussion_form": discussion_form,
-                    "create_forum": forum_form,
-                    "forums": ebook.forum_set.all(),
-                    "count": count,
-                    "discussions": discussions,
+                    "form":
+                    form,
+                    "substract":
+                    request.user.user_profile.nbooks_by_subs -
+                    request.user.user_profile.n_books_followed,
+                    "ebook_followed":
+                    followed,
+                    "ebook":
+                    ebook,
+                    "review_form":
+                    review_form,
+                    "reviews":
+                    reviews,
+                    "discussion_form":
+                    discussion_form,
+                    "create_forum":
+                    forum_form,
+                    "forums":
+                    ebook.forum_set.all(),
+                    "count":
+                    count,
+                    "discussions":
+                    discussions,
                 }
         else:
             context = {
@@ -578,7 +587,6 @@ def follow(request, pk):
             }
 
         return render(request, "scribd/ebook_details.html", context)
-
 
 
 def ebook_forum(request, book_k, forum_k):
@@ -644,9 +652,8 @@ def ticketForumView(request, pk):
 
         if discussion_form.is_valid() and request.user.is_authenticated:
             discussion = DiscussionTickets.objects.create(
-                user=User.objects.get(
-                    id=User.objects.get(username=request.user.username).id
-                ),
+                user=User.objects.get(id=User.objects.get(
+                    username=request.user.username).id),
                 userticket=UserTickets.objects.get(id_uTicket=pk),
                 discuss=discussion_form.cleaned_data.get("discuss"),
             )
