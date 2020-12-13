@@ -184,7 +184,7 @@ class LoginTesting(TestCase):
         userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
-        self.client.save()
+        self.user.save()
 
     @override_settings(STATICFILES_STORAGE=
                        "django.contrib.staticfiles.storage.StaticFilesStorage")
@@ -340,7 +340,6 @@ class EbookDetailsTesting(TestCase):
         userprofile = userProfile.objects.create(user=self.user)
         userprofile.bio = ("Soy un usuario de prueba", )
         userprofile.subs_type = ("Free Trial", )
-        userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
         self.book.save()
