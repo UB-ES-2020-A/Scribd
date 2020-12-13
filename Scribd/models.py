@@ -53,7 +53,7 @@ class Ebook(models.Model):
                                        upload_to="images",
                                        default="images/unknown.png")
     file = models.FileField(max_length=200,
-                          default="readable_content/hp3.pdf",
+                          default="hp3.pdf",
                           blank=True,
                           null=True)
     count_downloads = models.PositiveIntegerField(default=0)
