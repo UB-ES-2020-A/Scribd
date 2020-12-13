@@ -210,18 +210,24 @@ class SignupTesting(TestCase):
         self.first_name = "Pepito"
         self.last_name = "123"
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_signup_page_url(self):
         response = self.client.get("/accounts/signup/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 template_name="registration/signup.html")
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_signup_page_view_name(self):
         response = self.client.get(reverse("signup"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 template_name="registration/signup.html")
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_correct_password(self):
         password = "xTu<3D\R"
         response = self.client.post(
@@ -237,6 +243,8 @@ class SignupTesting(TestCase):
         )
         self.assertEqual(response.status_code, 302)
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_wrong_password(self):
         password = "xTu<3D\R"
         response = self.client.post(
@@ -252,6 +260,8 @@ class SignupTesting(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_short_password(self):
         password = "as33"
         response = self.client.post(
@@ -267,6 +277,8 @@ class SignupTesting(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_similar_to_user_name(self):
         password = self.username + "123"
         response = self.client.post(
@@ -282,6 +294,8 @@ class SignupTesting(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_too_common(self):
         password = "123456789"
         response = self.client.post(
@@ -325,12 +339,16 @@ class EbookDetailsTesting(TestCase):
         userprofile.nbooks_by_subs = ("10", )
         userprofile.card_titular = "Pepito 123"
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_ebookdetails_page_url(self):
         response = self.client.get("/ebookdetail/" + str(self.book.id) + "/")
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 template_name="scribd/ebook_details.html")
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_signup_page_view_name(self):
         response = self.client.get(
             reverse("ebook_custom_detail", kwargs={"pk": self.book.id}))
@@ -338,7 +356,8 @@ class EbookDetailsTesting(TestCase):
         self.assertTemplateUsed(response,
                                 template_name="scribd/ebook_details.html")
 
-
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_follow_book(self):
         self.client.login(username=self.user.username, password='xTu<3D\R')
         followers = self.book.follower.count()
@@ -346,6 +365,8 @@ class EbookDetailsTesting(TestCase):
         new_followers = self.book.follower.count()
         self.assertTrue(followers < new_followers)
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_follow_book_not_authenticated(self):
 
         followers = self.book.follower.count()
@@ -353,7 +374,8 @@ class EbookDetailsTesting(TestCase):
         new_followers = self.book.follower.count()
         self.assertTrue(followers == new_followers)
 
-
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_create_forum(self):
         self.client.login(username=self.user.username, password='xTu<3D\R')
         topic = 'test'
@@ -367,6 +389,8 @@ class EbookDetailsTesting(TestCase):
         self.assertTrue(self.book.forum_set.all()[new_forums-1].topic == topic)
         self.assertTrue(self.book.forum_set.all()[new_forums-1].description == description)
 
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_create_forum_not_authenticated(self):
         forums = self.book.forum_set.count()
         self.client.post(reverse('ebook_custom_detail', kwargs={'pk': self.book.id}),
@@ -375,7 +399,8 @@ class EbookDetailsTesting(TestCase):
         new_forums = self.book.forum_set.count()
         self.assertTrue(forums == new_forums)
 
-
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_create_review(self):
         self.client.login(username=self.user.username, password='xTu<3D\R')
         comment = 'test'
@@ -390,7 +415,8 @@ class EbookDetailsTesting(TestCase):
         self.assertTrue(self.book.review_set.all()[new_reviews-1].comment == comment)
         self.assertTrue(self.book.review_set.all()[new_reviews-1].value_stars == value_stars)
 
-
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_create_review_not_authenticated(self):
         comment = 'test'
         value_stars = 'Five stars'
