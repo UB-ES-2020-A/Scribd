@@ -85,9 +85,9 @@
                             </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md"><p
+                            <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md" target = "_blank"><p
                                     style="font-size: large"><i
-                                    class="fa fa-github"></i> About</p></a>
+                                    class="fa fa-github"></i> About us</p></a>
                         </li>
                         <!--<li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPages" data-toggle="dropdown"
@@ -124,14 +124,16 @@
             <!--Body-->
             <div class="modal-body">
                 <div class="text-center">
-                     <img class="my-3" src="{% static 'images/login_icon.png' %}" style="width: 25%;">
+                    <img class="my-3" src="{% static 'images/login_icon.png' %}" style="width: 25%;">
                     <p> Welcome {{ request.user.username }}, we hope you have a nice reading time!</p>
                 </div>
             </div>
 
             <!--Footer-->
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn" style="background-color: #367C85" data-dismiss="modal"><h7 style="color: #FFFFFF">Thanks! </h7><i class="far fa-gem ml-1 text-white"></i></button>
+                <button type="button" class="btn" style="background-color: #367C85" data-dismiss="modal">
+                    <h7 style="color: #FFFFFF">Thanks!</h7>
+                    <i class="far fa-gem ml-1 text-white"></i></button>
             </div>
         </div>
         <!--/.Content-->
@@ -155,13 +157,14 @@
                 <div class="text-center">
                     <img class="my-3" src="{% static 'images/warning.png' %}" style="width: 25%;">
                     <p>There was a problem with the credentials so we couldn't log you in!</p>
-                    <p>Don't have an account yet? Create one <a href="{% url 'signup' %}"> here</a>  </p>
+                    <p>Don't have an account yet? Create one <a href="{% url 'signup' %}"> here</a></p>
                 </div>
             </div>
 
             <!--Footer-->
             <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></button>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal"
+                        data-target="#login">Try again!<i class="far fa-gem ml-1 text-white"></i></button>
                 <button type="button" class="btn btn-outline-warning waves-effect" data-dismiss="modal">Close</button>
             </div>
         </div>
@@ -178,19 +181,23 @@
 
             </div>
             <div class="modal-body text-center">
-                 <img class="my-4" src="{% static 'images/login_first.png' %}" style="width: 25%;">
+                <img class="my-4" src="{% static 'images/login_first.png' %}" style="width: 25%;">
                 <form action="{% url 'login' %}" method="post">
                     {% csrf_token %}
 
                     {{ login_form.username|as_crispy_field }}
                     {{ login_form.password|as_crispy_field }}
                     <hr>
-                    <button type="submit" class="btn btn-lg btn-block" style="background-color: #367C85"><h7 style="color: #ffffff">Let me in!</h7></button>
+                    <button type="submit" class="btn btn-lg btn-block" style="background-color: #367C85">
+                        <h7 style="color: #ffffff">Let me in!</h7>
+                    </button>
                 </form>
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger waves-effect btn-lg btn-block" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-danger waves-effect btn-lg btn-block" data-dismiss="modal">
+                    Close
+                </button>
             </div>
 
         </div>
@@ -207,36 +214,22 @@
         <!-- Grid row -->
         <div class="row">
 
-            <!-- Grid column -->
-            <div class="col-md-6 mt-md-0 mt-3">
-
-                <!-- Content -->
-                <h5 class="text-uppercase mt-3" style="color: #FFFFFF">Scribd</h5>
-                <a href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md">About us</a>
-
-            </div>
-            <!-- Grid column -->
-
             <hr class="clearfix w-100 d-md-none pb-3">
-
             <!-- Grid column -->
-            <div class="col-md-3 mb-md-0 mb-3">
+            <div class="col-lg-12" style="text-align: center">
 
                 <!-- Links -->
                 <h5 class="text-uppercase mt-3" style="color: #FFFFFF">Links</h5>
 
                 <ul class="list-unstyled">
                     <li>
-                        <a class="link" href="signup/">Register</a>
+                        <a class="link" href="{% url 'signup' %}">Register</a>
                     </li>
                     <li>
-                        <a href="#">About us</a>
+                        <a class="link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md" target = "_blank">About us</a>
                     </li>
                     <li>
-                        <a href="#">Forum</a>
-                    </li>
-                    <li>
-                        <a href="sendTicket/">send a Ticket</a>
+                        <a href="{% url 'support_page' %}">send a Ticket</a>
                     </li>
                 </ul>
 
@@ -251,9 +244,6 @@
 
 </footer>
 <!-- Footer -->
-
-<div class="container-fluid" style="background-color: #343a40; height: 45px; position: absolute">
-</div>
 
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
