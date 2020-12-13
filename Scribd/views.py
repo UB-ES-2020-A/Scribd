@@ -454,17 +454,17 @@ def upload_file(request):
 
 
 def follow(request, pk):
-    if request.method == "POST":
-        if "follow" in request.POST:
-            print(request.POST)
+    if request.method == 'POST' and request.user.is_authenticated:
+        if 'follow' in request.POST:
+
 
             form = FollowForm(request.POST)
             if form.is_valid():
                 user = request.user
-                print(user.username)
+
 
                 # always update the value. Controlled in front-end
-                print(list(user.users_key.values()))
+
                 user.user_profile.n_books_followed += 1
                 user.user_profile.save()
 
@@ -477,7 +477,7 @@ def follow(request, pk):
 
             forum_form = CreateInForum(request.POST)
 
-            if forum_form.is_valid() and request.user.is_authenticated:
+            if forum_form.is_valid():
                 forum = Forum.objects.create(
                     ebook=Ebook.objects.get(id=pk),
                     user=request.user,
@@ -494,7 +494,7 @@ def follow(request, pk):
             print(request.POST)
             review_form = ReviewForm(request.POST)
 
-            if review_form.is_valid() and request.user.is_authenticated:
+            if review_form.is_valid():
                 review = Review.objects.create(
                     ebook=Ebook.objects.get(id=pk),
                     comment=review_form.cleaned_data.get("comment"),
@@ -575,6 +575,7 @@ def follow(request, pk):
             }
 
         return render(request, "scribd/ebook_details.html", context)
+
 
 
 def ebook_forum(request, book_k, forum_k):

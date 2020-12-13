@@ -340,16 +340,65 @@ class EbookDetailsTesting(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name="scribd/ebook_details.html")
 
-    """def test_follow_book(self):
+
+    def test_follow_book(self):
         self.client.login(username=self.user.username, password='xTu<3D\R')
         followers = self.book.follower.count()
-        self.client.post(reverse('ebook_custom_detail',kwargs={'pk':self.book.id}),follow='')
+        self.client.post(reverse('ebook_custom_detail',kwargs={'pk':self.book.id}),data={'follow':''})
         new_followers = self.book.follower.count()
         self.assertTrue(followers < new_followers)
 
     def test_follow_book_not_authenticated(self):
 
         followers = self.book.follower.count()
-        self.client.post(reverse('ebook_custom_detail',kwargs={'pk':self.book.id}),follow='')
+        a = self.client.post(reverse('ebook_custom_detail',kwargs={'pk':self.book.id}),data={'follow':''})
         new_followers = self.book.follower.count()
-        self.assertTrue(followers == new_followers)"""
+        self.assertTrue(followers == new_followers)
+
+
+    def test_create_forum(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        topic = 'test'
+        description = 'test'
+        forums = self.book.forum_set.count()
+        self.client.post(reverse('ebook_custom_detail', kwargs={'pk': self.book.id}),data={'topic':topic,'description':description,'create_forum':''})
+
+        new_forums= self.book.forum_set.count()
+        self.assertTrue(forums < new_forums)
+        self.assertTrue(self.book.forum_set.all()[new_forums-1].user == self.user)
+        self.assertTrue(self.book.forum_set.all()[new_forums-1].topic == topic)
+        self.assertTrue(self.book.forum_set.all()[new_forums-1].description == description)
+
+    def test_create_forum_not_authenticated(self):
+        forums = self.book.forum_set.count()
+        self.client.post(reverse('ebook_custom_detail', kwargs={'pk': self.book.id}),
+                         data={'topic': 'test', 'description': 'test', 'create_forum': ''})
+
+        new_forums = self.book.forum_set.count()
+        self.assertTrue(forums == new_forums)
+
+
+    def test_create_review(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        comment = 'test'
+        value_stars = 'Five stars'
+        reviews = self.book.review_set.count()
+        self.client.post(reverse('ebook_custom_detail', kwargs={'pk': self.book.id}),data={'comment':comment,'value_stars':value_stars,'review':''})
+
+        new_reviews= self.book.review_set.count()
+
+        self.assertTrue(reviews < new_reviews)
+        self.assertTrue(self.book.review_set.all()[new_reviews-1].user == self.user)
+        self.assertTrue(self.book.review_set.all()[new_reviews-1].comment == comment)
+        self.assertTrue(self.book.review_set.all()[new_reviews-1].value_stars == value_stars)
+
+
+    def test_create_review_not_authenticated(self):
+        comment = 'test'
+        value_stars = 'Five stars'
+        reviews = self.book.review_set.count()
+        self.client.post(reverse('ebook_custom_detail', kwargs={'pk': self.book.id}),
+                         data={'comment': comment, 'value_stars': value_stars, 'review': ''})
+
+        new_reviews = self.book.review_set.count()
+        self.assertTrue(reviews == new_reviews)
