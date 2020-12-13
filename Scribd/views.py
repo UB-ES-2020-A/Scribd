@@ -190,12 +190,6 @@ def signup_create_view(request, backend='django.contrib.auth.backends.ModelBacke
 
             login(request, user, backend)
 
-            if user.is_provider:
-                return redirect('provider_page')
-            elif user.is_support:
-                return redirect('support_page')
-            elif user.is_provider:
-                return HttpResponseRedirect(reverse('admin:index'))
             return redirect('index')
 
         else:
