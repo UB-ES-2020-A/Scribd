@@ -44,7 +44,6 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
-        - python manage.py loaddata fixtures/ebooks.json
       script:
         - coverage run --source=Scribd manage.py test
       after_success:
@@ -57,7 +56,6 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
-        - python manage.py loaddata fixtures/ebooks.json
       script:
         - coverage run --source=Scribd manage.py test
       after_success:
@@ -83,7 +81,6 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
-        - python manage.py loaddata fixtures/ebooks.json
       script:
         - coverage run --source=Scribd manage.py test
       after_success:
