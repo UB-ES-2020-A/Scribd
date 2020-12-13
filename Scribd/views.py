@@ -95,6 +95,7 @@ def ebooks(request, search=""):
     if request.method == "GET":
         dictionary = request.GET.dict()
         query = dictionary.get("search")
+        print(query)
         if query:
             ebooks = Ebook.objects.filter(
                 Q(ebook_number__icontains=query)
@@ -115,13 +116,14 @@ def ebooks(request, search=""):
         ebooks = Ebook.objects.all()
 
     context = {
-        "search": search,
+        "search": query,
         "ebooks": ebooks,
         "viewedebooks": _check_session(request),
     }
+
     return render(request, "scribd/mainpage.html", context)
 
-
+# TODO
 def ebook_create_view(request):
     instance2 = providerProfile.objects.get(user=request.user)
     if request.method == "POST":
