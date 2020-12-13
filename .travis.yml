@@ -12,12 +12,12 @@ python:
   - 3.8.6
 
 # Addons
-addons:
-  postgresql: "9.4"
+services:
+  - postgresql
 
 # Environment
 env:
-  - DATABASE_URL=postgres://postgres:postgres@localhost:5432/travis_ci_test
+  - DJANGO=3.1.4 DB=sqlite
 
 # Install pip dependencies
 install:
@@ -44,9 +44,9 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
-        - python manage.py loaddata fixtures/ebooks.json
+        - python manage.py loaddata fixtures/data.json
       script:
-        - coverage run --source='.' manage.py test Scribd
+        - coverage run --source=Scribd manage.py test
       after_success:
         - coveralls
 
@@ -57,9 +57,9 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
-        - python manage.py loaddata fixtures/ebooks.json
+        - python manage.py loaddata fixtures/data.json
       script:
-        - coverage run --source='.' manage.py test Scribd
+        - coverage run --source=Scribd manage.py test
       after_success:
         - coveralls
       true:
@@ -83,9 +83,9 @@ jobs:
         - psql -c 'create database travis_ci_test;' -U postgres
         - python manage.py makemigrations
         - python manage.py migrate
-        - python manage.py loaddata fixtures/ebooks.json
+        - python manage.py loaddata fixtures/data.json
       script:
-        - coverage run --source='.' manage.py test Scribd
+        - coverage run --source=Scribd manage.py test
       after_success:
         - coveralls
       deploy:
