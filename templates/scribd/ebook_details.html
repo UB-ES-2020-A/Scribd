@@ -26,7 +26,7 @@
                                 <form method="post">
                                     <input type="hidden" name="next" value="{{ request.path }}">
                                     {% csrf_token %}
-                                    {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
+                                    {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated %}
                                         {% if substract > 0 and not ebook_followed %}
                                             <button name="follow" type="submit" class="btn"
                                                     style="background-color: #367C85; margin-top:25px"
@@ -92,7 +92,7 @@
                             {% endfor %}
 
                             <div class="card-footer text-muted text-center my-lg-auto">
-                                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
+                                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated %}
                                     <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createreview"
                                             type="submit"
                                             style="background-color: #367C85">
@@ -111,7 +111,7 @@
                                     <div class="card-title">
                                         <h4>{{ forum.topic }}</h4></a>
                                         <div class="card-body container">
-                                             <p class="card-text text-truncate mb-5">{{ forum.description }}</p>
+                                            <p class="card-text text-truncate mb-5">{{ forum.description }}</p>
                                             <small class="text-muted">Posted by {{ forum.user.username }} </small>
                                         </div>
                                         <hr>
@@ -128,7 +128,7 @@
                                 <hr>
                             {% endfor %}
                             <div class="card-footer text-muted text-center mt-4">
-                                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
+                                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated %}
                                     <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum"
                                             type="submit"
                                             style="background-color: #367C85">

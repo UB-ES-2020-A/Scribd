@@ -3,11 +3,12 @@
 {% block content %}
     <div class="container">
         <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-            <h1 class="display-4">Upgrade your account</h1>
+            <h1><strong>Upgrade your subscription</strong></h1>
         </div>
-        <form method="post" style="margin-top: 60px">
+        <form method="post" style="margin-top: 20px">
             {% csrf_token %}
             {{ form|crispy }}
+
             <div class="container">
                 <div class="card-deck mb-3 text-center">
                     <div class="card mb-4 shadow-sm">
@@ -52,7 +53,7 @@
             {% if request.user.user_profile.subs_type == "Free trial" and request.user.user_profile.first_upgrade %}
                 <hr>
                 <div class="info-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-                    <h4 class="mb-3">Payment info</h4>
+                    <h4 class="mb-3"><strong>Payment info</strong></h4>
                 </div>
                 <hr/>
                 <div class="form-row">
@@ -86,6 +87,7 @@
                 </a>
                 <hr>
             {% endif %}
+
             <button type="submit" class="btn btn-primary" style="background-color: #367C85; margin-bottom: 20px"
                     onclick="history.pushState(null, null, location.href);
                         window.onpopstate = function () {
@@ -93,6 +95,7 @@
                         };">
                 <h7 style="color: #FFFFFF">Upgrade now!</h7>
             </button>
+
         </form>
     </div>
 {% endblock %}

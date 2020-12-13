@@ -7,7 +7,7 @@ def authentificated_user(view_func):
         if request.user.is_authenticated:
             return view_func(request, *args, **kwargs)
         else:
-            return redirect('index')
+            return redirect("index")
 
     return wrapper_func
 
@@ -22,7 +22,7 @@ def allowed_users(allowed_roles=[]):
             if [i for i in group if i in allowed_roles]:
                 return view_func(request, *args, **kwargs)
             else:
-                return HttpResponse('error')
+                return HttpResponse("error")
 
         return wrapper_func
 

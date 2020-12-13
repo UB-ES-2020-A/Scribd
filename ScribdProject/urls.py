@@ -15,29 +15,38 @@ Including another URLconf
 """
 
 from django.conf import settings
-from django.conf.urls import url, handler404, handler500
+from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
 
-from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet, ForumViewSet, error404, error500
+from Scribd.views import (
+    EbookViewSet,
+    AccountsViewSet,
+    ticketViewSet,
+    UploadsViewSet,
+    ForumViewSet,
+    error404,
+    error500,
+)
 
 router = routers.DefaultRouter()
-router.register(r'ebooks', EbookViewSet)
-router.register(r'accounts', AccountsViewSet)
-router.register(r'uploaded_files', UploadsViewSet)
-router.register(r'tickets', ticketViewSet)
-router.register(r'forums', ForumViewSet)
+router.register(r"ebooks", EbookViewSet)
+router.register(r"accounts", AccountsViewSet)
+router.register(r"uploaded_files", UploadsViewSet)
+router.register(r"tickets", ticketViewSet)
+router.register(r"forums", ForumViewSet)
 
 urlpatterns = [
-    url(r'admin/', admin.site.urls, name="admin_page"),
-    url(r'', include('Scribd.urls')),
-    url(r'', include('Scribd.urls')),
-    url(r'api/', include(router.urls)),
-    url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^oauth/', include('social_django.urls', namespace='social')),
-    url('accounts/', include('django.contrib.auth.urls'))
+    url(r"admin/", admin.site.urls, name="admin_page"),
+    url(r"", include("Scribd.urls")),
+    url(r"", include("Scribd.urls")),
+    url(r"api/", include(router.urls)),
+    url(r"api-auth/", include("rest_framework.urls",
+                              namespace="rest_framework")),
+    url(r"^oauth/", include("social_django.urls", namespace="social")),
+    url("accounts/", include("django.contrib.auth.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

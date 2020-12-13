@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
     <div class="profile-banner" style="background:url({{ user.user_profile.portrait.url }});">
-        <div class="col-sm-3 avatar-container" >
+        <div class="col-sm-3 avatar-container">
             {% if user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
                 <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-fluid profile-avatar"
                      alt="User avatar" style="border-radius: 2%">
@@ -143,7 +143,7 @@
                                                                     <div class="card-body">
                                                                         <small style="font-size: x-small">{{ ebook.title }}</small>
                                                                         <a class="btn btn-sm btn-block"
-                                                                           href="{% static ebook.url %}"
+                                                                           href="/media/{{ ebook.file }}" target="_blank"
                                                                            style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
                                                                                 class="fa fa-book"></i> Read
                                                                         </a>
