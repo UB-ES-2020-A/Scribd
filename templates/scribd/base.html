@@ -51,7 +51,6 @@
                         </button>
                     </form>
                     <ul class="navbar-nav ml-auto" style="margin-top: 20px">
-
                         {% if request.user.is_authenticated %}
                             <li class="nav-item">
                                 {% if not request.user.is_provider and not request.user.is_support and not request.user.is_superuser %}
