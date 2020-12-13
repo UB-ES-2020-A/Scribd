@@ -432,10 +432,13 @@ def upload_file(request):
 def follow(request, pk):
     if request.method == 'POST':
         if 'follow' in request.POST:
+            print(request.POST)
+
 
             form = FollowForm(request.POST)
             if form.is_valid():
                 user = request.user
+                print(user.username)
 
                 # always update the value. Controlled in front-end
                 print(list(user.users_key.values()))
