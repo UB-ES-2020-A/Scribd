@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings, Client
 from django.urls import reverse
 
-from Scribd.models import Ebook, UploadedResources, Payments
+from Scribd.models import Ebook, UploadedResources, Payments, UserTickets
 from Scribd.user_models import User, userProfile
 
 
@@ -427,3 +427,94 @@ class EbookDetailsTesting(TestCase):
 
         new_reviews = self.book.review_set.count()
         self.assertTrue(reviews == new_reviews)
+
+
+
+
+
+class SupportPageTesting(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+
+        self.user = User.objects.create_user(
+            email="pepito123@gmail.com",
+            username="pepito123",
+            first_name="Pepito",
+            last_name="123",
+            password="xTu<3D\R",
+        )
+        self.user.set_password("xTu<3D\R")
+        userprofile = userProfile.objects.create(user=self.user)
+        userprofile.bio = ("Soy un usuario de prueba", )
+        userprofile.subs_type = ("Free Trial", )
+        userprofile.nbooks_by_subs = ("10", )
+        userprofile.card_titular = "Pepito 123"
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_supportpage_page_url(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        response = self.client.get("/tickets/" )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/support_page.html")
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_supportpage_page_view_name(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        response = self.client.get(
+            reverse("support_page"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                template_name="scribd/support_page.html")
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_supportpage_page_url_not_authenticated(self):
+
+        response = self.client.get("/tickets/")
+        self.assertEqual(response.status_code, 302)
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_supportpage_page_view_not_authenticated_name(self):
+
+        response = self.client.get(reverse("support_page"))
+        self.assertEqual(response.status_code, 302)
+
+
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_create_ticket(self):
+        self.client.login(username=self.user.username, password='xTu<3D\R')
+        ticket_title = 'test'
+        ticket_summary = 'test'
+        tickets = UserTickets.objects.count()
+        response = self.client.post( reverse("support_page"),data={'ticket_title':ticket_title,'ticket_summary':ticket_summary})
+
+        new_tickets = UserTickets.objects.count()
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(tickets < new_tickets)
+        self.assertTrue(UserTickets.objects.all()[new_tickets-1].ticket_user == self.user)
+        self.assertTrue(UserTickets.objects.all()[new_tickets-1].ticket_title == ticket_title)
+        self.assertTrue(UserTickets.objects.all()[new_tickets-1].ticket_summary == ticket_summary)
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+
+    def test_create_ticket_not_authenticated(self):
+
+        ticket_title = 'test'
+        ticket_summary = 'test'
+        tickets = UserTickets.objects.count()
+        self.client.post( reverse("support_page"),
+                                    data={'ticket_title': ticket_title, 'ticket_summary': ticket_summary})
+
+        new_tickets = UserTickets.objects.count()
+
+        self.assertTrue(tickets == new_tickets)
+
+

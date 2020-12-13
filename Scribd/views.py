@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.db.models import Q
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -635,24 +635,6 @@ class ticketViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return UserTickets.objects.all().order_by("id")
-
-
-@authentificated_user
-def ticket_page(request):
-    if request.method == "POST":
-        ticket_form = TicketForm(request.POST, request.FILES)
-        if ticket_form.is_valid():
-            ticket = UserTickets.objects.create(
-                ticket_title=ticket_form.cleaned_data.get("ticket_title"),
-                ticket_summary=ticket_form.cleaned_data.get("ticket_summary"),
-                ticket_user=User.objects.get(username=request.user.username),
-            )
-            ticket.save()
-            return redirect("index")
-    else:
-        ticket_form = TicketForm()
-
-    return render(request, "scribd/tickets.html", {"ticket_form": ticket_form})
 
 
 @authentificated_user
