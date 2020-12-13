@@ -12,12 +12,10 @@ python:
   - 3.8.6
 
 # Addons
-addons:
-  postgresql: "13"
+services:
+  - postgresql
 
 # Environment
-env:
-  - DATABASE_URL=postgres://postgres:postgres@localhost:5432/travis_ci_test
 
 # Install pip dependencies
 install:
