@@ -35,6 +35,7 @@
 
                 <div class="row">
                     {% for ticket in tickets %}
+                        {% if ticket.ticket_user.username == request.user.username or request.user.is_support %}
                         <div class="col-lg-6 align-items-stretch">
                             <div class="card mb-4 box-shadow">
                                 <div class="card-header">
@@ -58,6 +59,7 @@
                                 </div>
                             </div>
                         </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>

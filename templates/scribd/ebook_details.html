@@ -26,7 +26,7 @@
                                 <form method="post">
                                     <input type="hidden" name="next" value="{{ request.path }}">
                                     {% csrf_token %}
-                                    {% if request.user.is_authenticated %}
+                                    {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
                                         {% if substract > 0 and not ebook_followed %}
                                             <button name="follow" type="submit" class="btn"
                                                     style="background-color: #367C85; margin-top:25px"
@@ -92,7 +92,7 @@
                             {% endfor %}
 
                             <div class="card-footer text-muted text-center my-lg-auto">
-                                {% if request.user.is_authenticated %}
+                                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
                                     <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createreview"
                                             type="submit"
                                             style="background-color: #367C85">
@@ -128,7 +128,7 @@
                                 <hr>
                             {% endfor %}
                             <div class="card-footer text-muted text-center mt-4">
-                                {% if request.user.is_authenticated %}
+                                {% if not request.user.is_provider and not request.user.is_support and request.user.is_authenticated%}
                                     <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createforum"
                                             type="submit"
                                             style="background-color: #367C85">
@@ -142,9 +142,9 @@
                         <div id="info" class="tab-pane">
                             <h6> Book ISBN: {{ ebook.ebook_number }}</h6>
                             <hr>
-                            <h6> Editorial: {{ ebook.publisher }}</h6>
+                            <h6> Editorial: {{ ebook.publisher.publisher }}</h6>
                             <hr>
-                            <h6> Size: {{ ebook.size }} Mbs</h6>
+                            <h6> Size: {{ ebook.size }} pgs</h6>
                             <hr>
                             <h6> Downloads: {{ ebook.count_downloads }}</h6>
                             <hr>

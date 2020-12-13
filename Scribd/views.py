@@ -131,7 +131,7 @@ def ebook_create_view(request):
         form = EbookForm()
     books = []
     for book in Ebook.objects.all():
-        if str(book.publisher)[21:] == instance2.publisher:
+        if str(book.publisher.publisher) == instance2.publisher:
             books.append(book)
     return render(request, 'scribd/providers_homepage.html',
                   {'book_form': form, 'provider_instance': instance2, 'books': books})
@@ -413,6 +413,7 @@ def update_payment_details(request, username):
     return render(request, 'forms/update_payment.html', context)
 
 
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
@@ -591,7 +592,7 @@ class UploadsViewSet(viewsets.ModelViewSet):
 ##################################
 ####### VISTA TICKETS ############
 ##################################
-
+@authentificated_user
 class ticketListView(ListView):
     model = UserTickets
     template_name = 'scribd/support_page.html'
@@ -604,7 +605,7 @@ class ticketViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return UserTickets.objects.all().order_by('id')
 
-
+@authentificated_user
 def ticket_page(request):
     if request.method == 'POST':
         ticket_form = TicketForm(request.POST, request.FILES)
@@ -613,17 +614,15 @@ def ticket_page(request):
                 ticket_title=ticket_form.cleaned_data.get('ticket_title'),
                 ticket_summary=ticket_form.cleaned_data.get('ticket_summary'),
                 ticket_user=User.objects.get(username=request.user.username),
-
             )
             ticket.save()
-
             return redirect('index')
     else:
         ticket_form = TicketForm()
 
     return render(request, 'scribd/tickets.html', {'ticket_form': ticket_form})
 
-
+@authentificated_user
 def ticketForumView(request, pk):
     if request.method == 'POST':
         discussion_form = CreateInDiscussionTicket(request.POST)

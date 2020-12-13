@@ -17,7 +17,7 @@
                                 {% if ticket.ticket_user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
                                     <div class="media flex-wrap w-100 align-items-center"><img
                                             src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                                            class="d-block ui-w-40 rounded-circle" alt="" style="width: 8%;">
+                                            class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75">
                                         <div class="media-body ml-3">{{ ticket.v.username }}
                                             <div class="text-muted small">
                                                 <div>Member since <strong>{{ ticket.ticket_user.date_joined }}</strong>
@@ -28,16 +28,17 @@
                                     </div>
                                 {% else %}
                                     <div class="media flex-wrap w-100 align-items-center"><img
-                                            src="{{ forum.ticket_user.user_profile.profile_image.url }}"
-                                            class="d-block ui-w-40 rounded-circle" alt="">
-                                        <div class="media-body ml-3">{{ ticket.ticket_user.username }}
-                                            <div class="text-muted small">
-                                                <div>Member since <strong>{{ ticket.ticket_user.date_joined }}</strong>
+                                                src="{{ ticket.ticket_user.user_profile.profile_image.url }}"
+                                                class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75">
+                                            <div class="media-body ml-3">{{ ticket.ticket_user.username }}
+                                                <div class="text-muted small">
+                                                    <div>Member since <strong>{{ ticket.ticket_user.date_joined }}</strong>
+                                                    </div>
+                                                    {{ ticket.ticket_user.email }}
                                                 </div>
-                                                {{ ticket.ticket_user.email }}
                                             </div>
                                         </div>
-                                    </div>
+
                                 {% endif %}
                             </div>
 
@@ -72,7 +73,7 @@
                                 {% if objs.user.is_support %}
                                     <div class="media flex-wrap w-100 align-items-center"><img
                                                 src="{% static 'images/support.png' %}"
-                                                class="d-block ui-w-40 rounded-circle" alt="" style="width: 8%;">
+                                                class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75">
                                             <div class="media-body ml-3">{{ objs.user.username }}
                                                 <div class="text-muted small">
                                                     {{ objs.user.email }}
@@ -84,7 +85,7 @@
                                     {% if objs.user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
                                         <div class="media flex-wrap w-100 align-items-center"><img
                                                 src="https://bootdey.com/img/Content/avatar/avatar6.png"
-                                                class="d-block ui-w-40 rounded-circle" alt="" style="width: 8%;">
+                                                class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75">
                                             <div class="media-body ml-3">{{ objs.user.username }}
                                                 <div class="text-muted small">
                                                     <div>Member since <strong>{{ objs.user.date_joined }}</strong>
@@ -96,7 +97,7 @@
                                     {% else %}
                                         <div class="media flex-wrap w-100 align-items-center"><img
                                                 src="{{ objs.user.user_profile.profile_image.url }}"
-                                                class="d-block ui-w-40 rounded-circle" alt="">
+                                                class="d-block ui-w-40 rounded-circle" alt="" width="75" height="75">
                                             <div class="media-body ml-3">{{ objs.user.username }}
                                                 <div class="text-muted small">
                                                     <div>Member since <strong>{{ objs.user.date_joined }}</strong>

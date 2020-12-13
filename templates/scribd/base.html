@@ -51,25 +51,45 @@
                         </button>
                     </form>
                     <ul class="navbar-nav ml-auto" style="margin-top: 20px">
+
                         {% if request.user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{% url 'upload_file' %}">
-                                    <p style="font-size: large; color: #FFFFFF"><i
-                                            class="fa fa-upload"></i> Upload files</p>
-                                </a>
+                                {% if not request.user.is_provider and not request.user.is_support %}
+                                    <a class="nav-link" href="{% url 'upload_file' %}">
+                                        <p style="font-size: large; color: #FFFFFF"><i
+                                                class="fa fa-upload"></i> Upload files</p>
+                                    </a>
+
+                                {% endif %}
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link"
-                                   href="{% url 'userprofilepage' request.user.username %}"><strong
-                                        style="color:#367C85;font-size: large"><i
-                                        class="fa fa-user"></i> {{ request.user.username }}</strong></a>
+
+                            <li class="nav-item">
+                                {% if request.user.is_provider %}
+                                    <a class="nav-link"
+                                       href="{% url 'provider_page' %}"><strong
+                                            style="color:#367C85;font-size: large"><i
+                                            class="fa fa-user"></i> {{ request.user.username }}</strong></a>
+
+                                {% elif request.user.is_support %}
+                                    <a class="nav-link"
+                                       href="{% url 'support_page' %}"><strong
+                                            style="color:#367C85;font-size: large"><i
+                                            class="fa fa-user"></i> {{ request.user.username }}</strong></a>
+                                {% else %}
+                                    <a class="nav-link"
+                                       href="{% url 'userprofilepage' request.user.username %}"><strong
+                                            style="color:#367C85;font-size: large"><i
+                                            class="fa fa-user"></i> {{ request.user.username }}</strong></a>
+                                {% endif %}
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="/accounts/logout">
                                     <p style="font-size: large; color: #FFFFFF">Log Out <i
                                             class="fa fa-sign-out"></i></p>
                                 </a>
                             </li>
+
                         {% else %}
                             <li class="nav-item">
                                 <a class="nav-link" href="/accounts/signup/">
@@ -85,7 +105,8 @@
                             </li>
                         {% endif %}
                         <li class="nav-item">
-                            <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md" target = "_blank"><p
+                            <a class="nav-link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md"
+                               target="_blank"><p
                                     style="font-size: large"><i
                                     class="fa fa-github"></i> About us</p></a>
                         </li>
@@ -226,7 +247,8 @@
                         <a class="link" href="{% url 'signup' %}">Register</a>
                     </li>
                     <li>
-                        <a class="link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md" target = "_blank">About us</a>
+                        <a class="link" href="https://github.com/UB-ES-2020-A/Scribd/blob/main/README.md"
+                           target="_blank">About us</a>
                     </li>
                     <li>
                         <a href="{% url 'support_page' %}">send a Ticket</a>
@@ -248,9 +270,10 @@
 <!-- Bootstrap core JavaScript -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+<script
+            src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+            crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>
@@ -259,7 +282,7 @@
         crossorigin="anonymous"></script>
 
 
-
+<script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
 {% if request.session.login is not None %}
     {% if request.session.login %}
@@ -279,4 +302,6 @@
 <script src="{% static 'js/upload.js' %}"></script>
 
 </body>
+
+
 </html>
