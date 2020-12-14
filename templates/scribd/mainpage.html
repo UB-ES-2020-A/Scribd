@@ -1,45 +1,140 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>MainPage</title>
-    <meta charset="utf-8"/>
-</head>
 {% extends 'scribd/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/modern-business.css' %}" rel="stylesheet">
+
+
+</head>
+
+{% block title %} Scribd {% endblock %}
+
 {% block content %}
-    {% if search %}
-        <h3>Busqueda por: {{ search }}</h3>
-    {% endif %}
-    <div id='cards'>
-        <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
-            <div class="container">
-                <h2 style="color: #323232"><strong>Recently added</strong></h2>
-                <div class="row">
-                    {% for ebook in ebooks %}
-                        <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
-                            <div class="card" style="width: 500px">
-                                <div class="card-body" style="text-align: center;">
-                                    <!-- Modify dimensions later-->
-                                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                                        {% load static %}
-                                        <img src="{% static 'images/unknown.png' %}" height="400px" width="280px" alt=""
-                                             style="border-radius: 2%">
-                                    {% else %}
-                                        <img src="{{ ebook.featured_photo.url }}" height="400px" width="280px" alt=""
-                                             style="border-radius: 2%">
-                                    {% endif %}
-                                    <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
-                                    <br>
-                                    <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
-                                    <br>
-                                    <a href="ebookdetail/{{ ebook.id }}" class="btn" style="background-color: #367C85">
-                                        <h7 style="color: #FFFFFF">More info</h7>
-                                    </a>
-                                </div>
-                            </div>
+    <div>
+        <header>
+            <div id="carouselExampleIndicators" class="carousel slide pb-2" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner" role="listbox">
+                    <!-- Slide One - Set the background image for this slide in the line below -->
+                    <div class="carousel-item active"
+                         style="background-image: url({% static 'images/hogwarts_express.jpg' %})">
+                        <div class="carousel-caption d-none d-md-block" style="text-align: start" href="#">
+                            <h2>Harry Potter and the philosopher's stone</h2>
+                            <h4>By J. K. Rowling</h4>
                         </div>
-                    {% endfor %}
+                    </div>
+                    <!-- Slide Two - Set the background image for this slide in the line below -->
+                    <div class="carousel-item"
+                         style="background-image: url({% static 'images/thorfinn_thorkell.jpg' %})">
+                        <div class="carousel-caption d-none d-md-block" href="#">
+                            <h2>Vinland Saga (manga)</h2>
+                            <h4>By Makoto Yukimura</h4>
+                        </div>
+                    </div>
+                    <!-- Slide Three - Set the background image for this slide in the line below -->
+                    <div class="carousel-item" style="background-image: url({% static 'images/thewall.png' %})">
+                        <div class="carousel-caption d-none d-md-block" style="text-align: end;" href="#">
+                            <h2>Game of Thrones: A Song of Ice and Fire</h2>
+                            <h4>By George R. R. Martin</h4>
+                        </div>
+                    </div>
                 </div>
+                <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        </header>
+    </div>
+
+    <!-- Page Content -->
+    <div class="container pb-3 mt-5">
+
+        <!-- Portfolio Section -->
+        <h3>Our selection of the <strong>best books</strong> is waiting for you!</h3>
+        <br>
+        {% if search %}
+            <h3>Search for: {{ search }}</h3>
+        {% endif %}
+        <div class="row">
+            {% for ebook in ebooks %}
+                <div class="card flex-lg-row h-md-250 mt-3 w-100" style="box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5)">
+                    <img class="card-img-left flex-auto d-none d-md-block" width="300" height="400"
+                         src="{{ ebook.featured_photo.url }}" data-holder-rendered="true">
+                    <div class="card text-center w-100">
+
+                        <div class="card-body" style="border-radius: 20%">
+                            <h3 class="card-title">{{ ebook.title }}</h3>
+                            <br>
+                            <h6> by {{ ebook.autor }}</h6>
+                            <br>
+                            <p class="card-text" style="text-align: justify">{{ ebook.description|truncatechars:650 }}</p>
+                            <br>
+                            <a href="ebookdetail/{{ ebook.id }}">
+                                <button class="btn my-2 my-sm-0" type="submit"
+                                        style="background-color: #367C85">
+                                    <h7 style="color: #FFFFFF">More info</h7>
+                                </button>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            {% endfor %}
+            <div style="position:relative; left: 40%; padding-top: 10px;">
+                <ul class="pagination">
+                    {% if ebooks.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ ebooks.previous_page_number }}"
+                               tabindex="-1">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for pg in page_range %}
+                        {% if ebooks.number == pg %}
+                            <li class="page-item active">
+                                <a class="page-link" href="?page={{ pg }}">{{ pg }}<span
+                                        class="sr-only">(current)</span></a>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ pg }}">{{ pg }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if ebooks.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ ebooks.next_page_number }}">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </div>
+
     </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
 {% endblock %}
+
+</html>

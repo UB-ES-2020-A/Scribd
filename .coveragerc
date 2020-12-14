@@ -1,0 +1,9 @@
+[run]
+omit =
+    # omit anything in the venv
+    */venv/*
+    */virtualenvironment/*
+    */virtualenv/*
+    Scribd/decorators.py
+    Scribd/test_views.py
+    Scribd/permissions.py

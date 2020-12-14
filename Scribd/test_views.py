@@ -3,38 +3,64 @@ from django.urls import reverse
 
 
 class MyTest(TestCase):
-
     def setUpTestingViews(self):
         self.client = Client()
 
-    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_base(self):
-        response = self.client.get(reverse('base'))
+        response = self.client.get(reverse("base"))
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'scribd/base.html')
+        self.assertTemplateUsed(response, "scribd/base.html")
 
-    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_ebooks(self):
-        response = self.client.get(reverse('ebooks'))
+        response = self.client.get(reverse("ebooks"))
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'scribd/mainpage.html')
+        self.assertTemplateUsed(response, "scribd/mainpage.html")
 
-    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_users(self):
-        response = self.client.get(reverse('users'))
+        response = self.client.get(reverse("users"))
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
 
-
-    @override_settings(STATICFILES_STORAGE='django.contrib.staticfiles.storage.StaticFilesStorage')
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
     def test_get_ebooks(self):
-        response = self.client.get(reverse('ebooks'))
+        response = self.client.get(reverse("ebooks"))
 
         # 200, OK
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'scribd/mainpage.html')
+        self.assertTemplateUsed(response, "scribd/mainpage.html")
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_get_ebooks(self):
+        response = self.client.get(reverse("ebooks"))
+
+        # 200, OK
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "scribd/mainpage.html")
+
+
+class PostInteraction(TestCase):
+    def setUpTestingViews(self):
+        self.client = Client()
+
+    @override_settings(STATICFILES_STORAGE=
+                       "django.contrib.staticfiles.storage.StaticFilesStorage")
+    def test_login(self):
+        response = self.client.post(reverse("login"),
+                                    data={
+                                        "username": "Skere",
+                                        "password": "skereskere"
+                                    })
+        self.assertEquals(response.status_code, 302)

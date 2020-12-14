@@ -1,32 +1,111 @@
 {% extends 'scribd/base.html' %}
-
+{% load crispy_forms_tags %}
 {% block content %}
-    <div id='cards'>
-        <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
-            <div class="container">
-                <h2 style="color: #323232">Recently <strong>saved</strong></h2>
 
-                {% for ticket in tickets %}
-                    <div class="col-lg-6 col-md-6 mb-3 d-flex">
-                        <div class="card" style="width: 500px">
-                            {% if not ticket.ticket_solved  %}
-                                {% if ticket.ticket_user.username == request.user.username or request.user.is_support %}
-                                <div class="card-body" style="text-align: center;">
-                                    <h5 class="card-title pt-5"><strong>{{ ticket.ticket_title }}</strong></h5>
-                                    <br>
-                                    <p> {{ ticket.ticket_summary }} </p>
+    <div class="container mt-4 my-4">
+        {% if not request.user.is_support %}
+            <section class="jumbotron text-center">
+                <div class="p-5 bg-white box-shadow">
+                    <h1 class="jumbotron-heading">Welcome to the support page!</h1>
+                    <p class="lead text-muted">Please, if you have a problem write a ticket to contact with our support
+                        staff!</p>
+                    <p>
 
+                        <button class="btn my-2 my-sm-0" data-toggle="modal" data-target="#createticket"
+                                type="submit"
+                                style="background-color: #367C85">
+                            <h7 style="color: #FFFFFF">Write a ticket</h7>
+                        </button>
 
-                                    <br>
-                                <a href="{% url 'ticketdetail' ticket.id_uTicket %}" class="btn" style="background-color: #367C85">
-                                        <h7 style="color: #FFFFFF">More info</h7>
-                                    </a>
+                    </p>
+                </div>
+            </section>
+        {% else %}
+
+            <section class="jumbotron text-center">
+                <div class="my-3 p-3 bg-white rounded box-shadow">
+                    <h1 class="jumbotron-heading">Welcome again {{ request.user.username }}</h1>
+                    <p class="lead text-muted">These are the current opened tickets!</p>
+                </div>
+            </section>
+        {% endif %}
+
+        <div class="album py-lg-5 bg-light">
+            <div class="container my-4 my-lg-auto">
+
+                <div class="row">
+                    {% for ticket in tickets %}
+                        {% if ticket.ticket_user.username == request.user.username or request.user.is_support %}
+                            <div class="col-lg-6 align-items-stretch">
+                                <div class="card mb-4 box-shadow">
+                                    <div class="card-header">
+                                        <h6>{{ ticket.ticket_title }}</h6>
+                                    </div>
+                                    <div class="card-body ">
+                                        <p class="card-text text-truncate mb-5">{{ ticket.ticket_summary }}</p>
+                                        <hr>
+                                        <div class="d-flex  align-items-right">
+                                            <div class="btn-group">
+                                                <a href="{% url 'ticket_detail' ticket.id_uTicket %}" class="btn"
+                                                   style="background-color: #367C85">
+                                                    <h7 style="color: #FFFFFF">More info</h7>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">{{ ticket.ticket_date_added }}
+                                            by {{ ticket.ticket_user }}</small>
+                                    </div>
                                 </div>
-                            {% endif %}
+                            </div>
                         {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createticket" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Write a ticket</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        {% if ticket_form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in ticket_form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        {{ ticket_form.ticket_title|as_crispy_field }}
+
+                        {{ ticket_form.ticket_summary|as_crispy_field }}
+
+
+                        <button name="ticket" type="submit" class="btn btn-success btn-lg btn-block"
+                                style="background-color: #367C85; margin-bottom: 20px">
+                            <h7 style="color: #FFFFFF">Create ticket</h7>
+                        </button>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-lg btn-block" data-dismiss="modal">Close
+                    </button>
+                </div>
             </div>
         </div>
     </div>

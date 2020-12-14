@@ -1,0 +1,129 @@
+body {
+    margin-top: 20px;
+    background-color: #e9ebee;
+}
+
+.profile-banner {
+    width: 100%;
+    height: 300px;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    background-color: #252932;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.custombase {
+    border-radius: 1%;
+    width: 90%;
+    height: auto;
+    background-position: center center;
+    background-size: cover;
+    position: relative;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+    margin: 10px;
+}
+
+.avatar-container {
+    height: 300px;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 210px;
+    height: 210px;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 196px;
+    margin-left: 30px;
+    border: 4px solid #f3f3f3;
+}
+
+.profile-actions {
+    position: absolute;
+    bottom: 20px;
+}
+
+.user-profile-2 {
+    margin-top: 50px;
+    margin-left: 50px;
+}
+
+.user-profile-sidebar {
+    margin: 0 0 20px;
+}
+
+.user-profile-sidebar .user-identity {
+    margin: 20px 0 0;
+}
+
+.user-profile-sidebar img {
+    width: 90px;
+}
+
+.account-status-data {
+    text-align: center;
+    padding: 10px 0;
+    border-top: 1px dashed #ddd;
+    border-bottom: 1px dashed #ddd;
+    margin: 10px 0 20px;
+}
+
+.account-status-data h5 {
+    font-size: 11px;
+    line-height: 150%;
+    color: #909090;
+}
+
+.user-button {
+    margin: 15px 0;
+}
+
+.user-button .btn {
+    margin: 5px 0;
+}
+
+#social {
+    padding: 10px;
+    background: #E5E9EC;
+    text-align: center;
+}
+
+#social a:hover {
+    text-decoration: none;
+}
+
+.fa-circle.facebook {
+    color: #5471AE;
+}
+
+.fa-circle.twitter {
+    color: #4EC6F6;
+}
+
+.fa-circle.gplus {
+    color: #E24E3E;
+}
+
+.fa-circle.tumblr {
+    color: #4D77A3;
+}
+
+.fa-circle.linkedin {
+    color: #3097CE;
+}
+
+.user-profile-content {
+    margin: 30px 15px;
+}
+
+.tab-pane {
+    padding-top: 20px;
+}
+
+.user-message {
+    width: 50px;
+    height: 50px;
+}
+
+

@@ -21,23 +21,34 @@ from django.contrib import admin
 from django.urls import include
 from rest_framework import routers
 
-from Scribd.views import EbookViewSet, AccountsViewSet, ticketViewSet, UploadsViewSet,ForumViewSet
-
+from Scribd.views import (
+    EbookViewSet,
+    AccountsViewSet,
+    ticketViewSet,
+    UploadsViewSet,
+    ForumViewSet,
+    error404,
+    error500,
+)
 
 router = routers.DefaultRouter()
-router.register(r'ebooks', EbookViewSet)
-router.register(r'accounts', AccountsViewSet)
-router.register(r'uploaded_files', UploadsViewSet)
-router.register(r'tickets', ticketViewSet)
-router.register(r'forums',ForumViewSet)
+router.register(r"ebooks", EbookViewSet)
+router.register(r"accounts", AccountsViewSet)
+router.register(r"uploaded_files", UploadsViewSet)
+router.register(r"tickets", ticketViewSet)
+router.register(r"forums", ForumViewSet)
 
 urlpatterns = [
-    url(r'admin/', admin.site.urls, name="admin_page"),
-    url(r'', include('Scribd.urls')),
-    url(r'scribd/', include('Scribd.urls')),
-    url(r'api/', include(router.urls)),
-    url(r'api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^oauth/', include('social_django.urls', namespace='social')),
-    url('accounts/', include('django.contrib.auth.urls'))
+    url(r"admin/", admin.site.urls, name="admin_page"),
+    url(r"", include("Scribd.urls")),
+    url(r"", include("Scribd.urls")),
+    url(r"api/", include(router.urls)),
+    url(r"api-auth/", include("rest_framework.urls",
+                              namespace="rest_framework")),
+    url(r"^oauth/", include("social_django.urls", namespace="social")),
+    url("accounts/", include("django.contrib.auth.urls")),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = error404
+handler500 = error500

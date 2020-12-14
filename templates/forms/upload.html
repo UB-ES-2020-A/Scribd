@@ -1,43 +1,96 @@
 {% extends 'scribd/base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 {% load crispy_forms_tags %}
 {% block title %}Upload Page{% endblock %}
 {% block content %}
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="{% static 'css/styles-upload.css' %}">
+
+        <title>Document</title>
+    </head>
+
     <div class="container-fluid">
         <div class="sign-up-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
             <h1 class="display-4">Upload files</h1>
         </div>
-        <div class="row">
-            <div class="col">
-                <p>
-                    Upload your stories (pdf, txt, doc, docx, epub...) here.
-                </p>
+        <div class="custombase" style="background-color: #FFFFFF; margin-left: 5%; margin-bottom: 100px">
+            <div class="row">
+                <div class="col">
+                    <p class="container mt-5">
+                        Here you can upload your stories (pdf, txt, doc, docx, epub...). Bring your ideas to life and
+                        share with others your own creations.
+                    </p>
+
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col" style="margin-left: 50px">
-                <form method="post" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="row">
-                        <!--<input type="file" name="document">-->
-                        {{ upload_file_form.title|as_crispy_field }}
+            <hr>
+            <div class="row mt-5">
+                <div class="col">
+                    <div class="container">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <h5>Give a <strong>title</strong></h5>
+                                    {{ upload_file_form.title|as_crispy_field }}
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>Select the <strong>visibility</strong> mode <small style="color: #4e555b">(Other
+                                        user's may be able to download your file if it's public)</small></h5>
+                                    {{ upload_file_form.visibility|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h5>Upload a <strong>cover</strong> for your book</h5>
+                                    {{ upload_file_form.featured_photo|as_crispy_field }}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="file-upload">
+                                        <button class="file-upload-btn" type="button"
+                                                onclick="$('.file-upload-input').trigger( 'click' )">Add File
+                                        </button>
+                                        <h5 style="text-align: center; margin-top: 10px">or...</h5>
+                                        <div class="file-upload-wrap">
+                                            {{ upload_file_form.file }}
+                                            <div class="drag-text">
+                                                <h3>Drag and drop a file</h3>
+                                            </div>
+                                        </div>
+                                        <div class="file-upload-content">
+                                            <img class="file-upload-file" src="#" alt="your file"/>
+                                            <div class="file-title-wrap">
+                                                <button type="button" onclick="removeUpload()" class="remove-file">
+                                                    Remove <span
+                                                        class="file-title">Uploaded File</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin-left: -80px; margin-right: -80px">
+                            <div class="row mt-5 block" style="text-align: center">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-block"
+                                            style="background-color: #367C85; margin-bottom: 20px">
+                                        <h7 style="color: #FFFFFF">Upload file now</h7>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="row">
-                        <!--<input type="file" name="document">-->
-                        {{ upload_file_form.visibility|as_crispy_field }}
-                    </div>
-                    <div class="row">
-                        <!--<input type="file" name="document">-->
-                        {{ upload_file_form.file|as_crispy_field }}
-                    </div>
-                    <div class="row">
-                        <button type="submit" class="btn btn-primary"
-                                style="background-color: #367C85; margin-bottom: 20px">
-                            <h7 style="color: #FFFFFF">Upload file here</h7>
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
+
+
 {% endblock %}

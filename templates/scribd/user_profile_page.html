@@ -1,143 +1,315 @@
 {% extends 'scribd/base.html' %}
-{% load crispy_forms_tags %}
-{% block title %}Profile page{% endblock %}
+{% load static %}
 {% block content %}
-    <div class="container-fluid" style="margin-top: 50px; margin-bottom: 50px; margin-left: 50px">
-        <div class="row">
-            <div class="col">
-                <h1 style="color: #367C85; font-size: 70px">{{ user.username }}</h1>
-                <h3 style="color: dimgray"><small>{{ user.first_name }} {{ user.last_name }}</small></h3>
-                <br>
-                <br>
-                <h3 style="color: dimgray">About Me</h3>
-                <p>{{ user.user_profile.bio }}</p>
-            </div>
-            <div class="col" style="text-align: center">
-                <img src="{{ user.profile_image.url }}" height="100%" width="50%" alt=""
-                     style="border-radius: 5%; margin-left: -300px">
-            </div>
+    <div class="profile-banner" style="background:url({{ user.user_profile.portrait.url }});">
+        <div class="col-sm-3 avatar-container">
+            {% if user.user_profile.profile_image.url ==  '/media/images/unknown.png' %}
+                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" class="img-fluid profile-avatar"
+                     alt="User avatar" style="border-radius: 2%">
+            {% else %}
+                <img src="{{ user.user_profile.profile_image.url }}" class="img-fluid profile-avatar"
+                     style="border-radius: 2%" alt="User avatar">
+            {% endif %}
         </div>
+    </div>
+    <div class="content" style="margin-bottom: 20px; margin-top: 20px">
         <div class="row">
-            <div class="col">
-                <a href="edit/" class="btn" style="background-color: #367C85; margin-top: 20px">
-                    <h7 style="color: #FFFFFF">Edit profile</h7>
-                </a>
-            </div>
-        </div>
-        <hr style="margin-right: 50px; margin-top: 50px">
-        <div class="row">
-            <div class="col">
-                <h3 style="color:dimgray">Type of subscription</h3>
-                <h1 style="color: dimgray"><small
-                        style="font-size: 50px; color: #367C85">{{ user.user_profile.subs_type }}</small>
-                </h1>
-            </div>
-            <div class="col">
-                <div>
-                    <h3 style="color:dimgray">Limited books by subscription</h3>
-                    <h1 style="font-size: 50px; color: #367C85">{{ user.user_profile.nbooks_by_subs }}</h1>
-                </div>
-            </div>
-            <div class="col">
-                <div>
-                    <h3 style="color:dimgray">Books already followed</h3>
-                    <h1 style="font-size: 50px; color: #367C85">{{ user.user_profile.n_books_followed }}</h1>
-                </div>
-            </div>
-        </div>
-
-        {% if user.user_profile.expires < current_time or user.user_profile.subs_type == "Free trial" %}
-            <div class="row">
-                <div class="col">
-                    <a href="upgrade/" class="btn" style="background-color: #367C85; margin-top: 20px">
-                        <h7 style="color: #FFFFFF">Upgrade my subscription</h7>
-                    </a>
-                </div>
-            </div>
-        {% elif user.user_profile.expires > current_time %}
-            <div class="row">
-                <div class="col">
-                    <h6 style="color:darkred;">Your subscription will expire in {{ user.user_profile.expires }}</h6>
-                    <a href="cancelconfirmation/" class="btn" style="background-color: darkred; margin-top: 20px">
-                        <h7 style="color: #FFFFFF">Cancel my subscription</h7>
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-
-        <br>
-
-        {% if user.user_profile.n_books_followed > 0 %}
-            <hr style="margin-right: 50px; margin-top: 50px">
-            <div class="row">
-                <div class="col">
-                    <h3 style="color:dimgray">Followed resources</h3>
-                    <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
-                        <div class="container">
-                            <div class="row">
-                                {% for ebook in user.users_key.values %}
-                                    {% if user.user_profile.nbooks_by_subs >= forloop.counter %}
-                                        <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
-                                            <div class="card" style="width: 500px">
-                                                <div class="card-body" style="text-align: center;">
-                                                    {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
-                                                        {% load static %}
-                                                        <img src="{% static 'images/unknown.png' %}" height="400px"
-                                                             width="280px" alt=""
-                                                             style="border-radius: 2%">
-                                                    {% else %}
-                                                        {% load static %}
-                                                        <img src="{{ ebook.featured_photo.url }}" height="400px"
-                                                             width="280px"
-                                                             alt=""
-                                                             style="border-radius: 2%">
-                                                    {% endif %}
-                                                    <h5 class="card-title pt-5"><strong>{{ ebook.title }}</strong></h5>
-                                                    <br>
-                                                    <h6 class="card-subtitle"> {{ ebook.autor }} </h6>
-                                                    <br>
-                                                    <a href="http://es-scribd.herokuapp.com/{{ ebook.url }}" class="btn"
-                                                       style="background-color: #367C85">
-                                                        <h7 style="color: #FFFFFF">Read book</h7>
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+            <div class="col-sm-3">
+                <!-- Begin user profile -->
+                <div class="text-center user-profile-2"
+                     style="margin-top: 100px; box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.5); border-radius: 2%">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <h4><b>{{ request.user.username }}</b></h4>
+                            <h6>{{ request.user.email }}</h6>
+                            <br>
+                            <h5>Subscription plan</h5>
+                            <strong>{{ request.user.user_profile.subs_type }}</strong>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">{{ request.user.user_profile.n_books_followed }}</span>
+                            Followed books
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge">{{ request.user.user_profile.n_uploads }}</span>
+                            Uploaded resources
+                        </li>
+                    </ul>
+                </div><!-- End div .box-info -->
+                <!-- Begin user profile -->
+                <!-- User button -->
+                <div class="user-button" style="margin-left: 50px">
+                    <div class="row">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                            <a class="btn btn-sm btn-block" style="background-color: #367C85; color: #FFFFFF;"
+                               href="edit/"><i
+                                    class="fa fa-edit"></i> Edit profile
+                            </a>
                         </div>
                     </div>
-                </div>
+                </div><!-- End div .user-button -->
             </div>
-            <hr style="margin-right: 50px; margin-top: 50px">
-        {% endif %}
 
-        {% if user.user_profile.n_uploads > 0 %}
-            <div class="row">
-                <div class="col">
-                    <h3 style="color:dimgray">Uploads</h3>
-                    <div class="parallax-inner" style="padding-top: 5%;padding-bottom: 5%;">
-                        <div class="container">
-                            <div class="row">
-                                {% for res in user.uploadedresources_set.values %}
-                                    <div class="col-lg-4 col-md-6 mb-5 pb-1 d-flex">
-                                        <div class="card" style="width: 500px">
-                                            <div class="card-body" style="text-align: center;">
-                                                <h5 class="card-title pt-5"><strong>{{ res.title }}</strong></h5>
-                                                <br>
-                                                Access link:
-                                                <a href="/media/{{ res.file }}">{{ res.file }}</a>
+            <div class="col-sm-9">
+                <div class="custombase" style="background-color: #FFFFFF">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist" style="color: #1b1e21">
+                            <a class="nav-item nav-link active" style="color: #367C85" id="nav-home-tab"
+                               data-toggle="tab" href="#nav-home"
+                               role="tab"
+                               aria-controls="nav-home" aria-selected="true"><i
+                                    class="fa fa-user"></i> Profile</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-profile-tab" data-toggle="tab"
+                               href="#nav-profile"
+                               role="tab"
+                               aria-controls="nav-profile" aria-selected="false"><i
+                                    class="fa fa-book"></i> Followed</a>
+                            <a class="nav-item nav-link" style="color: #367C85" id="nav-contact-tab" data-toggle="tab"
+                               href="#nav-contact"
+                               role="tab"
+                               aria-controls="nav-contact" aria-selected="false"><i
+                                    class="fa fa-upload"></i> Uploaded</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                             aria-labelledby="nav-home-tab">
+                            <div class="container">
+                                <h5>About me</h5>
+                                <p style="margin-left: 10px; color: #1d2124;">{{ request.user.user_profile.bio }}</p>
+                                <hr>
+                                <h5>Contracted plan: <strong>{{ request.user.user_profile.subs_type }}</strong><small
+                                        style="color: #4e555b"> (The plan expires in 4 weeks since the payment is
+                                    done)</small></h5>
+                                {% if user.user_profile.expires < current_time or user.user_profile.subs_type == "Free trial" %}
+                                    <a href="upgrade/">
+                                        <h7 style="margin-left: 10px">Upgrade subscription now!</h7>
+                                    </a>
+                                    <br>
+                                {% elif user.user_profile.expires > current_time %}
+                                    <p style="color: #1d2124; margin-left: 10px">Your subscription will expire
+                                        in {{ user.user_profile.expires }}, but you can cancel anytime by <strong><a
+                                                href="cancelconfirmation/" style="color: darkred">
+                                            clicking here!
+                                        </a></strong></p>
+                                {% endif %}
+                                <hr>
+                                <p style="margin-left: 10px">You have read
+                                    <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
+                                    <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
+                                <p style="margin-left: 10px">You're part from this community since
+                                    <strong>{{ request.user.date_joined }}</strong></p>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                        </div>
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel"
+                             aria-labelledby="nav-profile-tab">
+                            <div class="container">
+                                <h5>Books followed</h5>
+                                <p style="margin-left: 10px">You have read
+                                    <strong>{{ request.user.user_profile.n_books_followed }}</strong> but you can read
+                                    <strong>{{ substract }}</strong>, you're running out of time hurry up!</p>
+                                <br>
+                                <div id="books" class="carousel slide" data-wrap="false">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <div class="container" style="margin-left: 15px; margin-top: 10px">
+                                                <div class="row">
+                                                    <!-- by now we range over all the books twice -->
+                                                    {% for ebook in user.users_key.values %}
+                                                        {% if 4 >= forloop.counter %}
+                                                            <div class="col-sm-12 col-lg-3">
+                                                                <div class="card"
+                                                                     style="width: 175px; text-align: center;">
+
+                                                                    <div class="container" style="margin-top: 10px">
+                                                                        {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                                                            {% load static %}
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% else %}
+                                                                            <img src="/media/{{ ebook.featured_photo }}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <small style="font-size: x-small">{{ ebook.title }}</small>
+                                                                        <a class="btn btn-sm btn-block"
+                                                                           href="/media/{{ ebook.file }}" target="_blank"
+                                                                           style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
+                                                                                class="fa fa-book"></i> Read
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <div class="container" style="margin-left: 15px; margin-top: 10px;">
+                                                <div class="row">
+                                                    <!-- by now we range over all the books twice -->
+                                                    {% for ebook in user.users_key.values %}
+                                                        {% if 4 < forloop.counter %}
+                                                            <div class="col-sm-12 col-lg-3">
+                                                                <div class="card"
+                                                                     style="width: 175px; text-align: center;">
+                                                                    <div class="container" style="margin-top: 10px">
+                                                                        {% if ebook.featured_photo.url == '/media/images/unknown.png' %}
+                                                                            {% load static %}
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% else %}
+                                                                            <img src="/media/{{ ebook.featured_photo }}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="card-body" style="margin-top: -10px">
+                                                                        <small style="font-size: x-small">{{ ebook.title }}</small>
+                                                                        <a class="btn btn-sm btn-block"
+                                                                           style="background-color: #367C85; color: #FFFFFF; margin-top: 15px"><i
+                                                                                class="fa fa-book"></i> Read
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                {% endfor %}
+                                </div>
+                                {% if user.user_profile.n_books_followed > 4 %}
+                                    <a href="#books" class="carousel-control-prev"
+                                       data-slide="prev" style="height: 10%; width: 5%; margin-top: 250px">
+                                                <span class="carousel-control-prev-icon"
+                                                      style="filter: invert()"></span>
+                                    </a>
+                                    <a href="#books" class="carousel-control-next"
+                                       data-slide="next" style="height: 10%; width: 5%; margin-top: 250px">
+                                                <span class="carousel-control-next-icon"
+                                                      style="filter: invert()"></span>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-contact" role="tabpanel"
+                             aria-labelledby="nav-contact-tab">
+                            <div class="container">
+                                <h5>Files uploaded</h5>
+                                <p style="margin-left: 10px">
+                                    The number of files uploaded by now is
+                                    <strong>{{ request.user.user_profile.n_uploads }}</strong>
+                                    .</p>
+                                {% if user.user_profile.n_uploads == 0 %}
+                                    <a href="{% url 'upload_file' %}" style="margin-left: 10px">Upload now for the first
+                                        time</a>
+                                {% endif %}
+                                <br>
+                                <div id="uploads" class="carousel slide" data-wrap="false">
+                                    <div class="carousel-inner">
+                                        <div class="carousel-item active">
+                                            <div class="container" style="margin-left: 15px; margin-top: 10px">
+                                                <div class="row">
+                                                    <!-- by now we range over all the books twice -->
+                                                    {% for res in user.uploadedresources_set.values %}
+                                                        {% if 4 >= forloop.counter %}
+                                                            <div class="col-sm-12 col-lg-3">
+                                                                <div class="card"
+                                                                     style="width: 175px; text-align: center;">
+                                                                    <div class="container" style="margin-top: 10px">
+                                                                        {% if res.featured_photo.url == '/media/images/unknown.png' %}
+                                                                            {% load static %}
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% else %}
+                                                                            <img src="/media/{{ res.featured_photo }}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <small style="font-size: x-small">Access
+                                                                            link:</small>
+                                                                        <a href="/media/{{ res.file }}"><a
+                                                                                href="/media/{{ res.file }}"><small
+                                                                                style="font-size: x-small">{{ res.file }}</small></a></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="carousel-item">
+                                            <div class="container" style="margin-left: 15px; margin-top: 10px;">
+                                                <div class="row">
+                                                    <!-- by now we range over all the books twice -->
+                                                    {% for res in user.uploadedresources_set.values %}
+                                                        {% if 4 < forloop.counter %}
+                                                            <div class="col-sm-12 col-lg-3">
+                                                                <div class="card"
+                                                                     style="width: 175px; text-align: center;">
+                                                                    <div class="container" style="margin-top: 10px">
+                                                                        {% if res.featured_photo.url == '/media/images/unknown.png' %}
+                                                                            {% load static %}
+                                                                            <img src="{% static 'images/unknown.png' %}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% else %}
+                                                                            <img src="/media/{{ res.featured_photo }}"
+                                                                                 height="100%" width="100%" alt=""
+                                                                                 style="border-radius: 2%">
+                                                                        {% endif %}
+
+                                                                    </div>
+                                                                    <div class="card-body" style="margin-top: -10px">
+                                                                        <small style="font-size: x-small">Access
+                                                                            link:</small>
+                                                                        <a href="/media/{{ res.file }}"><small
+                                                                                style="font-size: x-small">{{ res.title }}</small></a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if user.user_profile.n_uploads > 4 %}
+                                    <a href="#uploads" class="carousel-control-prev"
+                                       data-slide="prev" style="height: 10%; width: 5%; margin-top: 250px">
+                                                <span class="carousel-control-prev-icon"
+                                                      style="filter: invert()"></span>
+                                    </a>
+                                    <a href="#uploads" class="carousel-control-next"
+                                       data-slide="next" style="height: 10%; width: 5%; margin-top: 250px">
+                                                <span class="carousel-control-next-icon"
+                                                      style="filter: invert()"></span>
+                                    </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}
