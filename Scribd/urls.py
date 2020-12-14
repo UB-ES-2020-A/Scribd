@@ -28,7 +28,7 @@ urlpatterns = [
     url(r"^$", views.index, name="index"),
     url(r"^base/$", views.base, name="base"),
     url(r"^ebooks/$", views.ebooks, name="ebooks"),
-    url(r"^ebooks/(?P<category>.*)/$", views.ebooks, name="ebooks"),
+    url(r"^ebooks/(?P<search>.*)/$", views.ebooks, name="ebooks"),
     url(r"ebookdetail/(?P<pk>[0-9]+)/$", follow,
         name="ebook_custom_detail"),  # everybody
     url(
